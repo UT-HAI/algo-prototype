@@ -1,4 +1,4 @@
-import { Container, Box, Tabs, Tab } from "@material-ui/core";
+import { Container, Box, Tabs, Tab } from "@mui/material";
 import React from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
@@ -25,6 +25,8 @@ const MainLayout = ({children}) => {
         <Tabs value={location} aria-label="basic tabs example">
           <NavTab label="1. Explore" value="/build/1"/>
           <NavTab label="2. Select Features" value="/build/2"/>
+          <NavTab label="3. Train Model" value="/build/3"/>
+          <NavTab label="4. Evaluate Model" value="/build/4"/>
         </Tabs>
       </Box>
         <Container>
