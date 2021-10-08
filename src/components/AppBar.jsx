@@ -4,8 +4,9 @@ import React from "react";
 
 // top bar with title and participant name
 const AppBar = () => {
-    return <MuiAppBar position="static">
-        <Toolbar>
+    return (
+    <MuiAppBar position="static">
+        <Toolbar variant="dense">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Name TBD
             </Typography>
@@ -13,7 +14,7 @@ const AppBar = () => {
                 Participant 0
             </Typography>
         </Toolbar>
-    </MuiAppBar>
+    </MuiAppBar>)
 }
 
 export default AppBar;

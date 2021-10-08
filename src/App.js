@@ -6,7 +6,7 @@ import SelectFeatures from "./views/SelectFeatures";
 
 function App() {
   return (
-    <div className="App" style={{ minHeight: "100vh" }}>
+    <div className="App" style={{ minHeight: "100vh", display: "flex", flexDirection: 'column' }}>
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <Router>
@@ -15,9 +15,8 @@ function App() {
                 <MainLayout>
                   <Switch>
                     {/* would put steps 1-4 in here */}
-                    <Route exact path='/2'>
+                    <Route exact path='/build/2'>
                       <SelectFeatures />
-                      <div />
                     </Route>
                   </Switch>
                 </MainLayout>

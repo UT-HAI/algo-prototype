@@ -3,6 +3,7 @@ import React from "react"
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom";
 import AppBar from "./AppBar";
+import { FlexBox } from "../util/components";
 
 // I kept the tab version but I like the step version better
 
@@ -23,6 +24,7 @@ const MainLayout = ({children}) => {
     const location = useLocation().pathname
     let index = 0
     try {
+        // get index from url "/build/{index}"
         index = Number(location.match(/(?:\/build\/)([0-9])/)[1]) - 1
     }
     catch{}
@@ -46,10 +48,10 @@ const MainLayout = ({children}) => {
                     )}
                 </Stepper>
             </Box>
-      </Box>
-        <Container>
+        </Box>
+        <FlexBox grow>
             {children}
-        </Container>
+        </FlexBox>
     </>
     )
 }
