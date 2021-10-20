@@ -4,7 +4,7 @@
   "description": "An Express, React with Typescript and Less boilerplate",
   "main": "server/index.js",
   "scripts": {
-    "build": "build-client && build-server",
+    "build": "yarn build-client && yarn build-server",
     "start": "yarn build && yarn serve",
     "build-client": "webpack --mode production",
     "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
