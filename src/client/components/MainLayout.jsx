@@ -27,6 +27,7 @@ const MainLayout = ({children}) => {
         // get index from url "/build/{index}"
         index = Number(location.match(/(?:\/build\/)([0-9])/)[1]) - 1
     }
+    // eslint-disable-next-line no-empty
     catch{}
     
     return (

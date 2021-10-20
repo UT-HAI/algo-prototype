@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react"
+import React, { createContext, useReducer } from "react"
 import { getStorage } from "../util/hooks/useStorage"
 
 // App-wide context backed by session storage
