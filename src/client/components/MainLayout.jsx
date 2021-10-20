@@ -32,7 +32,7 @@ const MainLayout = ({children}) => {
     return (
     <>
         <AppBar/>
-        <Box sx={{ py: 2, px: 1, display: 'flex', justifyContent: 'center', borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ py: 2, px: 1, display: 'flex', justifyContent: 'center', borderBottom: 1, borderColor: 'divider', backgroundColor:"grey.50" }}>
             <Box sx={{maxWidth: 'md', flexGrow: 1}}>
                 {/* <Tabs value={location} aria-label="basic tabs example">
                 <NavTab label="1. Explore" value="/build/1"/>

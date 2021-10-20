@@ -7,7 +7,12 @@ const theme = createTheme({
         button: {
           textTransform: "none",
         },
-      },
+    },
+    props: {
+        MuiButtonBase: {
+          disableRipple: true,
+        },
+    },
 })
 
 export default theme;

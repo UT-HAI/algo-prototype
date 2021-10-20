@@ -5,7 +5,7 @@ import React from "react";
 // top bar with title and participant name
 const AppBar = () => {
     return (
-    <MuiAppBar position="static">
+    <MuiAppBar position="static" sx={{zIndex: 0}}>
         <Toolbar variant="dense">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Name TBD

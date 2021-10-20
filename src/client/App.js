@@ -1,8 +1,10 @@
+import React from "react"
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import MainLayout from "./components/MainLayout"
 import theme from "./style/theme"
-import SelectFeatures from "./views/SelectFeatures";
+import SelectFeatures from "./views/SelectFeatures/SelectFeatures";
+import { GlobalProvider } from "./state/context"
 
 function App() {
   return (
@@ -10,6 +12,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <Router>
+            <GlobalProvider>
             <Switch>
               <Route path='/build'>
                 <MainLayout>
@@ -22,6 +25,7 @@ function App() {
                 </MainLayout>
               </Route>
             </Switch>
+            </GlobalProvider>
           </Router>
         </CssBaseline>
       </ThemeProvider>
