@@ -41,8 +41,8 @@ const Comparison = () => {
             </Grid>
             </Box>
             <FlexBox grow sx={{flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
-                <Card variant='outlined' sx={{ maxWidth: '600px', p: 2}}>
-                <Box sx={{width: '100%', height: '300px'}}>
+                <Card variant='outlined' sx={{ maxWidth: '800px', p: 2}}>
+                <Box sx={{width: '100%', height: '400px'}}>
                     {/* numerical vs numerical: scatter */}
                     {/* numerical vs categorical: violin */}
                     {/* categorical vs categorical: stacked bar */}

@@ -48,11 +48,11 @@ const SelectFeatures = () => {
             }
             secondComponent={
                 <Box sx={{display: "flex", flexGrow: 1}}>
-                    <FlexBox sx={{ borderRight: 1, borderColor: "divider", width: '300px', px: 2, py: 4}}>
+                    <FlexBox sx={{ borderRight: 1, borderColor: "divider", width: '350px', px: 2, py: 4}}>
                         <Typography variant="h5" mb={2}>
                             Feature Selection
                         </Typography>
-                        <Typography fontSize={13}>
+                        <Typography sx={{"& > h3": { color: 'text.secondary'}}}>
                             {
                                 tab === 0 ? content.selection :
                                 tab === 1 ? content.comparison : null
@@ -62,8 +62,8 @@ const SelectFeatures = () => {
                     <FlexBox grow sx={{height: 'auto'}}>
                         <FlexBox sx={{borderBottom: 1, borderColor: 'divider'}}>
                             <Tabs value={tab} onChange={(e,val) => setTab(val)}>
-                                <Tab label="Selection"/>
-                                <Tab label="Comparison"/>
+                                <Tab label="Selection" sx={{minWidth: '150px', fontSize: '1rem'}}/>
+                                <Tab label="Comparison"sx={{minWidth: '150px', fontSize: '1rem'}}/>
                             </Tabs>
                         </FlexBox>
                         <TabPanel value={tab} index={0}>
@@ -89,7 +89,12 @@ const SelectFeatures = () => {
                             mountOnEnter unmountOnExit
                             wrapperProps={{sx: {position: 'fixed', right: 0, bottom: 0, mr: 4, mb: 4}}}
                         >
-                            <Button variant='contained' sx={{fontSize: '16px', animation: `${flash} .8s ease-in infinite alternate`}}>Finish</Button>
+                            <Button
+                                variant='contained'
+                                sx={{fontSize: '16px', animation: `${flash} .8s ease-in infinite alternate`, fontSize: '1.2rem', p: '10px 20px'}}
+                            >
+                                Finish!
+                            </Button>
                         </Transition>
                     }
                 </Box>}
