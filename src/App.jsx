@@ -3,7 +3,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
 import theme from "./style/theme"
 import { GlobalProvider } from "./state/context"
-import Build from "./routes/Build"
+import Steps from "./routes/Steps"
 import Admin from "./views/Admin/Admin"
 
 function App() {
@@ -14,8 +14,8 @@ function App() {
           <Router>
             <GlobalProvider>
             <Switch>
-              <Route path='/build'>
-                <Build/>
+              <Route path='/steps'>
+                <Steps/>
               </Route>
               <Route path='/admin'>
                 <Admin />
