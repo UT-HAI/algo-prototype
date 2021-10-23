@@ -58,6 +58,8 @@ git push heroku main
 
 Only need to do the first two lines once to initially connect to the repo.
 
+The Heroku app has Python and Node buildpacks that will automatically install dependencies and run the build command. The Procfile specifies a command for Heroku to call that will start a gunicorn server.
+
 ## Linting
 
 To lint the Javascript files (located in `src`), run:
