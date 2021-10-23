@@ -22,31 +22,41 @@ pip install -r requirements.txt
 
 ## Development
 
-Start the development server with hot-reloading:
+Start the frontend development server with hot-reloading:
 
 ```bash
 yarn start
 ```
 
-Start the Flask server (the webpack dev server will proxy requests starting with /api to the server)
+Start the Flask server (the webpack dev server will proxy requests starting with /api to Flask):
 
 ```bash
 yarn serve
 ```
 
-## Tests
+## Production
 
-To run the Javascript tests (located in `src/tests/`), run:
-
-```bash
-npm run jest
-```
-
-To run the Python tests (located in `server/tests/`), run:
+Build the frontend:
 
 ```bash
-pytest
+yarn build
 ```
+
+Serve the frontend + the API:
+
+``bash
+yarn serve
+```
+
+Deploy the most recent git commit:
+
+```bash
+heroku login
+heroku git:remote -a algo-deliberation
+git push heroku main
+```
+
+Only need to do the first two lines once to initially connect to the repo.
 
 ## Linting
 
