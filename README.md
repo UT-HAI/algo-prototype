@@ -11,32 +11,28 @@ Simple boilerplate for a Flask backend and React client including:
 * Linting via Pylint and Eslint
 * Travis CI for automatic testing and linting
 
-## Dependencies
+## Getting Started
 
-To install the boilerplate dependencies, you can run:
+To install dependencies:
 
 ```bash
-git clone https://github.com/YaleDHLab/flask-react-boilerplate
-cd flask-react-boilerplate
-npm install --no-optional
+yarn install
 pip install -r requirements.txt
 ```
 
-## Quickstart
+## Development
 
-Once the dependencies are installed, you can start the api with the following command:
-
-```bash
-npm run production
-```
-
-That will start the server on port 7082. To run the development server with hot module reloading, run:
+Start the development server with hot-reloading:
 
 ```bash
-npm run start
+yarn start
 ```
 
-That will start the webpack dev server on port 7081.
+Start the Flask server (the webpack dev server will proxy requests starting with /api to the server)
+
+```bash
+yarn serve
+```
 
 ## Tests
 
