@@ -29,7 +29,6 @@ const SelectFeatures = () => {
     const [tab, setTab] = useSessionStore(0, 'tab')
     const [selections] = useFeatureSelection()
     const ready = Object.keys(simple).every(f => selections[f])
-    console.log(selections,ready)
     return (<>
       
         <SlideToggle 

@@ -5,7 +5,6 @@ import { useId } from "../util/hooks/contextHooks"
 export const IdForm = () => {
     const [id,setId] = useId()
     const [text, setText] = useState('')
-    console.log(id)
     return (
         <Dialog open={!id}>
             <DialogContent>
