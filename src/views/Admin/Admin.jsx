@@ -3,6 +3,7 @@ import { FlexContainer, FlexBox } from "../../util/components"
 import AppBar from "../../components/AppBar"
 import { Typography, Divider, Grid, Card, Button } from "@mui/material"
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
+import { Link } from "react-router-dom";
 
 const mockIds = ['12345','67890','56473','00110']
 
@@ -21,7 +22,17 @@ const Admin = () => {
                                 <Grid item><Typography color='textSecondary'>{id}</Typography></Grid>
                             ))}
                         </Grid>
-                        <Button variant='contained' startIcon={<DownloadIcon/>} sx={{mt:2}}>Download (csv)</Button>
+                        <Button
+                            variant='contained'
+                            startIcon={<DownloadIcon/>}
+                            sx={{mt:2}}
+                            component={Link}
+                            to={'/api/selections'}
+                            target="_blank"
+                            download
+                        >
+                            Download (csv)
+                        </Button>
                     </FlexBox>
                 </Card>
         </FlexContainer>
