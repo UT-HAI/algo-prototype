@@ -1,6 +1,6 @@
 import React from "react"
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom";
+import { Switch, Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import theme from "./style/theme"
 import { GlobalProvider } from "./state/context"
 import Steps from "./routes/Steps"
@@ -20,6 +20,7 @@ function App() {
               <Route path='/admin'>
                 <Admin />
               </Route>
+              <Redirect to='/steps' />
             </Switch>
             </GlobalProvider>
           </Router>

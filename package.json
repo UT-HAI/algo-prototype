@@ -18,7 +18,8 @@
     "gunicorn": "gunicorn --chdir server app:app --bind=0.0.0.0:$PORT",
     "lint-js": "eslint -c './src/config/.eslintrc.js' src/",
     "lint-py": "pylint server/app.py",
-    "lint": "npm run lint-js && npm run lint-py"
+    "lint": "npm run lint-js && npm run lint-py",
+    "parse-data": "cd server/data && python3 parse.py"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",

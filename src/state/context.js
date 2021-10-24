@@ -4,6 +4,8 @@ import { getQueryString, setQueryString } from "../util/hooks/useQuery"
 
 // App-wide context. Some properties also cached in storage or query string
 
+// IMPORTANT: try not to call useContext inside components, but instead access the data through hooks in the contextHooks.js file
+
 const initialState = {
     featureSelections: {}, // key-value pairs of feature names with "include" or "exclude" as values
     id: undefined, // participant id
@@ -18,7 +20,7 @@ const getCachedState = () => ({
 const reducer = (state, action) => {
     switch(action.type){
         case 'FEATURE_SELECT':
-            const { feature, selection }  = action.payload
+            const { feature, selection } = action.payload
             const featureSelections = {
                 ...state.featureSelections,
                 [feature]: selection,
@@ -35,6 +37,8 @@ const reducer = (state, action) => {
                 ...state,
                 id,
             }
+        // case feature_data
+        // case data_loading    
         default: return state
     }
 }
