@@ -1,48 +1,48 @@
 {
-    "rows": 34857,
+    "rows": 2000,
     "features": {
         "Suburb": {
             "description": "",
             "type": "categorical",
-            "unique": 351,
+            "unique": 265,
             "counts": {
-                "Reservoir": 844,
-                "Bentleigh East": 583,
-                "Richmond": 552,
-                "Glen Iris": 491,
-                "Preston": 485,
-                "Kew": 467,
-                "Brighton": 456,
-                "Brunswick": 444,
-                "South Yarra": 435,
-                "Hawthorn": 428,
-                "other": 29672
+                "Reservoir": 50,
+                "Brighton East": 34,
+                "Glen Iris": 32,
+                "South Yarra": 30,
+                "Brighton": 29,
+                "Bentleigh East": 29,
+                "Northcote": 28,
+                "Hawthorn": 28,
+                "Glenroy": 28,
+                "Kew": 28,
+                "other": 1684
             }
         },
         "Address": {
             "description": "",
             "type": "categorical",
-            "unique": 34009,
+            "unique": 1993,
             "counts": {
-                "5 Charles St": 6,
-                "25 William St": 4,
-                "57 Bay Rd": 3,
-                "5 Margaret St": 3,
-                "16 Smith St": 3,
-                "1 Daisy St": 3,
-                "2 Bruce St": 3,
-                "54 Charles St": 3,
-                "1/1 Clarendon St": 3,
-                "33 McCracken St": 3,
-                "other": 34823
+                "85 Stanhope St": 2,
+                "2 Derry St": 2,
+                "3/164 Nicholson St": 2,
+                "2/19 Glanfield St": 2,
+                "5 Charles St": 2,
+                "3 Atkinson St": 2,
+                "4 Berry Ct": 2,
+                "3/14 Suffolk St": 1,
+                "28A First St": 1,
+                "32 Troon Cr": 1,
+                "other": 1983
             }
         },
         "Rooms": {
             "description": "",
             "type": "numerical",
             "min": 1,
-            "max": 16,
-            "mean": 3.0310124221820582,
+            "max": 8,
+            "mean": 3.0955,
             "median": 3.0
         },
         "Type": {
@@ -50,194 +50,194 @@
             "type": "categorical",
             "unique": 3,
             "counts": {
-                "h": 23980,
-                "u": 7297,
-                "t": 3580,
+                "h": 1387,
+                "u": 394,
+                "t": 219,
                 "other": 0
             }
         },
         "Price": {
             "description": "",
             "type": "numerical",
-            "min": 85000.0,
-            "max": 11200000.0,
-            "mean": 1050173.344955408,
-            "median": 870000.0
+            "min": 220000.0,
+            "max": 6400000.0,
+            "mean": 1061819.295952223,
+            "median": 875500.0
         },
         "Method": {
             "description": "",
             "type": "categorical",
             "unique": 9,
             "counts": {
-                "S": 19744,
-                "SP": 5095,
-                "PI": 4850,
-                "VB": 3108,
-                "SN": 1317,
-                "PN": 308,
-                "SA": 226,
-                "W": 173,
-                "SS": 36,
+                "S": 1108,
+                "SP": 288,
+                "PI": 287,
+                "VB": 180,
+                "SN": 95,
+                "PN": 21,
+                "W": 11,
+                "SA": 6,
+                "SS": 4,
                 "other": 0
             }
         },
         "SellerG": {
             "description": "",
             "type": "categorical",
-            "unique": 388,
+            "unique": 155,
             "counts": {
-                "Jellis": 3359,
-                "Nelson": 3236,
-                "Barry": 3235,
-                "hockingstuart": 2623,
-                "Marshall": 2027,
-                "Ray": 1950,
-                "Buxton": 1868,
-                "Biggin": 897,
-                "Fletchers": 861,
-                "Woodards": 714,
-                "other": 14087
+                "Barry": 210,
+                "Jellis": 190,
+                "Nelson": 182,
+                "hockingstuart": 148,
+                "Marshall": 124,
+                "Ray": 120,
+                "Buxton": 106,
+                "Fletchers": 52,
+                "Noel": 42,
+                "Brad": 41,
+                "other": 785
             }
         },
         "Date": {
             "description": "",
             "type": "categorical",
-            "unique": 78,
+            "unique": 74,
             "counts": {
-                "28/10/2017": 1119,
-                "17/03/2018": 970,
-                "24/02/2018": 941,
-                "9/12/2017": 927,
-                "25/11/2017": 902,
-                "18/11/2017": 866,
-                "3/03/2018": 846,
-                "6/01/2018": 787,
-                "27/05/2017": 770,
-                "23/09/2017": 742,
-                "other": 25987
+                "28/10/2017": 61,
+                "17/03/2018": 58,
+                "3/03/2018": 56,
+                "24/02/2018": 56,
+                "18/11/2017": 54,
+                "16/09/2017": 50,
+                "6/01/2018": 48,
+                "26/08/2017": 47,
+                "17/06/2017": 46,
+                "21/10/2017": 46,
+                "other": 1478
             }
         },
         "Distance": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 48.1,
-            "mean": 11.18492942391554,
-            "median": 10.3
+            "max": 47.4,
+            "mean": 11.341299999999999,
+            "median": 10.4
         },
         "Postcode": {
             "description": "",
             "type": "numerical",
             "min": 3000.0,
             "max": 3978.0,
-            "mean": 3116.062858618315,
+            "mean": 3118.7295,
             "median": 3103.0
         },
         "Bedroom2": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 30.0,
-            "mean": 3.0846471471471473,
+            "max": 8.0,
+            "mean": 3.1506221349050425,
             "median": 3.0
         },
         "Bathroom": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 12.0,
-            "mean": 1.624798167549097,
+            "max": 5.0,
+            "mean": 1.655307994757536,
             "median": 2.0
         },
         "Car": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 26.0,
-            "mean": 1.7288453442535114,
+            "max": 18.0,
+            "mean": 1.7312541473125416,
             "median": 2.0
         },
         "Landsize": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 433014.0,
-            "mean": 593.598993361392,
-            "median": 521.0
+            "max": 39300.0,
+            "mean": 578.103579588728,
+            "median": 532.0
         },
         "BuildingArea": {
             "description": "",
             "type": "numerical",
             "min": 0.0,
-            "max": 44515.0,
-            "mean": 160.2564003565711,
-            "median": 136.0
+            "max": 6791.0,
+            "mean": 167.74927461139896,
+            "median": 137.0
         },
         "YearBuilt": {
             "description": "",
             "type": "numerical",
-            "min": 1196.0,
+            "min": 1870.0,
             "max": 2106.0,
-            "mean": 1965.289884894862,
+            "mean": 1965.8820160366552,
             "median": 1970.0
         },
         "CouncilArea": {
             "description": "",
             "type": "categorical",
-            "unique": 33,
+            "unique": 31,
             "counts": {
-                "Boroondara City Council": 3675,
-                "Darebin City Council": 2851,
-                "Moreland City Council": 2122,
-                "Glen Eira City Council": 2006,
-                "Melbourne City Council": 1952,
-                "Banyule City Council": 1861,
-                "Moonee Valley City Council": 1791,
-                "Bayside City Council": 1764,
-                "Brimbank City Council": 1593,
-                "Monash City Council": 1466,
-                "other": 13773
+                "Boroondara City Council": 221,
+                "Darebin City Council": 167,
+                "Moreland City Council": 122,
+                "Bayside City Council": 118,
+                "Moonee Valley City Council": 116,
+                "Banyule City Council": 112,
+                "Melbourne City Council": 109,
+                "Brimbank City Council": 95,
+                "Glen Eira City Council": 94,
+                "Monash City Council": 89,
+                "other": 757
             }
         },
         "Lattitude": {
             "description": "",
             "type": "numerical",
-            "min": -38.19043,
-            "max": -37.3902,
-            "mean": -37.810634295599115,
-            "median": -37.8076
+            "min": -38.17299,
+            "max": -37.4607,
+            "mean": -37.81548015625,
+            "median": -37.810860000000005
         },
         "Longtitude": {
             "description": "",
             "type": "numerical",
-            "min": 144.42379,
-            "max": 145.52635,
-            "mean": 145.00185113165432,
-            "median": 145.0078
+            "min": 144.57211,
+            "max": 145.4779,
+            "mean": 145.0057318033854,
+            "median": 145.0114
         },
         "Regionname": {
             "description": "",
             "type": "categorical",
             "unique": 8,
             "counts": {
-                "Southern Metropolitan": 11836,
-                "Northern Metropolitan": 9557,
-                "Western Metropolitan": 6799,
-                "Eastern Metropolitan": 4377,
-                "South-Eastern Metropolitan": 1739,
-                "Eastern Victoria": 228,
-                "Northern Victoria": 203,
-                "Western Victoria": 115,
+                "Southern Metropolitan": 676,
+                "Northern Metropolitan": 522,
+                "Western Metropolitan": 401,
+                "Eastern Metropolitan": 272,
+                "South-Eastern Metropolitan": 102,
+                "Eastern Victoria": 20,
+                "Western Victoria": 5,
+                "Northern Victoria": 2,
                 "other": 0
             }
         },
         "Propertycount": {
             "description": "",
             "type": "numerical",
-            "min": 83.0,
+            "min": 129.0,
             "max": 21650.0,
-            "mean": 7572.8883055029555,
-            "median": 6763.0
+            "mean": 7646.247,
+            "median": 6795.0
         }
     }
 }

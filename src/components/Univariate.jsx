@@ -1,14 +1,18 @@
 import React from "react"
 import Plot from "react-plotly.js"
 
-const Histogram = ({ data, name }) => {
+const Univariate = ({ data, name }) => {
+    const dataProps = data.type == 'numerical' ? {
+        type: 'histogram',
+        x: data.data
+    } : {
+        type: 'pie',
+        values: Object.values(data.counts),
+        labels: Object.keys(data.counts),
+    }
     return (
         <Plot
-            data={[{
-                type: 'histogram',
-                x: data.valuesForHistogram,
-                // orientation: 'v',
-            }]}
+            data={[dataProps]}
             layout={{
                 xaxis: {
                     title: {
@@ -28,7 +32,7 @@ const Histogram = ({ data, name }) => {
                 },
                 autosize: true,
                 margin: {
-                    l: 35,
+                    l: 45,
                     r: 0,
                     b: 35,
                     t: 20,
@@ -41,4 +45,4 @@ const Histogram = ({ data, name }) => {
     )
 }
 
-export default Histogram
+export default Univariate

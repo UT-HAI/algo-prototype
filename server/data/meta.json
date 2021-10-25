@@ -2,7 +2,7 @@
     "rows": 34857,
     "features": {
         "Suburb": {
-            "description": "",
+            "description": "Name of the Melbounre suburb the house is located in",
             "type": "categorical",
             "unique": 351,
             "counts": {
@@ -19,26 +19,8 @@
                 "other": 29672
             }
         },
-        "Address": {
-            "description": "",
-            "type": "categorical",
-            "unique": 34009,
-            "counts": {
-                "5 Charles St": 6,
-                "25 William St": 4,
-                "57 Bay Rd": 3,
-                "5 Margaret St": 3,
-                "16 Smith St": 3,
-                "1 Daisy St": 3,
-                "2 Bruce St": 3,
-                "54 Charles St": 3,
-                "1/1 Clarendon St": 3,
-                "33 McCracken St": 3,
-                "other": 34823
-            }
-        },
         "Rooms": {
-            "description": "",
+            "description": "Number of rooms in the house",
             "type": "numerical",
             "min": 1,
             "max": 16,
@@ -46,7 +28,7 @@
             "median": 3.0
         },
         "Type": {
-            "description": "",
+            "description": "H=House, U=Unit, T=Townhouse",
             "type": "categorical",
             "unique": 3,
             "counts": {
@@ -57,7 +39,7 @@
             }
         },
         "Price": {
-            "description": "",
+            "description": "Price of the house in Australian dollars",
             "type": "numerical",
             "min": 85000.0,
             "max": 11200000.0,
@@ -65,7 +47,7 @@
             "median": 870000.0
         },
         "Method": {
-            "description": "",
+            "description": "S - property sold; SP - property sold prior; PI - property passed in; PN - sold prior not disclosed; SN - sold not disclosed; NB - no bid; VB - vendor bid; W - withdrawn prior to auction; SA - sold after auction; SS - sold after auction price not disclosed. N/A - price or highest bid not available.",
             "type": "categorical",
             "unique": 9,
             "counts": {
@@ -81,68 +63,16 @@
                 "other": 0
             }
         },
-        "SellerG": {
-            "description": "",
-            "type": "categorical",
-            "unique": 388,
-            "counts": {
-                "Jellis": 3359,
-                "Nelson": 3236,
-                "Barry": 3235,
-                "hockingstuart": 2623,
-                "Marshall": 2027,
-                "Ray": 1950,
-                "Buxton": 1868,
-                "Biggin": 897,
-                "Fletchers": 861,
-                "Woodards": 714,
-                "other": 14087
-            }
-        },
-        "Date": {
-            "description": "",
-            "type": "categorical",
-            "unique": 78,
-            "counts": {
-                "28/10/2017": 1119,
-                "17/03/2018": 970,
-                "24/02/2018": 941,
-                "9/12/2017": 927,
-                "25/11/2017": 902,
-                "18/11/2017": 866,
-                "3/03/2018": 846,
-                "6/01/2018": 787,
-                "27/05/2017": 770,
-                "23/09/2017": 742,
-                "other": 25987
-            }
-        },
         "Distance": {
-            "description": "",
+            "description": "Distance from the Central Business District",
             "type": "numerical",
             "min": 0.0,
             "max": 48.1,
             "mean": 11.18492942391554,
             "median": 10.3
         },
-        "Postcode": {
-            "description": "",
-            "type": "numerical",
-            "min": 3000.0,
-            "max": 3978.0,
-            "mean": 3116.062858618315,
-            "median": 3103.0
-        },
-        "Bedroom2": {
-            "description": "",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 30.0,
-            "mean": 3.0846471471471473,
-            "median": 3.0
-        },
         "Bathroom": {
-            "description": "",
+            "description": "Number of bathrooms",
             "type": "numerical",
             "min": 0.0,
             "max": 12.0,
@@ -150,7 +80,7 @@
             "median": 2.0
         },
         "Car": {
-            "description": "",
+            "description": "Number of parking spots",
             "type": "numerical",
             "min": 0.0,
             "max": 26.0,
@@ -158,7 +88,7 @@
             "median": 2.0
         },
         "Landsize": {
-            "description": "",
+            "description": "Area of the land in square meters",
             "type": "numerical",
             "min": 0.0,
             "max": 433014.0,
@@ -166,23 +96,15 @@
             "median": 521.0
         },
         "BuildingArea": {
-            "description": "",
+            "description": "Area of the building in square meters",
             "type": "numerical",
             "min": 0.0,
             "max": 44515.0,
             "mean": 160.2564003565711,
             "median": 136.0
         },
-        "YearBuilt": {
-            "description": "",
-            "type": "numerical",
-            "min": 1196.0,
-            "max": 2106.0,
-            "mean": 1965.289884894862,
-            "median": 1970.0
-        },
         "CouncilArea": {
-            "description": "",
+            "description": "Governing council for the area",
             "type": "categorical",
             "unique": 33,
             "counts": {
@@ -199,24 +121,8 @@
                 "other": 13773
             }
         },
-        "Lattitude": {
-            "description": "",
-            "type": "numerical",
-            "min": -38.19043,
-            "max": -37.3902,
-            "mean": -37.810634295599115,
-            "median": -37.8076
-        },
-        "Longtitude": {
-            "description": "",
-            "type": "numerical",
-            "min": 144.42379,
-            "max": 145.52635,
-            "mean": 145.00185113165432,
-            "median": 145.0078
-        },
         "Regionname": {
-            "description": "",
+            "description": "Region of Melbourne the house resides in",
             "type": "categorical",
             "unique": 8,
             "counts": {
@@ -232,7 +138,7 @@
             }
         },
         "Propertycount": {
-            "description": "",
+            "description": "Number of properties that exist in the suburb this house in located in",
             "type": "numerical",
             "min": 83.0,
             "max": 21650.0,

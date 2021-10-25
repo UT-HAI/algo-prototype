@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import { FlexContainer, FlexBox, Transition } from "../../util/components";
 import { useSessionStore } from "../../util/hooks/useStorage";
 import SlideToggle from "../../components/SlideToggle"
-import { simple } from "../../data/mockData"
 import FeatureCard from "./FeatureCard"
 import FeatureDetails from "./FeatureDetails"
 import InfoTip from "../../components/InfoTip"
 import Comparison from "./Comparison";
-import { useFeatureSelection } from "../../util/hooks/contextHooks";
+import { useFeatureSelection, useData } from "../../util/hooks/contextHooks";
 import { keyframes } from '@emotion/react'
 import content from "./content"
 
@@ -25,10 +24,11 @@ const TabPanel = ({value, index, children}) => {
 const SelectFeatures = () => {
     const [landing, setLanding] = useSessionStore(true, "landing"); // is the user still on the landing/introduction screen
     const [feature, selectFeature] = useState(0)
-    const [selectedName, selectedData] = Object.entries(simple)[feature]
+    const { features, dataLoading, rows } = useData()
+    const [selectedName, selectedData] = rows > 0 ? Object.entries(features)[feature] : [undefined, undefined]
     const [tab, setTab] = useSessionStore(0, 'tab')
     const [selections] = useFeatureSelection()
-    const ready = Object.keys(simple).every(f => selections[f])
+    const ready = Object.keys(features).every(f => selections[f])
     return (<>
       
         <SlideToggle 
@@ -65,20 +65,25 @@ const SelectFeatures = () => {
                                 <Tab label="Comparison"sx={{minWidth: '150px', fontSize: '1rem'}}/>
                             </Tabs>
                         </FlexBox>
-                        <TabPanel value={tab} index={0}>
-                            <FlexContainer grow maxWidth="md" sx={{py:6, flexDirection: "row"}}>
-                                {/* https://mui.com/components/grid/#heading-spacing */}
-                                <Grid container spacing={1} direction="column" sx={{width: "auto", mr: 4}}>
-                                    {Object.entries(simple).map(([name,data], i) => <Grid item><FeatureCard name={name} selected={i === feature} onClick={() => selectFeature(i)}/></Grid>)}
-                                </Grid>
-                                <FlexBox grow sx={{flexDirection: 'row', flex: 1, width: 0}}>
-                                    <FeatureDetails name={selectedName} data={selectedData} />
-                                </FlexBox>
-                            </FlexContainer>
-                        </TabPanel>
-                        <TabPanel value={tab} index={1}>
-                            <Comparison />
-                        </TabPanel>
+                        {
+                            dataLoading ? "loading..." : 
+                            rows <= 0 ? "no data" :
+                            (<>
+                                <TabPanel value={tab} index={0}>
+                                    <FlexContainer grow maxWidth="md" sx={{py:6, flexDirection: "row"}}>
+                                        {/* https://mui.com/components/grid/#heading-spacing */}
+                                        <Grid container spacing={1} direction="column" sx={{width: "auto", mr: 4}}>
+                                            {Object.entries(features).map(([name,data], i) => <Grid item><FeatureCard name={name} selected={i === feature} onClick={() => selectFeature(i)}/></Grid>)}
+                                        </Grid>
+                                        <FlexBox grow sx={{flexDirection: 'row', flex: 1, width: 0}}>
+                                            <FeatureDetails name={selectedName} data={selectedData} />
+                                        </FlexBox>
+                                    </FlexContainer>
+                                </TabPanel>
+                                <TabPanel value={tab} index={1}>
+                                    <Comparison />
+                                </TabPanel>
+                        </>)}
                     </FlexBox>
                     {ready && 
                         <Transition

@@ -4,6 +4,7 @@ import numpy as np
 
 """ Parse metadata and descriptive statistics from data.csv"""
 
+# current dataset from: https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv
 
 # to encode numpy datatypes into json
 class NpEncoder(json.JSONEncoder):
@@ -39,7 +40,8 @@ if __name__ == '__main__':
             topCounts = {}
             for value, count in counts[:10].iteritems():
                 topCounts[value] = count
-            topCounts['other'] = counts[10:].sum()
+            rest = counts[10:].sum()
+            if rest > 0: topCounts['other'] = rest
             f['counts'] = topCounts
         features[col] = f
     desc['features'] = features

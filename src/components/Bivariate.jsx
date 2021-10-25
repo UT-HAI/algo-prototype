@@ -18,37 +18,27 @@ const Bivariate = ({x, y}) => {
     if (xtype === 'numerical' && ytype === 'numerical'){
         dataProps = { type: 'scatter', mode: 'markers'}
     }
-    // https://plotly.com/javascript/violin/#multiple-traces-violin-plot
+    // boxplot
     else if (xtype === 'numerical' && ytype === 'categorical'){
         dataProps = {
-            type: 'violin',
-            meanline: { visible: true },
+            type: 'box',
             transforms: [{
                 type: 'groupby',
                 groups: ydata,
-                // styles?
             }],
-            box: {
-                visible: true
-            },
             orientation: 'h',
         }
     }
-    // https://plotly.com/javascript/bar-charts/#stacked-bar-chart
     else if (xtype === 'categorical' && ytype === 'numerical'){
         dataProps = {
-            type: 'violin',
-            meanline: { visible: true },
+            type: 'box',
             transforms: [{
                 type: 'groupby',
                 groups: xdata,
-                // styles?
             }],
-            box: {
-                visible: true
-            },
         }
     }
+    // https://plotly.com/javascript/bar-charts/#stacked-bar-chart
     else if (xtype === 'categorical' && ytype === 'categorical'){
         const xvals = [...new Set(xdata)]
         // data = [...new Set(ydata)].map(y =>)
@@ -76,9 +66,9 @@ const Bivariate = ({x, y}) => {
         overrideYlabel = 'count'
     }
     layoutProps.margin = {
-        l: 50,
+        l: xtype == 'numerical' && ytype == 'categorical' ? 120 : 50,
         r: 0,
-        b: 35,
+        b: xtype == 'categorical' ? 100 : 30,
         t: 0,
     }
 
@@ -89,8 +79,6 @@ const Bivariate = ({x, y}) => {
                 {
                     x: xdata,
                     y: ydata,
-                    // type: 'scatter',
-                    // mode: 'markers'
                     ...dataProps
                 }
             ]}

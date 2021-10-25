@@ -8,13 +8,19 @@ import { getQueryString, setQueryString } from "../util/hooks/useQuery"
 
 const initialState = {
     featureSelections: {}, // key-value pairs of feature names with "include" or "exclude" as values
-    id: undefined, // participant id
+    id: undefined, // participant id,
+    data: {
+        rows: -1,
+        features: {}
+    },
+    dataLoading: false
 }
 
 const getCachedState = () => ({
     ...initialState,
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
     id: getQueryString('id'),
+    data: getStorage('feature-data','session',initialState.data)
 })
 
 const reducer = (state, action) => {
@@ -37,8 +43,14 @@ const reducer = (state, action) => {
                 ...state,
                 id,
             }
-        // case feature_data
-        // case data_loading    
+        case 'FETCH_DATA':
+            const { data, loading } = action.payload
+            sessionStorage.setItem('feature-data',JSON.stringify(data))
+            return {
+                ...state,
+                data: data ?? state.data,
+                dataLoading: loading ?? state.loading,
+            }
         default: return state
     }
 }
