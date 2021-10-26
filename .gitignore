@@ -6,3 +6,7 @@
 node_modules
 build
 __pycache__
+venv
+.env
+
+/server/data/parsed.json

@@ -8,6 +8,8 @@ To install dependencies:
 
 ```bash
 yarn install
+virtualenv venv
+source venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -33,9 +35,9 @@ Build the frontend:
 yarn build
 ```
 
-Serve the frontend + the API:
+Serve the frontend + the API (locally):
 
-``bash
+```bash
 yarn serve
 ```
 
@@ -50,6 +52,19 @@ git push heroku main
 Only need to do the first two lines once to initially connect to the repo.
 
 The Heroku app has Python and Node buildpacks that will automatically install dependencies and run the build command. The Procfile specifies a command for Heroku to call that will start a gunicorn server.
+
+## Managing the Database
+
+There are separate Mongo Atlas databases for development and production. On your local machine, you should have a .env file with a MONGO_URI variable (for the development DB) and a MONGO_URI_PROD variable containing their connection strings.
+
+To perform certain actions on either database, you can use `yarn db` with the following commands:
+* `seed`: will add rows to the collection based on a random uniform distribution (use --rows to specify number of rows, default 200)
+* `drop`: will delete all rows in the collection
+* `copy`: will copy one database to the other (without the `--production` flag this will copy the contents of production to development)
+
+Additional arguments:
+* `--collection [col_name]`: will perform the operation on only the specified collection (by default command is run on *all* collections)
+* `--production`: will perform the operation on the production database instead of development
 
 ## Linting
 

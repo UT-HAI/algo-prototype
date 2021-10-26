@@ -7,6 +7,7 @@ import { getQueryString, setQueryString } from "../util/hooks/useQuery"
 // IMPORTANT: try not to call useContext inside components, but instead access the data through hooks in the contextHooks.js file
 
 const initialState = {
+    error: undefined, // undefined or error message; if message, will display error snackbar in UI
     featureSelections: {}, // key-value pairs of feature names with "include" or "exclude" as values
     id: undefined, // participant id,
     data: {
@@ -25,6 +26,11 @@ const getCachedState = () => ({
 
 const reducer = (state, action) => {
     switch(action.type){
+        case 'ERROR':
+            return {
+                ...state,
+                error: action.payload
+            }
         case 'FEATURE_SELECT':
             const { feature, selection } = action.payload
             const featureSelections = {

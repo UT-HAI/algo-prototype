@@ -1,7 +1,7 @@
 import React from "react"
 import { FlexContainer, FlexBox } from "../../util/components"
 import AppBar from "../../components/AppBar"
-import { Typography, Divider, Grid, Card, Button } from "@mui/material"
+import { Typography, Divider, Grid, Card, Button, Stack } from "@mui/material"
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Link } from "react-router-dom";
 
@@ -16,12 +16,12 @@ const Admin = () => {
                 <Card variant='outlined' sx={{px:3, py:2, mt: 4}}>
                     <FlexBox sx={{alignItems: 'flex-start'}}>
                         <Typography variant="h6" gutterBottom>Feature Selections</Typography>
-                        <Grid container direction="column">
-                            <Grid item><Typography gutterBottom>The following users have submitted selections:</Typography></Grid>
+                        <Stack>
+                            <Typography gutterBottom>The following users have submitted selections:</Typography>
                             {mockIds.map(id => (
-                                <Grid item><Typography color='textSecondary'>{id}</Typography></Grid>
+                                <Typography color='textSecondary'>{id}</Typography>
                             ))}
-                        </Grid>
+                        </Stack>
                         <Button
                             variant='contained'
                             startIcon={<DownloadIcon/>}

@@ -1,4 +1,4 @@
-import { Button, Typography, Box, Grid, Tabs, Tab, Slide } from "@mui/material";
+import { Button, Typography, Box, Grid, Tabs, Tab, Slide, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { FlexContainer, FlexBox, Transition } from "../../util/components";
 import { useSessionStore } from "../../util/hooks/useStorage";
@@ -72,9 +72,9 @@ const SelectFeatures = () => {
                                 <TabPanel value={tab} index={0}>
                                     <FlexContainer grow maxWidth="md" sx={{py:6, flexDirection: "row"}}>
                                         {/* https://mui.com/components/grid/#heading-spacing */}
-                                        <Grid container spacing={1} direction="column" sx={{width: "auto", mr: 4}}>
-                                            {Object.entries(features).map(([name,data], i) => <Grid item><FeatureCard name={name} selected={i === feature} onClick={() => selectFeature(i)}/></Grid>)}
-                                        </Grid>
+                                        <Stack spacing={1} mr={4} sx={{width: "auto"}}>
+                                            {Object.entries(features).map(([name,data], i) => <FeatureCard name={name} selected={i === feature} onClick={() => selectFeature(i)}/>)}
+                                        </Stack>
                                         <FlexBox grow sx={{flexDirection: 'row', flex: 1, width: 0}}>
                                             <FeatureDetails name={selectedName} data={selectedData} />
                                         </FlexBox>

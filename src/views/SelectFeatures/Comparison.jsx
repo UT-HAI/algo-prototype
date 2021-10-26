@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Select, MenuItem, Card, Box, FormControl, InputLabel, Typography } from "@mui/material"
+import { Grid, Select, MenuItem, Card, Box, FormControl, InputLabel, Typography, Stack } from "@mui/material"
 import { useSessionStore } from "../../util/hooks/useStorage";
 import { useData } from "../../util/hooks/contextHooks";
 import { FlexContainer, FlexBox } from "../../util/components";
@@ -29,17 +29,11 @@ const Comparison = () => {
     return (
         <FlexContainer grow maxWidth="md" sx={{py:6, flexDirection: "column", height: 'auto', alignItems: 'center'}}>
             <Box sx={{ml:-4}}>
-            <Grid container spacing={4} direction="row" alignItems='center' sx={{width: "auto", mb: 4}}>
-                <Grid item>
-                    <AxisSelect label='x-axis' onChange={(e)=>setXaxis(e.target.value)} value={xaxis} values={featureNames} />
-                </Grid>
-                <Grid item>
-                    <Typography color="textSecondary">vs.</Typography>
-                </Grid>
-                <Grid item>
-                    <AxisSelect label='y-axis' onChange={(e)=>setYaxis(e.target.value)} value={yaxis} values={featureNames} />
-                </Grid>
-            </Grid>
+            <Stack spacing={4} direction="row" alignItems='center' mb={4} sx={{width: "auto"}}>
+                <AxisSelect label='x-axis' onChange={(e)=>setXaxis(e.target.value)} value={xaxis} values={featureNames} />
+                <Typography color="textSecondary">vs.</Typography>
+                <AxisSelect label='y-axis' onChange={(e)=>setYaxis(e.target.value)} value={yaxis} values={featureNames} />
+            </Stack>
             </Box>
             <FlexBox grow sx={{flexDirection: 'row', width: '100%', justifyContent: 'center'}}>
                 <Card variant='outlined' sx={{ maxWidth: '800px', p: 2}}>

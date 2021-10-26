@@ -3,6 +3,12 @@ import { AppContext } from "../../state/context"
 import { useHistory } from "react-router-dom"
 import { fetchData } from "../../api/data";
 
+export const useError = () => {
+    const { state: { error }, dispatch } = useContext(AppContext)
+    const setError = (err) => dispatch({ type: 'ERROR', payload: err })
+    return [error, setError]
+}
+
 // get current user's feature selections
 export const useFeatureSelection = () => {
     const { state, dispatch } = useContext(AppContext)

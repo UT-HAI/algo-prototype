@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, Grid, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material"
+import { Card, Grid, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Stack } from "@mui/material"
 import { FlexBox } from "../../util/components"
 import Univariate from "../../components/Univariate"
 import { useSessionStore } from "../../util/hooks/useStorage"
@@ -12,7 +12,7 @@ const round = (number, sigfigs) => Number(number.toFixed(sigfigs ?? 2))
 
 const Statistic =  ({name, number, sigfigs}) => 
     <FlexBox sx={{alignItems: "center"}}>
-        <Typography color="textPrimary" fontSize={24}>{round(number, sigfigs)}</Typography>
+        <Typography color="textPrimary" fontSize={24}>{round(number, sigfigs).toLocaleString()}</Typography>
         <Typography color="textSecondary" fontSize={14}>{name}</Typography>
     </FlexBox>
 
@@ -37,13 +37,11 @@ const FeatureDetails = ({ name, data }) => {
             </Box>
             {/* min, max, average, and median stats */}
             {features[name].type === 'numerical' ?
-                <Grid container columns={4} spacing={3} sx={{pt: 1}}>
+                <Stack direction="row" justifyContent='center' spacing={6} pt={1}>
                     {["min","max","mean","median"].map(stat => 
-                        <Grid item xs={1}>
-                            <Statistic name={stat} number={data[stat]} sigfigs={data['sigfigs']} />
-                        </Grid>    
+                        <Statistic name={stat} number={data[stat]} sigfigs={data['sigfigs']} />
                     )}
-                </Grid> :
+                </Stack> :
                 <Statistic name={'unique values'} number={data['unique']} />
             }   
             <Divider sx={{mt: 3}}/>
