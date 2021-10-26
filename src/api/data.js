@@ -1,5 +1,5 @@
-import { fetchApi } from '../util/api'
+import { apiFetch } from '../util/api'
 
 export const fetchData = () => 
-    fetchApi('/api/data')
+    apiFetch('/api/data')
     .then(data => data.json())
