@@ -28,6 +28,7 @@ export const useId = () => {
 export const useData = () => {
     const { state, dispatch } = useContext(AppContext)
     const { data: { rows, features }, dataLoading } = state
+    const [_,setError] = useError()
 
     console.log(rows)
 
@@ -41,6 +42,7 @@ export const useData = () => {
             })
             // todo: error handling
             .catch((err) => {
+                setError(err)
                 dispatch({ type: 'FETCH_DATA', payload: { loading: false }})
             })
         }

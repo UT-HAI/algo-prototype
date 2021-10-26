@@ -10,3 +10,4 @@ venv
 .env
 
 /server/data/parsed.json
+test.js

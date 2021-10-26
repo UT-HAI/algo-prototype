@@ -58,13 +58,18 @@ The Heroku app has Python and Node buildpacks that will automatically install de
 There are separate Mongo Atlas databases for development and production. On your local machine, you should have a .env file with a MONGO_URI variable (for the development DB) and a MONGO_URI_PROD variable containing their connection strings.
 
 To perform certain actions on either database, you can use `yarn db` with the following commands:
-* `seed`: will add rows to the collection based on a random uniform distribution (use --rows to specify number of rows, default 200)
+* `seed`: will add rows to the collection based on a random uniform distribution (use --rows to specify number of rows, default 10)
 * `drop`: will delete all rows in the collection
 * `copy`: will copy one database to the other (without the `--production` flag this will copy the contents of production to development)
 
 Additional arguments:
 * `--collection [col_name]`: will perform the operation on only the specified collection (by default command is run on *all* collections)
 * `--production`: will perform the operation on the production database instead of development
+
+Examples:
+* `yarn db seed --rows 20 --collection feature_selections`: adds 20 random rows to the development feature_selections collection
+* `yarn db drop --production`: drops every collection in the production database
+* `yarn db copy`: copies every collection from production to development (does not overwrite existing documents in development)
 
 ## Linting
 

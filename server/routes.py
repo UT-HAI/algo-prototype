@@ -1,5 +1,5 @@
 from app import app, db
-from flask import Response, jsonify
+from flask import Response, jsonify, request
 import os
 import json
 import pandas as pd
@@ -8,6 +8,27 @@ import numpy as np
 ##
 # API routes
 ##
+
+
+# participant is submitting their feature selections
+@app.route('/api/selection',methods=['POST'])
+def selection():
+  if request.content_type != 'application/json':
+    return 'content type must be application/json', 400
+  data = request.json
+  if 'id' not in data.keys() or 'selections' not in data.keys():
+    return 'invalid data format (must be { id: str, selections: dict })', 400
+  id = str(data['id'])
+  selections = data['selections']
+  if not id or not selections or type(selections) != dict:
+    return 'invalid data format (must be { id: str, selections: dict })', 400
+
+  db.feature_selections.replace_one({ 'id': id }, {
+    'id': id,
+    'selections': selections
+  }, upsert=True)
+
+  return jsonify(success=True)
 
 # Sends .csv of all participant feature selections
 @app.route('/api/selections')
