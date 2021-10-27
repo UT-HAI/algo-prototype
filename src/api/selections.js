@@ -5,10 +5,9 @@ export const fetchUsers = () =>
     .then(data => data.json())
 
 export const postSelections = (id, selections) =>{
-    console.log(selections)
     const booleanSelections = Object.fromEntries(Object.entries(selections)
         .map(([f,selection]) => [f,selection === 'include' ? true : false]))
-    return apiFetch('/api/selection',{
+    return apiFetch('/api/selection', {
         method: 'POST',
         headers: {
         'Accept': 'application/json',
@@ -17,4 +16,5 @@ export const postSelections = (id, selections) =>{
         body: JSON.stringify({id, selections: booleanSelections})
     })
 }
-    
+
+export const deleteAllSelections = () => apiFetch('/api/selections', { method: 'DELETE', })

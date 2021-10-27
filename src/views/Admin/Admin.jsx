@@ -1,15 +1,18 @@
-import React from "react"
+import React, { useState } from "react"
 import { FlexContainer, FlexBox } from "../../util/components"
 import AppBar from "../../components/AppBar"
 import { Typography, Divider, Grid, Card, Button, Stack } from "@mui/material"
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Link } from "react-router-dom";
 import { useSelectionsUsers } from "../../util/hooks/contextHooks";
-
-const mockIds = ['12345','67890','56473','00110']
+import { deleteAllSelections } from "../../api/selections"
+import AreYouSure from "./AreYouSure"
 
 const Admin = () => {
     const users = useSelectionsUsers()
+    const [areYouSure,setAreYouSure] = useState(false) // controls Are You Sure dialog?
+    const deleteAll = () => deleteAllSelections().then(() => window.location.reload(false))
     return (<>
         <AppBar />
         <FlexContainer maxidth="lg" sx={{pt: 4}}>
@@ -24,20 +27,30 @@ const Admin = () => {
                                 <Typography color='textSecondary' key={id}>{id}</Typography>
                             ))}
                         </Stack>
-                        <Button
-                            variant='contained'
-                            startIcon={<DownloadIcon/>}
-                            sx={{mt:2}}
-                            component={Link}
-                            to={'/api/selections'}
-                            target="_blank"
-                            download
-                        >
-                            Download (csv)
-                        </Button>
+                        <Stack direction='row' mt={3} spacing={1}>
+                            <Button
+                                variant='contained'
+                                startIcon={<DownloadIcon/>}
+                                component={Link}
+                                to={'/api/selections/selections.csv'}
+                                target="_blank"
+                                download
+                            >
+                                Download (csv)
+                            </Button>
+                            <Button
+                                startIcon={<DeleteIcon/>}
+                                color='error'
+                                onClick={()=>setAreYouSure(true)}
+                                variant='outlined'
+                            >
+                                Delete all
+                            </Button>
+                        </Stack>
                     </FlexBox>
                 </Card>
         </FlexContainer>
+        <AreYouSure open={areYouSure} setOpen={setAreYouSure} onConfirm={deleteAll}/>
     </>)
 }
 

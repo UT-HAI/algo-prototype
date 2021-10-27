@@ -30,14 +30,36 @@ def selection():
 
   return jsonify(success=True)
 
+@app.route('/api/selections',methods=['GET','DELETE'])
+def selections():
+  if request.method == 'GET':
+    features = []
+    try:
+      with open(os.path.join(app.config['ROOT_DIR'],'data/meta.json')) as file:
+          features = list(json.load(file)['features'].keys())
+    except Exception as e:
+      return str(e), 500
+
+    feature_selections = db.feature_selections.find()
+    selections_obj = {}
+
+    for doc in feature_selections:
+      selections_obj[doc['id']] = dict([(f,doc['selections'][f]) for f in features])
+
+    return jsonify(selections_obj)
+
+  elif request.method == 'DELETE':
+    db.feature_selections.drop()
+    return jsonify(success=True)
+
 @app.route('/api/selections/users')
 def get_users():
   selections = db.feature_selections.find()
   return jsonify([doc['id'] for doc in selections])
 
 # Sends .csv of all participant feature selections
-@app.route('/api/selections')
-def selections():
+@app.route('/api/selections/selections.csv')
+def selections_csv():
   selections = db.feature_selections.find()
   csv = ""
   features = []

@@ -3,6 +3,7 @@ import { AppContext } from "../../state/context"
 import { fetchData } from "../../api/data";
 import { fetchUsers } from "../../api/selections";
 
+// `error` is used by a site-wide Snackbar component
 export const useError = () => {
     const { state: { error }, dispatch } = useContext(AppContext)
     const setError = (err) => dispatch({ type: 'ERROR', payload: err })
@@ -52,6 +53,8 @@ export const useSelectionsUsers = () => {
     const { state: { selectionsUsers }, dispatch } = useContext(AppContext)
     const [_,setError] = useError()
 
+    // const clear = () => dispatch({ type: 'FETCH_SELECTIONS_USERS', payload: []})
+
     useEffect(() => {
         if (!selectionsUsers){
             fetchUsers()
@@ -62,5 +65,6 @@ export const useSelectionsUsers = () => {
         }
     },[])
 
+    // return [selectionsUsers ?? [],clear]
     return selectionsUsers ?? []
 }

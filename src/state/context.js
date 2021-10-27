@@ -24,7 +24,6 @@ const getCachedState = () => ({
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
     id: getQueryString('id') ?? getStorage('participant_id','session', initialState.id),
     data: getStorage('feature-data','session',initialState.data),
-    selectionsUsers: getStorage('selectionsUsers','session',initialState.selectionsUsers)
 })
 
 const reducer = (state, action) => {
@@ -62,7 +61,6 @@ const reducer = (state, action) => {
             }
         case 'FETCH_SELECTIONS_USERS':
             const users = action.payload
-            sessionStorage.setItem('selectionsUsers',JSON.stringify(users))
             return {
                 ...state,
                 selectionsUsers: users
