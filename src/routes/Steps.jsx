@@ -1,4 +1,5 @@
 import React from "react"
+import { Typography } from "@mui/material";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { IdForm } from "../components/IdForm"
 import MainLayout from "../components/MainLayout"
@@ -16,6 +17,9 @@ const Steps = () => {
             {/* would put steps 1-4 in here */}
             <Route exact path='/steps/2'>
                 <SelectFeatures />
+            </Route>
+            <Route exact path='/steps/3'>
+                <Typography variant="h2">Train Model</Typography>
             </Route>
             <Redirect to='/steps/2' />
         </Switch>

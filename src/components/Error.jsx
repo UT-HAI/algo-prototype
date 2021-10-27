@@ -7,14 +7,17 @@ import { useError } from "../util/hooks/contextHooks"
 const Error = () => {
     const [error, setError] = useError()
     const close = () => setError(undefined)
+    // coalesce the error in case it's accidentally an object and not a string
+    const err = ['undefined', 'string'].includes(typeof error) ? error
+        : (error.message ?? 'error')
     return (
         <Snackbar
-            open={error}
+            open={Boolean(err)}
             onClose={close}
             anchorOrigin={{vertical:'bottom',horizontal:'center'}}
         >
             <Alert onClose={close} severity="error">
-                {error}
+                {err}
             </Alert>
         </Snackbar>
     )

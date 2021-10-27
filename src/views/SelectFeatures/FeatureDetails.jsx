@@ -39,7 +39,7 @@ const FeatureDetails = ({ name, data }) => {
             {features[name].type === 'numerical' ?
                 <Stack direction="row" justifyContent='center' spacing={6} pt={1}>
                     {["min","max","mean","median"].map(stat => 
-                        <Statistic name={stat} number={data[stat]} sigfigs={data['sigfigs']} />
+                        <Statistic name={stat} number={data[stat]} sigfigs={data['sigfigs']} key={stat}/>
                     )}
                 </Stack> :
                 <Statistic name={'unique values'} number={data['unique']} />

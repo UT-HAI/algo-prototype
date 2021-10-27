@@ -4,10 +4,12 @@ import AppBar from "../../components/AppBar"
 import { Typography, Divider, Grid, Card, Button, Stack } from "@mui/material"
 import DownloadIcon from '@mui/icons-material/FileDownloadOutlined';
 import { Link } from "react-router-dom";
+import { useSelectionsUsers } from "../../util/hooks/contextHooks";
 
 const mockIds = ['12345','67890','56473','00110']
 
 const Admin = () => {
+    const users = useSelectionsUsers()
     return (<>
         <AppBar />
         <FlexContainer maxidth="lg" sx={{pt: 4}}>
@@ -17,9 +19,9 @@ const Admin = () => {
                     <FlexBox sx={{alignItems: 'flex-start'}}>
                         <Typography variant="h6" gutterBottom>Feature Selections</Typography>
                         <Stack>
-                            <Typography gutterBottom>The following users have submitted selections:</Typography>
-                            {mockIds.map(id => (
-                                <Typography color='textSecondary'>{id}</Typography>
+                            <Typography gutterBottom>The following {users.length} user(s) have submitted selections:</Typography>
+                            {users.map(id => (
+                                <Typography color='textSecondary' key={id}>{id}</Typography>
                             ))}
                         </Stack>
                         <Button

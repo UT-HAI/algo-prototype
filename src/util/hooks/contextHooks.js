@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../state/context"
-import { useHistory } from "react-router-dom"
 import { fetchData } from "../../api/data";
+import { fetchUsers } from "../../api/selections";
 
 export const useError = () => {
     const { state: { error }, dispatch } = useContext(AppContext)
@@ -18,9 +18,8 @@ export const useFeatureSelection = () => {
 
 // get participant id
 export const useId = () => {
-    const history = useHistory()
     const { state: { id }, dispatch } = useContext(AppContext)
-    const setId = (id) => dispatch({ type: 'PARTICIPANT_ID', payload: { history, id }})
+    const setId = (id) => dispatch({ type: 'PARTICIPANT_ID', payload: id})
     return [id, setId]
 }
 
@@ -29,8 +28,6 @@ export const useData = () => {
     const { state, dispatch } = useContext(AppContext)
     const { data: { rows, features }, dataLoading } = state
     const [_,setError] = useError()
-
-    console.log(rows)
 
     useEffect(() => {
         if (rows === -1 && !dataLoading){
@@ -42,11 +39,28 @@ export const useData = () => {
             })
             // todo: error handling
             .catch((err) => {
-                setError(err)
+                setError(err.message)
                 dispatch({ type: 'FETCH_DATA', payload: { loading: false }})
             })
         }
-    })
+    },[])
 
     return { rows, features, dataLoading }
+}
+
+export const useSelectionsUsers = () => {
+    const { state: { selectionsUsers }, dispatch } = useContext(AppContext)
+    const [_,setError] = useError()
+
+    useEffect(() => {
+        if (!selectionsUsers){
+            fetchUsers()
+            .then(users => {
+                dispatch({ type: 'FETCH_SELECTIONS_USERS', payload: users})
+            })
+            .catch(err => setError(err.message))
+        }
+    },[])
+
+    return selectionsUsers ?? []
 }

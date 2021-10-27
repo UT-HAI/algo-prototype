@@ -14,7 +14,7 @@ const AxisSelect = ({ label, onChange, values, value }) => (
           onChange={onChange}
           sx={{backgroundColor: 'white'}}
         >
-          {values.map(v => <MenuItem value={v}>{v}</MenuItem>)}
+          {values.map(v => <MenuItem value={v} key={v}>{v}</MenuItem>)}
         </Select>
       </FormControl>
 )

@@ -14,14 +14,17 @@ const initialState = {
         rows: -1,
         features: {}
     },
-    dataLoading: false
+    dataLoading: false,
+    // ADMIN CONTEXT BELOW
+    selectionsUsers: undefined, // users who have submitted a selectin
 }
 
 const getCachedState = () => ({
     ...initialState,
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
-    id: getQueryString('id'),
-    data: getStorage('feature-data','session',initialState.data)
+    id: getQueryString('id') ?? getStorage('participant_id','session', initialState.id),
+    data: getStorage('feature-data','session',initialState.data),
+    selectionsUsers: getStorage('selectionsUsers','session',initialState.selectionsUsers)
 })
 
 const reducer = (state, action) => {
@@ -43,8 +46,8 @@ const reducer = (state, action) => {
                 featureSelections,
             }
         case 'PARTICIPANT_ID':
-            const { id, history } = action.payload
-            setQueryString('id',id,history)
+            const id = action.payload
+            sessionStorage.setItem('participant_id',String(id))
             return {
                 ...state,
                 id,
@@ -56,6 +59,13 @@ const reducer = (state, action) => {
                 ...state,
                 data: data ?? state.data,
                 dataLoading: loading ?? state.loading,
+            }
+        case 'FETCH_SELECTIONS_USERS':
+            const users = action.payload
+            sessionStorage.setItem('selectionsUsers',JSON.stringify(users))
+            return {
+                ...state,
+                selectionsUsers: users
             }
         default: return state
     }

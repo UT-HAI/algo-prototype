@@ -1,4 +1,7 @@
-import {  Tooltip as MuiTooltip, useTheme, tooltipClasses, styled } from "@mui/material"
+import { Tooltip as MuiTooltip } from "@mui/material"
+import { useTheme } from "@mui/material/styles"
+import { tooltipClasses } from "@mui/material/Tooltip"
+import { styled } from "@mui/material/styles"
 import React from "react"
 
 const Tooltip = styled(({ className, ...props }) => (
@@ -13,7 +16,7 @@ const InfoTip = ({ children, text }) => {
     const theme = useTheme()
     return (
         <Tooltip title={text}>
-            <span style={{textDecoration: 'underline', cursor: 'pointer', color: theme.palette.primary.dark}}>
+            <span style={{textDecoration: 'underline', color: theme.palette.primary.dark}}>
                 {children}
             </span>
         </Tooltip>

@@ -30,6 +30,11 @@ def selection():
 
   return jsonify(success=True)
 
+@app.route('/api/selections/users')
+def get_users():
+  selections = db.feature_selections.find()
+  return jsonify([doc['id'] for doc in selections])
+
 # Sends .csv of all participant feature selections
 @app.route('/api/selections')
 def selections():
@@ -59,14 +64,11 @@ def selections():
     return Response(
       csv,
       mimetype='text/csv',
-      headers={"Content-disposition": "attachment; filename=test.csv"}
+      headers={"Content-disposition": "attachment; filename=selections.csv"}
     )
     
   except Exception as e:
     return str(e), 500
-
-
-  
 
 # combines the metadata and .csv file in /data and sends a json object
 @app.route('/api/data')
@@ -83,3 +85,10 @@ def data():
     data_obj['features'][feature]['data'] = rows[feature].replace({np.nan: None}).tolist()
 
   return jsonify(data_obj)
+
+# return a list of features being considered (aka those present in meta.json)
+@app.route('/api/data/features')
+def features():
+  with open(os.path.join(app.config['ROOT_DIR'],'data/meta.json')) as file:
+    data_obj = json.load(file)
+  return jsonify(list(data_obj['features'].keys()))
