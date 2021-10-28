@@ -17,11 +17,11 @@ def selection():
     return 'content type must be application/json', 400
   data = request.json
   if 'id' not in data.keys() or 'selections' not in data.keys():
-    return 'invalid data format (must be { id: str, selections: dict })', 400
+    return 'invalid data format (must be { id: str, selections: { reason: str, decision: include | exclude, sure: boolean } })', 400
   id = str(data['id'])
   selections = data['selections']
   if not id or not selections or type(selections) != dict:
-    return 'invalid data format (must be { id: str, selections: dict })', 400
+    return 'invalid data format (must be { id: str, selections: { reason: str, decision: include | exclude, sure: boolean } })', 400
 
   db.feature_selections.replace_one({ 'id': id }, {
     'id': id,
@@ -65,22 +65,30 @@ def selections_csv():
   features = []
   try:
     with open(os.path.join(app.config['ROOT_DIR'],'data/meta.json')) as file:
-        features = list(json.load(file)['features'].keys())
+      features = list(json.load(file)['features'].keys())
 
     # header
-    csv += ",".join(["user id"] + features) + "\n"
+    columns = []
+    for f in features:
+      columns.append(f)
+      columns.append('{} - reason'.format(f))
+    csv += ','.join(['user id'] + columns) + '\n'
 
     # each row is one user's selections
     for user_selection in selections:
         id = user_selection['id']
         row = [str(id)]
         for f in features:
-            if not f in user_selection['selections'].keys():
-                row.append("")
-            elif user_selection['selections'][f]:
-                row.append("include")
-            else:
-                row.append('exclude')
+          selection = ""
+          reason = ""
+          if f in user_selection['selections'].keys():
+            selection = user_selection['selections'][f]['decision']
+            if not user_selection['selections'][f]['sure']:
+              selection += ' (not sure)'
+            reason = user_selection['selections'][f]['reason']
+          row.append(selection)
+          row.append(reason)
+            
         csv += ",".join(row) + "\n"
 
     return Response(
@@ -90,6 +98,7 @@ def selections_csv():
     )
     
   except Exception as e:
+    print(e)
     return str(e), 500
 
 # combines the metadata and .csv file in /data and sends a json object

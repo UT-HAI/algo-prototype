@@ -8,7 +8,7 @@ import { getQueryString } from "../util/hooks/useQuery"
 
 const initialState = {
     error: undefined, // undefined or error message; if message, will display error snackbar in UI
-    featureSelections: {}, // key-value pairs of feature names with "include" or "exclude" as values
+    featureSelections: undefined, // keys are feature names and objects are { decision: 'include' | 'exclude', sure: boolean, reason: string }
     id: undefined, // participant id,
     data: {
         rows: -1,
@@ -19,6 +19,8 @@ const initialState = {
     selectionsUsers: undefined, // users who have submitted a selection
     features: undefined, // list of features without the data
 }
+
+const defaultSelection = { decision: undefined, sure: true, reason: ''}
 
 const getCachedState = () => ({
     ...initialState,
@@ -35,6 +37,7 @@ const reducer = (state, action) => {
                 ...state,
                 error: action.payload
             }
+            
         case 'FEATURE_SELECT':
             const { feature, selection } = action.payload
             const featureSelections = {
@@ -46,6 +49,7 @@ const reducer = (state, action) => {
                 ...state,
                 featureSelections,
             }
+
         case 'PARTICIPANT_ID':
             const id = action.payload
             sessionStorage.setItem('participant_id',String(id))
@@ -53,20 +57,29 @@ const reducer = (state, action) => {
                 ...state,
                 id,
             }
+
         case 'FETCH_DATA':
-            const { data, loading } = action.payload
+            const { data, loading, setDefaultSelections } = action.payload
             sessionStorage.setItem('feature-data',JSON.stringify(data))
-            return {
+            const newState = {
                 ...state,
                 data: data ?? state.data,
                 dataLoading: loading ?? state.loading,
             }
+            // populate featureSelections with the default selection object
+            if (setDefaultSelections){
+                newState.featureSelections = Object.fromEntries(Object.keys(data.features).map(f=>[f,defaultSelection]))
+                sessionStorage.setItem('feature-selections',JSON.stringify(newState.featureSelections))
+            }
+            return newState
+
         case 'FETCH_SELECTIONS_USERS':
             const users = action.payload
             return {
                 ...state,
                 selectionsUsers: users
             }
+
         case 'FETCH_FEATURES':
             const features = action.payload
             sessionStorage.setItem('features',JSON.stringify(features))

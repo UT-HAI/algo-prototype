@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("command", help="which command to run on the database (seed, drop, or copy)")
 parser.add_argument("-c", "--collection", help="which collection to act on (will act on ALL collections if not specified)")
 parser.add_argument("-p", "--production", help="make changes to the production database", action="store_true")
-parser.add_argument("-r", "--rows", help="if command is seed: number of rows to seed", type=int)
+parser.add_argument("-r", "--rows", help="if command is 'seed', number of rows to seed", type=int)
 
 # all the collections in the database
 collections = ['feature_selections']
@@ -38,7 +38,11 @@ if __name__ == "__main__":
       for i in range(rows):
         selections = {}
         for f in features:
-          selections[f] = random.choice([True,False])
+          selections[f] = {
+            'decision': random.choice(['include','exclude']),
+            'sure': random.choice([True,False]),
+            'reason': random.choice(['one two three', 'four five six', 'seven eight nine']),
+          }
         row = { 'id': str(random.randrange(99999)), 'selections': selections}
         db.feature_selections.insert_one(row)
     print('[{}] seeded collection(s): {}'.format(tag,','.join(collections)))

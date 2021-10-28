@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { AppContext } from "../../state/context"
+import { AppContext, defaultSelection } from "../../state/context"
 import { fetchData, fetchFeatures } from "../../api/data";
 import { fetchUsers } from "../../api/selections";
 
@@ -13,7 +13,15 @@ export const useError = () => {
 // get current user's feature selections
 export const useFeatureSelection = () => {
     const { state, dispatch } = useContext(AppContext)
-    const select = (feature, selection) => dispatch({ type: 'FEATURE_SELECT', payload: { feature, selection }})
+    const select = (feature, { decision, sure, reason }) => {
+        const currentSelection = state.featureSelections[feature]
+        return dispatch({ type: 'FEATURE_SELECT', payload: { feature, selection: {
+            decision: decision ?? currentSelection.decision,
+            sure: sure ?? currentSelection.sure ?? true,
+            reason: reason ?? currentSelection.reason ?? '',
+        }}})
+    }
+        
     return [state.featureSelections, select]
 }
 
@@ -29,6 +37,7 @@ export const useData = () => {
     const { state, dispatch } = useContext(AppContext)
     const { data: { rows, features }, dataLoading } = state
     const [_,setError] = useError()
+    const [selections] = useFeatureSelection()
 
     useEffect(() => {
         if (rows === -1 && !dataLoading){
@@ -36,7 +45,7 @@ export const useData = () => {
             dispatch({ type: 'FETCH_DATA', payload: { loading: true }})
             fetchData()
             .then(data => {
-                dispatch({ type: 'FETCH_DATA', payload: { loading: false, data}})
+                dispatch({ type: 'FETCH_DATA', payload: { loading: false, data, setDefaultSelections: !Boolean(selections) }})
             })
             // todo: error handling
             .catch((err) => {

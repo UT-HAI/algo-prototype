@@ -54,7 +54,7 @@ const SelectFeatures = () => {
                         'Selection': {
                             text: content.selection,
                             component: (
-                                <FlexContainer grow maxWidth="md" sx={{py:6,  flexDirection: "row", maxHeight: '100%'}}>
+                                <FlexContainer grow maxWidth="md" sx={{py:6,  flexDirection: "row" }}>
                                     {/* https://mui.com/components/grid/#heading-spacing */}
                                     <Stack spacing={1} mr={4} sx={{width: "auto", maxHeight: '100%', overflow: 'auto', direction: 'rtl'}}>
                                         {Object.entries(features).map(([name,data], i) => <FeatureCard name={name} selected={i === feature} onClick={() => selectFeature(i)} key={name}/>)}

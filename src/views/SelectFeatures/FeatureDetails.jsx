@@ -1,12 +1,12 @@
-import React from "react"
-import { Card, Grid, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Stack } from "@mui/material"
+import React, { useCallback, useState } from "react"
+import { Card, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Stack, Checkbox, TextField } from "@mui/material"
 import { FlexBox } from "../../util/components"
 import Univariate from "../../components/Univariate"
-import { useSessionStore } from "../../util/hooks/useStorage"
 import { useFeatureSelection, useData } from "../../util/hooks/contextHooks"
 import Chip from "../../components/Chips"
 import LineIcon from '@mui/icons-material/TimelineOutlined';
 import BarIcon from '@mui/icons-material/BarChartOutlined';
+import debounce from "lodash.debounce"
 
 const round = (number, sigfigs) => Number(number.toFixed(sigfigs ?? 2))
 
@@ -19,7 +19,10 @@ const Statistic =  ({name, number, sigfigs}) =>
 
 const FeatureDetails = ({ name, data }) => {
     const [selections, select] = useFeatureSelection();
-    const selection = selections[name]
+    const { decision, reason, sure } = selections[name]
+    const [text, setText] = useState(reason)
+    const debounceReason = useCallback(debounce((txt)=> select(name, { reason:txt }),1000), [name])
+    const onReasonChange = (e) => { debounceReason(e.target.value); setText(e.target.value)}
     const { features } = useData()
     const chipProps = features[name].type == 'numerical' ?
         { color: 'purple', icon: <LineIcon/>} :
@@ -45,21 +48,29 @@ const FeatureDetails = ({ name, data }) => {
                 <Statistic name={'unique values'} number={data['unique']} />
             }   
             <Divider sx={{mt: 3}}/>
-            <Box mt={2} ml={1}>
+            <Stack mt={2} ml={1} spacing={1}>
                 <FormControl component="fieldset">
-                <FormLabel component="legend">Selection</FormLabel>
-                <RadioGroup
-                    row
-                    aria-label="feature selection"
-                    name="radio-buttons-group"
-                    value={selection ?? null}
-                    onChange={(e) => { select(name,e.target.value) }}
-                >
-                    <FormControlLabel value="include" control={<Radio />} label="include" />
-                    <FormControlLabel value="exclude" control={<Radio />} label="exclude" />
-                </RadioGroup>
+                    <FormLabel component="legend">Selection</FormLabel>
+                    <RadioGroup
+                        row
+                        aria-label="feature selection"
+                        name="radio-buttons-group"
+                        value={decision ?? null}
+                        onChange={(e) => select(name, { decision: e.target.value })}
+                    >
+                        <FormControlLabel value="include" control={<Radio />} label="include" />
+                        <FormControlLabel value="exclude" control={<Radio />} label="exclude" />
+                    </RadioGroup>
                 </FormControl>
-            </Box>
+                <FormControlLabel checked={!sure} onChange={(e)=>select(name, { sure: !e.target.checked })} control={<Checkbox />} label="I'm not sure about this decision" />
+                <TextField
+                    label="Reason for decision"
+                    multiline
+                    maxRows={4}
+                    value={text}
+                    onChange={onReasonChange}
+                />
+            </Stack>
         </Card>
     )
 }
