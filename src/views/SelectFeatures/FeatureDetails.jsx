@@ -8,6 +8,8 @@ import LineIcon from '@mui/icons-material/TimelineOutlined';
 import BarIcon from '@mui/icons-material/BarChartOutlined';
 import debounce from "lodash.debounce"
 
+// card that represents the details, visualization, and selection decision of one feature
+
 const round = (number, sigfigs) => Number(number.toFixed(sigfigs ?? 2))
 
 const Statistic =  ({name, number, sigfigs}) => 
@@ -15,7 +17,6 @@ const Statistic =  ({name, number, sigfigs}) =>
         <Typography color="textPrimary" fontSize={24}>{round(number, sigfigs).toLocaleString()}</Typography>
         <Typography color="textSecondary" fontSize={14}>{name}</Typography>
     </FlexBox>
-
 
 const FeatureDetails = ({ name, data }) => {
     const [selections, select] = useFeatureSelection();

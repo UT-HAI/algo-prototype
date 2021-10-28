@@ -14,7 +14,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 // displays children when value == index
 const TabPanel = ({value, index, children}) => {
     return (
-        <Box sx={{display: value !== index ? 'none' : 'block', backgroundColor: 'grey.100', flex: '1 1 auto', overflow: 'auto', display: 'flex', flexDirection: 'column'}}>
+        <Box sx={{display: value !== index ? 'none' : 'flex', backgroundColor: 'grey.100', flex: '1 1 auto', overflow: 'auto', flexDirection: 'column'}}>
             {value === index && children}
         </Box>
     )
