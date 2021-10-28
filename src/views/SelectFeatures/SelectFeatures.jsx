@@ -22,7 +22,7 @@ const submitSelections = (id, selections, onSuccess, onError) =>
     
 
 const SelectFeatures = () => {
-    const [landing, setLanding] = useState(false); // is the user still on the landing/introduction screen
+    const [landing, setLanding] = useState(true); // is the user still on the landing/introduction screen
     const [feature, selectFeature] = useState(0) // the feature selected to be viewed
     const [finished, setFinished] = useState(false) // set by clicking Finish (shows Finish Dialog)
     const { features, dataLoading, rows } = useData()
