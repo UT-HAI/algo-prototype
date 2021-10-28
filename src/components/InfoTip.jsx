@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/material/styles"
 import React from "react"
+import glossary from "../content/glossary"
 
 const Tooltip = styled(({ className, ...props }) => (
     <MuiTooltip {...props} classes={{ popper: className }} />
@@ -12,11 +13,11 @@ const Tooltip = styled(({ className, ...props }) => (
     }
   `);
 
-const InfoTip = ({ children, text }) => {
+const InfoTip = ({ children, term, text }) => {
     const theme = useTheme()
     return (
-        <Tooltip title={text}>
-            <span style={{textDecoration: 'underline', color: theme.palette.primary.dark}}>
+        <Tooltip title={glossary[term] ?? text}>
+            <span style={{textDecoration: 'underline', color: theme.palette.primary.dark, cursor: 'default'}}>
                 {children}
             </span>
         </Tooltip>

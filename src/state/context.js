@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react"
 import { getStorage } from "../util/hooks/useStorage"
-import { getQueryString, setQueryString } from "../util/hooks/useQuery"
+import { getQueryString } from "../util/hooks/useQuery"
 
 // App-wide context. Some properties also cached in storage or query string
 
@@ -16,7 +16,8 @@ const initialState = {
     },
     dataLoading: false,
     // ADMIN CONTEXT BELOW
-    selectionsUsers: undefined, // users who have submitted a selectin
+    selectionsUsers: undefined, // users who have submitted a selection
+    features: undefined, // list of features without the data
 }
 
 const getCachedState = () => ({
@@ -24,6 +25,7 @@ const getCachedState = () => ({
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
     id: getQueryString('id') ?? getStorage('participant_id','session', initialState.id),
     data: getStorage('feature-data','session',initialState.data),
+    features: getStorage('features','session',initialState.features)
 })
 
 const reducer = (state, action) => {
@@ -64,6 +66,13 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 selectionsUsers: users
+            }
+        case 'FETCH_FEATURES':
+            const features = action.payload
+            sessionStorage.setItem('features',JSON.stringify(features))
+            return {
+                ...state,
+                features
             }
         default: return state
     }

@@ -18,7 +18,7 @@ const FeatureCard = ({ name, selected, onClick}) => {
     const [features] = useFeatureSelection()
     const selection = features[name]
     return (
-        <Card variant='outlined' sx={{width: '200px', ...(selected ? selectedStyle : {}) }}>
+        <Card variant='outlined' sx={{width: '200px', flex: '1 0 auto', ...(selected ? selectedStyle : {}), direction: 'ltr' }}>
             <CardActionArea sx={{ py:1, px: 1.5, }} onClick={onClick}>
                 <Typography sx={{display: 'flex', justifyContent: 'space-between'}}>
                     {name}

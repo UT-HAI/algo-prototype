@@ -22,7 +22,7 @@ const MainLayout = ({children}) => {
     <>
         <AppBar/>
         <Box sx={{ py: 2, px: 1, display: 'flex', justifyContent: 'center', borderBottom: 1, borderColor: 'divider', backgroundColor:"grey.50" }}>
-            <Box sx={{maxWidth: 'md', flexGrow: 1}}>
+            <Box sx={{maxWidth: 'md', flexGrow: 1, overflow: 'auto'}}>
                 <Stepper activeStep={index}>
                     {steps.map(step =>
                         <Step key={step}>
@@ -32,7 +32,7 @@ const MainLayout = ({children}) => {
                 </Stepper>
             </Box>
         </Box>
-        <FlexBox grow>
+        <FlexBox grow sx={{overflow: 'auto'}}>
             {children}
         </FlexBox>
     </>

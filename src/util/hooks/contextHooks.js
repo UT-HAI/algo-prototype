@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../state/context"
-import { fetchData } from "../../api/data";
+import { fetchData, fetchFeatures } from "../../api/data";
 import { fetchUsers } from "../../api/selections";
 
 // `error` is used by a site-wide Snackbar component
@@ -67,4 +67,22 @@ export const useSelectionsUsers = () => {
 
     // return [selectionsUsers ?? [],clear]
     return selectionsUsers ?? []
+}
+
+export const useFeatures = () => {
+    const { state: { features }, dispatch } = useContext(AppContext)
+    const [_,setError] = useError()
+
+
+    useEffect(() => {
+        if (!features){
+            fetchFeatures()
+            .then(feats => {
+                dispatch({ type: 'FETCH_FEATURES', payload: feats})
+            })
+            .catch(err => setError(err.message))
+        }
+    },[])
+
+    return features ?? []
 }
