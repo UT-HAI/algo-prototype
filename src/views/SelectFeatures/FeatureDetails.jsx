@@ -21,7 +21,10 @@ const Statistic =  ({name, number, sigfigs}) =>
 const FeatureDetails = ({ name, data }) => {
     const [selections, select] = useFeatureSelection();
     const { decision, reason, sure } = selections[name]
-    const [text, setText] = useState(reason)
+    const [text, setText] = useState('')
+    useEffect(() => {
+        setText(reason)
+    },[name])
     const debounceReason = useCallback(debounce((txt)=> select(name, { reason:txt }),1000), [name])
     const onReasonChange = (e) => { debounceReason(e.target.value); setText(e.target.value)}
     const { features } = useData()
