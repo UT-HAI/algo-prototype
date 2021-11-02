@@ -6,7 +6,6 @@ import AppBar from "../../components/AppBar"
 import { FlexBox } from "../../util/components";
 import UpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { insert } from "../../util/structures";
 
 // const Section = React.forwardRef(({ children, i }, refList) =>
 //   <Box sx={{height: '100vh', width: '100vw'}} ref={(section)=>{ refList.current[i] = section }}>
