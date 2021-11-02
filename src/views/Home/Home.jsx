@@ -6,6 +6,7 @@ import AppBar from "../../components/AppBar"
 import { FlexBox } from "../../util/components";
 import UpIcon from '@mui/icons-material/KeyboardArrowUp';
 import DownIcon from '@mui/icons-material/KeyboardArrowDown';
+import CircleIcon from '@mui/icons-material/Circle';
 
 // const Section = React.forwardRef(({ children, i }, refList) =>
 //   <Box sx={{height: '100vh', width: '100vw'}} ref={(section)=>{ refList.current[i] = section }}>
@@ -44,12 +45,17 @@ const FullPageSection = ({ children }) =>
       {children}
   </Container>
 
-const Controls = ({ moveUp, moveDown, first, last }) => 
-  <FlexBox id='controls' sx={{position: 'fixed', right: '16px', top: '50%', transform: 'translate(0, -50%)', zIndex: 100}} >
-    <IconButton onClick={moveUp} disabled={first}>
+const Controls = ({ moveUp, moveDown, i, total }) => 
+  <FlexBox id='controls' sx={{position: 'fixed', right: '24px', top: '50%', transform: 'translate(0, -50%)', zIndex: 100}} >
+    <IconButton onClick={moveUp} disabled={i===0}>
       <UpIcon />
     </IconButton>
-    <IconButton onClick={moveDown} disabled={last} >
+    <Stack alignItems='center' spacing={1}>
+      {[...Array(total)].map((_,idx)=>
+        <CircleIcon sx={{fontSize:'8px', color: 'text.secondary', opacity: idx === i ? 1 : .3}} />
+      )}
+    </Stack>
+    <IconButton onClick={moveDown} disabled={i===total-1} >
       <DownIcon />
     </IconButton>
   </FlexBox>
@@ -85,8 +91,8 @@ const Home = () => {
     <Controls
       moveUp={()=>window.fullpage_api.moveSectionUp()}
       moveDown={()=>window.fullpage_api.moveSectionDown()}
-      first={index==0}
-      last={index==sections.length-1}
+      i={index}
+      total={sections.length}
     />
     <ReactFullpage
       afterLoad={(_,destination)=>setIndex(destination.index)}
@@ -95,7 +101,7 @@ const Home = () => {
             <ReactFullpage.Wrapper>
               {sections.map((section,i)=>(
                 <FullPageSection>
-                  <FlexBox justifyContent='center' alignItems='center' sx={{height: '100%', px: 6}} key={i}>{section}</FlexBox>
+                  <FlexBox justifyContent='center' alignItems='center' sx={{height: '100%', px: 8}} key={i}>{section}</FlexBox>
                 </FullPageSection>
               ))}
             </ReactFullpage.Wrapper>
