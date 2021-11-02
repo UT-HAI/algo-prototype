@@ -30,7 +30,7 @@ const SelectFeatures = () => {
     const [tab, setTab] = useSessionStore(0, 'tab') // Selection & Comparison tabs 
     const [selections] = useFeatureSelection()
     const [_, setError] = useError()
-    const ready = Object.keys(features).every(f => selections[f]) // controls if the Finish button is visible
+    const ready = Object.keys(features).every(f => selections[f].decision) // controls if the Finish button is visible
     const [id] = useId()
     const onFinish = () => submitSelections(id,selections,() => setFinished(true),(err)=>setError(err.message))
     return (<>

@@ -6,6 +6,7 @@ import theme from "./style/theme"
 import { GlobalProvider } from "./state/context"
 import Steps from "./routes/Steps"
 import Admin from "./views/Admin/Admin"
+import Home from "./views/Home/Home"
 import Error from "./components/Error"
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
             <GlobalProvider>
               <Error />
               <Switch>
+              <Route exact path='/'>
+                  <Home/>
+                </Route>
                 <Route path='/steps'>
                   <Steps/>
                 </Route>

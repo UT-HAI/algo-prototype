@@ -22,10 +22,20 @@ const initialState = {
 
 const defaultSelection = { decision: undefined, sure: true, reason: ''}
 
+const getCachedId = (fallback) => {
+    const query = getQueryString('id')
+    console.log(getStorage('participant_id','session', fallback))
+    if (query) {
+        sessionStorage.setItem('participant_id',JSON.stringify(query))
+        return query
+    }
+    return getStorage('participant_id','session', fallback)
+}
+
 const getCachedState = () => ({
     ...initialState,
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
-    id: getQueryString('id') ?? getStorage('participant_id','session', initialState.id),
+    id: getCachedId(initialState.id),
     data: getStorage('feature-data','session',initialState.data),
     features: getStorage('features','session',initialState.features)
 })
@@ -52,7 +62,7 @@ const reducer = (state, action) => {
 
         case 'PARTICIPANT_ID':
             const id = action.payload
-            sessionStorage.setItem('participant_id',String(id))
+            sessionStorage.setItem('participant_id',JSON.stringify(String(id)))
             return {
                 ...state,
                 id,

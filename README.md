@@ -1,6 +1,6 @@
 # Algorithm Deliberation Prototype
 
-MVP version of a collaborative, machine learning deliberation tool
+MVP version of a collaborative machine learning deliberation tool
 
 ## Getting Started
 
