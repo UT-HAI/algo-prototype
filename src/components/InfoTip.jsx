@@ -17,9 +17,20 @@ const InfoTip = ({ children, term, text }) => {
     const theme = useTheme()
     return (
         <Tooltip title={glossary[term] ?? text}>
-            <span style={{textDecoration: 'underline', color: theme.palette.primary.dark, cursor: 'default'}}>
+            <mark
+              style={{
+                // highlight effect
+                boxDecorationBreak: 'clone',
+                WebkitBoxDecorationBreak: 'clone',
+                borderRadius: '3px',
+                padding: '0 5px',
+                cursor: 'default',
+                backgroundColor: '#d3e9ff',
+                color: 'inherit'
+              }}
+            >
                 {children}
-            </span>
+            </mark>
         </Tooltip>
     )
 }

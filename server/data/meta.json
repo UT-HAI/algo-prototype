@@ -1,149 +1,185 @@
 {
-    "rows": 34857,
+    "rows": 2206,
     "features": {
-        "Suburb": {
-            "description": "Name of the Melbounre suburb the house is located in",
-            "type": "categorical",
-            "unique": 351,
-            "counts": {
-                "Reservoir": 844,
-                "Bentleigh East": 583,
-                "Richmond": 552,
-                "Glen Iris": 491,
-                "Preston": 485,
-                "Kew": 467,
-                "Brighton": 456,
-                "Brunswick": 444,
-                "South Yarra": 435,
-                "Hawthorn": 428,
-                "other": 29672
-            }
-        },
-        "Rooms": {
-            "description": "Number of rooms in the house",
+        "GRE APT Verb Percentile": {
+            "description": "",
             "type": "numerical",
-            "min": 1,
-            "max": 16,
-            "mean": 3.0310124221820582,
-            "median": 3.0
+            "min": 0,
+            "max": 99,
+            "mean": 66.19084315503173,
+            "median": 69.0
         },
-        "Type": {
-            "description": "H=House, U=Unit, T=Townhouse",
+        "GRE APT Quant Percentile": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 99,
+            "mean": 67.48912058023572,
+            "median": 75.0
+        },
+        "GRE APT Analyt Percentile": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 99,
+            "mean": 46.8780598368087,
+            "median": 42.0
+        },
+        "tiers": {
+            "description": "",
+            "type": "numerical",
+            "min": 0.0,
+            "max": 4.0,
+            "mean": 2.928377153218495,
+            "median": 4.0
+        },
+        "admit_code": {
+            "description": "",
             "type": "categorical",
             "unique": 3,
             "counts": {
-                "h": 23980,
-                "u": 7297,
-                "t": 3580,
-                "other": 0
-            }
+                "R": 814,
+                "A": 789,
+                "D": 603
+            },
+            "transform": [
+                { "from": "R", "to": "Rescind"},
+                { "from": "A", "to": "Admit"},
+                { "from": "D", "to": "Deny"}
+            ]
         },
-        "Price": {
-            "description": "Price of the house in Australian dollars",
+        "GPA_Merged": {
+            "description": "",
             "type": "numerical",
-            "min": 85000.0,
-            "max": 11200000.0,
-            "mean": 1050173.344955408,
-            "median": 870000.0
+            "min": 1.0,
+            "max": 4.0,
+            "mean": 3.453596080327783,
+            "median": 3.56
         },
-        "Method": {
-            "description": "S - property sold; SP - property sold prior; PI - property passed in; PN - sold prior not disclosed; SN - sold not disclosed; NB - no bid; VB - vendor bid; W - withdrawn prior to auction; SA - sold after auction; SS - sold after auction price not disclosed. N/A - price or highest bid not available.",
+        "Master's Held": {
+            "description": "",
             "type": "categorical",
-            "unique": 9,
+            "unique": 2,
             "counts": {
-                "S": 19744,
-                "SP": 5095,
-                "PI": 4850,
-                "VB": 3108,
-                "SN": 1317,
-                "PN": 308,
-                "SA": 226,
-                "W": 173,
-                "SS": 36,
-                "other": 0
-            }
+                "0": 2106,
+                "1": 100
+            },
+            "transform": [
+                { "from": 0, "to": "No"},
+                { "from": 1, "to": "Yes"}
+            ]
         },
-        "Distance": {
-            "description": "Distance from the Central Business District",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 48.1,
-            "mean": 11.18492942391554,
-            "median": 10.3
-        },
-        "Bathroom": {
-            "description": "Number of bathrooms",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 12.0,
-            "mean": 1.624798167549097,
-            "median": 2.0
-        },
-        "Car": {
-            "description": "Number of parking spots",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 26.0,
-            "mean": 1.7288453442535114,
-            "median": 2.0
-        },
-        "Landsize": {
-            "description": "Area of the land in square meters",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 433014.0,
-            "mean": 593.598993361392,
-            "median": 521.0
-        },
-        "BuildingArea": {
-            "description": "Area of the building in square meters",
-            "type": "numerical",
-            "min": 0.0,
-            "max": 44515.0,
-            "mean": 160.2564003565711,
-            "median": 136.0
-        },
-        "CouncilArea": {
-            "description": "Governing council for the area",
+        "Doctorate Held": {
+            "description": "",
             "type": "categorical",
-            "unique": 33,
+            "unique": 2,
             "counts": {
-                "Boroondara City Council": 3675,
-                "Darebin City Council": 2851,
-                "Moreland City Council": 2122,
-                "Glen Eira City Council": 2006,
-                "Melbourne City Council": 1952,
-                "Banyule City Council": 1861,
-                "Moonee Valley City Council": 1791,
-                "Bayside City Council": 1764,
-                "Brimbank City Council": 1593,
-                "Monash City Council": 1466,
-                "other": 13773
-            }
+                "0": 2194,
+                "1": 12
+            },
+            "transform": [
+                { "from": 0, "to": "No"},
+                { "from": 1, "to": "Yes"}
+            ]
         },
-        "Regionname": {
-            "description": "Region of Melbourne the house resides in",
+        "Bachelor's Held": {
+            "description": "",
             "type": "categorical",
-            "unique": 8,
+            "unique": 2,
             "counts": {
-                "Southern Metropolitan": 11836,
-                "Northern Metropolitan": 9557,
-                "Western Metropolitan": 6799,
-                "Eastern Metropolitan": 4377,
-                "South-Eastern Metropolitan": 1739,
-                "Eastern Victoria": 228,
-                "Northern Victoria": 203,
-                "Western Victoria": 115,
-                "other": 0
+                "0": 1538,
+                "1": 668
+            },
+            "transform": [
+                { "from": 0, "to": "No"},
+                { "from": 1, "to": "Yes"}
+            ]
+        },
+        "Special Degree Held": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 1,
+            "mean": 0.0022665457842248413,
+            "median": 0.0
+        },
+        "Count: Arts": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 3,
+            "mean": 0.06255666364460562,
+            "median": 0.0
+        },
+        "Count: GAE": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 3,
+            "mean": 0.5158658204895739,
+            "median": 0.0
+        },
+        "Count: Research": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 3,
+            "mean": 0.10516772438803264,
+            "median": 0.0
+        },
+        "Count: Service": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 3,
+            "mean": 0.04669084315503173,
+            "median": 0.0
+        },
+        "Count: Leadership": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 2,
+            "mean": 0.034904805077062555,
+            "median": 0.0
+        },
+        "Count: Competition": {
+            "description": "",
+            "type": "numerical",
+            "min": 0,
+            "max": 3,
+            "mean": 0.12375339981867634,
+            "median": 0.0
+        },
+        "Gender": {
+            "description": "",
+            "type": "categorical",
+            "unique": 2,
+            "counts": {
+                "Female": 1531,
+                "Male": 675
             }
         },
-        "Propertycount": {
-            "description": "Number of properties that exist in the suburb this house in located in",
+        "First Generation": {
+            "description": "",
+            "type": "categorical",
+            "unique": 2,
+            "counts": {
+                "0.0": 2135,
+                "1.0": 71
+            },
+            "transform": [
+                { "from": 0.0, "to": "No"},
+                { "from": 1.0, "to": "Yes"}
+            ]
+        },
+        "work_experience_int": {
+            "description": "",
             "type": "numerical",
-            "min": 83.0,
-            "max": 21650.0,
-            "mean": 7572.8883055029555,
-            "median": 6763.0
+            "min": -1307.0,
+            "max": 33176.0,
+            "mean": 424.58703535811424,
+            "median": 0.0
         }
     }
 }

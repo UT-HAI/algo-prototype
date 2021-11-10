@@ -6,6 +6,8 @@ import numpy as np
 
 # current dataset from: https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv
 
+EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held"]
+
 # to encode numpy datatypes into json
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -20,6 +22,7 @@ class NpEncoder(json.JSONEncoder):
 if __name__ == '__main__':
     df = pd.read_csv('data.csv',header=0)
     numeric_columns = df._get_numeric_data().columns.tolist()
+    numeric_columns = [col for col in numeric_columns if col not in EXPLICIT_CATEGORICAL]
     
     desc = {}
     desc['rows'] = len(df)

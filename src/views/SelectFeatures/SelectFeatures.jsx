@@ -1,4 +1,4 @@
-import { Button, Typography, Box, Slide, Stack } from "@mui/material";
+import { Button, Typography, Box, Slide, Stack, Tooltip } from "@mui/material";
 import React, { useState } from "react";
 import { FlexContainer, FlexBox, Transition } from "../../util/components";
 import { useSessionStore } from "../../util/hooks/useStorage";
@@ -30,7 +30,7 @@ const SelectFeatures = () => {
     const [tab, setTab] = useSessionStore(0, 'tab') // Selection & Comparison tabs 
     const [selections] = useFeatureSelection()
     const [_, setError] = useError()
-    const ready = Object.keys(features).every(f => selections[f].decision) // controls if the Finish button is visible
+    const ready = selections ? Object.keys(features).every(f => selections[f].decision) : false // controls if the Finish button is visible
     const [id] = useId()
     const onFinish = () => submitSelections(id,selections,() => setFinished(true),(err)=>setError(err.message))
     return (<>
@@ -72,7 +72,7 @@ const SelectFeatures = () => {
                     }}
                     fallback={dataLoading && "loading..." || (rows <= 0) && 'no data' }
                 />
-                {ready && 
+                {/* {ready && 
                         <Transition
                             TransitionComponent={Slide}
                             direction="up"
@@ -88,8 +88,37 @@ const SelectFeatures = () => {
                                 Finish!
                             </Button>
                         </Transition>
-                }
-                <FinishDialog open={finished} setOpen={setFinished}/>
+                } */}
+                {selections ? <>
+                    <Tooltip title={ready ? '' : `decisions need to be made for the following features: ${Object.keys(selections).filter(f => selections[f].decision === undefined).join(', ')}`}>
+                    {/* have to use a box to enable tooltip on disabled button */}
+                    <Box sx={{
+                        position: 'fixed',
+                        right: 0,
+                        bottom: 0,
+                        mr: 4,
+                        mb: 4
+                    }}
+                    >
+                        <Button
+                            variant='contained'
+                            sx={{
+                                animation: ready ? `${flash} .8s ease-in infinite alternate` : undefined,
+                                fontSize: '16px',
+                                fontSize: '1.2rem',
+                                p: '10px 20px',
+                                
+                            }}
+                            onClick={onFinish}
+                            disabled={!ready}
+                        >
+                            Finish!
+                        </Button>
+                    </Box>
+                    </Tooltip>
+                
+                    <FinishDialog open={finished} setOpen={setFinished}/>
+                </>: null}
                 </>}
             firstIn={landing}
         />

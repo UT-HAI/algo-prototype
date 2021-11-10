@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from "react"
-import { Card, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Stack, Checkbox, TextField } from "@mui/material"
+import { Card, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Stack, Checkbox, TextField, Tooltip } from "@mui/material"
 import { FlexBox } from "../../util/components"
 import Univariate from "../../components/Univariate"
 import { useFeatureSelection, useData } from "../../util/hooks/contextHooks"
@@ -31,11 +31,19 @@ const FeatureDetails = ({ name, data }) => {
     const chipProps = features[name].type == 'numerical' ?
         { color: 'purple', icon: <LineIcon/>} :
         { color: 'green', icon: <BarIcon/>}
+    const chipTooltip = features[name].type == 'numerical' ?
+        'Numerical variables have values that describe a measurable quantity as a number, like "how many" or "how much"' :
+        'Categorical variables have values that describe a "quality" or "characteristic" of a data unit, like "what type" or "which category"'
     return (
         <Card variant='outlined' sx={{width: '0', flex: 1, maxWidth: '600px', p: 2, overflow: 'visible'/*for the tooltips*/}}>
             <FlexBox sx={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Typography variant="h5" gutterBottom>{name}</Typography>
-                <Chip label={features[name].type} {...chipProps}/>
+                <Tooltip title={chipTooltip}>
+                    {/* Tooltip child must be able to forward ref, hence the Box component */}
+                    <Box>
+                        <Chip label={features[name].type} {...chipProps}/>
+                    </Box>
+                </Tooltip>
             </FlexBox>
             <Typography sx={{mb: 3}} fontSize={14} color='textSecondary'>{features[name].description}</Typography>
             {/* histogram */}
@@ -66,14 +74,15 @@ const FeatureDetails = ({ name, data }) => {
                         <FormControlLabel value="exclude" control={<Radio />} label="exclude" />
                     </RadioGroup>
                 </FormControl>
-                <FormControlLabel checked={!sure} onChange={(e)=>select(name, { sure: !e.target.checked })} control={<Checkbox />} label="I'm not sure about this decision" />
                 <TextField
-                    label="Reason for decision"
+                    // label="Reason for decision"
                     multiline
                     maxRows={4}
                     value={text}
                     onChange={onReasonChange}
+                    placeholder='(Optional) Please describe your reasoning for including or excluding this feature.'
                 />
+                <FormControlLabel checked={!sure} onChange={(e)=>select(name, { sure: !e.target.checked })} control={<Checkbox />} label="I'm not sure about this decision" />
             </Stack>
         </Card>
     )

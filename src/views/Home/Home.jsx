@@ -71,7 +71,7 @@ const Home = () => {
           <span>design a tool to help you make decisions on who should be admitted to the School of Information.</span>
         </Typography>
         <Typography>
-        Throughout the sessions, you will learn the basic concepts and terminology related to Artificial Intelligence and Machine Learning. Using a real dataset of anonymized past applicants, you will apply these concepts to create your tool. 
+        Throughout the sessions, you will learn the basic concepts and terminology related to Artificial Intelligence and Machine Learning. Using a real dataset of anonymized past applicants, you will apply these concepts to create your model. 
         </Typography>
       </Stack>
       <img src='' alt='image' width='400px' height='300px' style={{backgroundColor: 'lightblue'}}/>

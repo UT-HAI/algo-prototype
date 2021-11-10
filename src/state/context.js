@@ -24,7 +24,6 @@ const defaultSelection = { decision: undefined, sure: true, reason: ''}
 
 const getCachedId = (fallback) => {
     const query = getQueryString('id')
-    console.log(getStorage('participant_id','session', fallback))
     if (query) {
         sessionStorage.setItem('participant_id',JSON.stringify(query))
         return query

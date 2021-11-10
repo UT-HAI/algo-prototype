@@ -20,10 +20,10 @@ const FeatureCard = ({ name, selected, onClick}) => {
     return (
         <Card variant='outlined' sx={{width: '200px', flex: '1 0 auto', ...(selected ? selectedStyle : {}), direction: 'ltr' }}>
             <CardActionArea sx={{ py:1, px: 1.5, }} onClick={onClick}>
-                <Typography sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <Typography sx={{fontSize: '14px', display: 'flex', justifyContent: 'space-between'}}>
                     {name}
-                    { selection === 'include' ? <Check color='success'/> :
-                        selection === 'exclude' ? <Cross color='error'/> :
+                    { selection === 'include' ? <Check color='success' sx={{fontSize:'1.5em'}}/> :
+                        selection === 'exclude' ? <Cross color='error' sx={{fontSize:'1.5em'}}/> :
                         null}
                 </Typography>
             </CardActionArea>

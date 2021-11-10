@@ -1,7 +1,20 @@
 import React from "react"
 import Plot from "react-plotly.js"
 
+const pieColors = {
+    'Yes': '#537dc1',
+    'No': '#ed6868',
+    'Male': '#537dc1',
+    'Female': '#ed6868'
+}
+
 const Univariate = ({ data, name }) => {
+    let yesNo = false
+    if (data.counts){
+        const vals = Object.keys(data.counts)
+        if (vals.length === 2 && vals.includes("Yes") && vals.includes("No"))
+            yesNo = true
+    }
     const dataProps = data.type == 'numerical' ? {
         type: 'histogram',
         x: data.data
@@ -9,6 +22,10 @@ const Univariate = ({ data, name }) => {
         type: 'pie',
         values: Object.values(data.counts),
         labels: Object.keys(data.counts),
+        marker: {
+            colors: Object.keys(data.counts).map(val => pieColors[val])
+        }
+
     }
     return (
         <Plot

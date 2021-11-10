@@ -38,6 +38,7 @@ export const useData = () => {
     const { data: { rows, features }, dataLoading } = state
     const [_,setError] = useError()
     const [selections] = useFeatureSelection()
+    console.log(selections)
 
     useEffect(() => {
         if (rows === -1 && !dataLoading){

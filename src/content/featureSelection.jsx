@@ -16,7 +16,7 @@ export default {
         <Heading>Selection</Heading>
         <p>You can view each <InfoTip term="feature">feature</InfoTip> by clicking on its name in the list. Each feature has a description,
          a chart showing its <InfoTip term="distribution">distribution</InfoTip>, and summary statistics.</p>
-        <p>When you've decided whether or not to include this feature in your model, use the Selection section to mark your choice. You can continue after you've marked the Selection for every feature by clicking the Finish button that appears.</p>
+        <p>When you've decided whether or not to include this feature in your model, use the <b>Selection</b> section to mark your choice. You can continue after you've marked the <b>Selection</b> for every feature by clicking the <b>Finish</b> button that appears.</p>
         <p>To compare the distributions of two variables, use the tabs to navigate to the <b>Comparison</b> section</p>
     </>,
     comparison: <>

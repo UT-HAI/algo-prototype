@@ -113,7 +113,18 @@ def data():
   # add the rows to each feature (each feature is like a pandas series)
   # NaN values are converted to None, which is converted to null in JSON
   for feature in data_obj['features'].keys():
-    data_obj['features'][feature]['data'] = rows[feature].replace({np.nan: None}).tolist()
+    data = rows[feature].replace({np.nan: None})
+    col = data_obj['features'][feature]
+    # make transforms if specified (only categorical columns)
+    if 'transform' in col.keys():
+      for transform in col['transform']:
+        # replace in data
+        data = data.replace(to_replace=transform['from'], value=transform['to'])
+        # replace in counts
+        data_obj['features'][feature]['counts'][str(transform['to'])] = col['counts'][str(transform['from'])]
+        del data_obj['features'][feature]['counts'][str(transform['from'])]
+        
+    data_obj['features'][feature]['data'] = data.tolist()
 
   return jsonify(data_obj)
 
