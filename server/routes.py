@@ -134,3 +134,25 @@ def features():
   with open(os.path.join(app.config['ROOT_DIR'],'data/meta.json')) as file:
     data_obj = json.load(file)
   return jsonify(list(data_obj['features'].keys()))
+
+@app.route('/api/notebook',methods=['GET','POST'])
+def notebook():
+  if request.method == 'POST':
+    if request.content_type != 'application/json':
+      return 'content type must be application/json', 400
+    data = request.json
+    if not all([prop in data.keys() for prop in ['id','q1','q2','rules']]):
+      return 'invalid data format (must be { id: str, q1: str, q2: str, rules: str[]})', 400
+
+    data['id'] = str(data['id'])
+
+    db.notebook.replace_one({ 'id': data['id'] }, data, upsert=True)
+
+    return jsonify(success=True)
+
+  elif request.method == 'GET':
+    id = request.args.get('id')
+    notebook = db.notebook.find_one({ 'id': id })
+    if notebook and '_id' in notebook.keys():
+      del notebook['_id']
+    return jsonify(notebook)

@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import { IdForm } from "../components/IdForm"
 import MainLayout from "../components/MainLayout"
 import SelectFeatures from "../views/SelectFeatures/SelectFeatures";
+import ExploreData from "../views/ExploreData/ExploreData";
 import { useData } from "../util/hooks/contextHooks";
 
 
@@ -15,13 +16,16 @@ const Steps = () => {
         <MainLayout>
         <Switch>
             {/* would put steps 1-4 in here */}
+            <Route exact path='/steps/1'>
+                <ExploreData />
+            </Route>
             <Route exact path='/steps/2'>
                 <SelectFeatures />
             </Route>
             <Route exact path='/steps/3'>
                 <Typography variant="h2">Train Model</Typography>
             </Route>
-            <Redirect to='/steps/2' />
+            <Redirect to='/steps/1' />
         </Switch>
         </MainLayout>
     </>)

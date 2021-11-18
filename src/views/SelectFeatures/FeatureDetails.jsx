@@ -3,9 +3,7 @@ import { Card, Typography, Box, Divider, FormControl, FormLabel, RadioGroup, For
 import { FlexBox } from "../../util/components"
 import Univariate from "../../components/Univariate"
 import { useFeatureSelection, useData } from "../../util/hooks/contextHooks"
-import Chip from "../../components/Chips"
-import LineIcon from '@mui/icons-material/TimelineOutlined';
-import BarIcon from '@mui/icons-material/BarChartOutlined';
+import TypeChip from "./TypeChip"
 import debounce from "lodash.debounce"
 
 // card that represents the details, visualization, and selection decision of one feature
@@ -28,22 +26,11 @@ const FeatureDetails = ({ name, data }) => {
     const debounceReason = useCallback(debounce((txt)=> select(name, { reason:txt }),1000), [name])
     const onReasonChange = (e) => { debounceReason(e.target.value); setText(e.target.value)}
     const { features } = useData()
-    const chipProps = features[name].type == 'numerical' ?
-        { color: 'purple', icon: <LineIcon/>} :
-        { color: 'green', icon: <BarIcon/>}
-    const chipTooltip = features[name].type == 'numerical' ?
-        'Numerical variables have values that describe a measurable quantity as a number, like "how many" or "how much"' :
-        'Categorical variables have values that describe a "quality" or "characteristic" of a data unit, like "what type" or "which category"'
     return (
         <Card variant='outlined' sx={{width: '0', flex: 1, maxWidth: '600px', p: 2, overflow: 'visible'/*for the tooltips*/}}>
             <FlexBox sx={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Typography variant="h5" gutterBottom>{name}</Typography>
-                <Tooltip title={chipTooltip}>
-                    {/* Tooltip child must be able to forward ref, hence the Box component */}
-                    <Box>
-                        <Chip label={features[name].type} {...chipProps}/>
-                    </Box>
-                </Tooltip>
+                <TypeChip type={features[name].type} />
             </FlexBox>
             <Typography sx={{mb: 3}} fontSize={14} color='textSecondary'>{features[name].description}</Typography>
             {/* histogram */}

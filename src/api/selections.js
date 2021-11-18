@@ -14,4 +14,4 @@ export const postSelections = (id, selections) =>
         body: JSON.stringify({ id, selections })
     })
 
-export const deleteAllSelections = () => apiFetch('/api/selections', { method: 'DELETE', })
+export const deleteAllSelections = () => apiFetch('/api/selections', { method: 'DELETE' })

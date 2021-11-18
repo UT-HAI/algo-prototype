@@ -2,8 +2,10 @@ import { useContext, useEffect } from "react";
 import { AppContext, defaultSelection } from "../../state/context"
 import { fetchData, fetchFeatures } from "../../api/data";
 import { fetchUsers } from "../../api/selections";
+import { fetchNotebook, postNotebook } from "../../api/notebook";
 
 // `error` is used by a site-wide Snackbar component
+// when this value is truthy, a red error snackbar is displayed with the contents
 export const useError = () => {
     const { state: { error }, dispatch } = useContext(AppContext)
     const setError = (err) => dispatch({ type: 'ERROR', payload: err })
@@ -38,7 +40,6 @@ export const useData = () => {
     const { data: { rows, features }, dataLoading } = state
     const [_,setError] = useError()
     const [selections] = useFeatureSelection()
-    console.log(selections)
 
     useEffect(() => {
         if (rows === -1 && !dataLoading){
@@ -57,6 +58,44 @@ export const useData = () => {
     },[])
 
     return { rows, features, dataLoading }
+}
+
+export const useNotebook = () => {
+    const { state, dispatch } = useContext(AppContext)
+    const { notebook } = state
+    const [_,setError] = useError()
+    const [id] = useId()
+
+    const setNotebook = (notebookData) => dispatch({ type: 'NOTEBOOK', payload: {...notebookData, id}})
+
+    const submitNotebook = (notebookData) => 
+        postNotebook(id, notebookData)
+        .then(() => {
+            setNotebook({...notebookData, status: 'full'})
+            return true
+        })
+        .catch(err => {
+            setError(err)
+            return false
+        })
+    
+
+    useEffect(() => {
+        if (id && (notebook.status === 'not loaded' || id !== notebook.id)){
+            dispatch({ type: 'NOTEBOOK', payload: { status: 'loading' }})
+            fetchNotebook(id)
+            .then(data => {
+                const status = data ? 'full' : 'empty'
+                setNotebook({...data, status})
+            })
+            .catch(err => {
+                setError(err)
+                dispatch({ type: 'NOTEBOOK', payload: { status: 'empty' }})
+            })
+        }
+    }, [id])
+
+    return [notebook, submitNotebook]
 }
 
 export const useSelectionsUsers = () => {

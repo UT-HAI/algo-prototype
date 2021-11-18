@@ -31,6 +31,7 @@
     "@mui/material": "^5.0.4",
     "@mui/styles": "^5.0.2",
     "babel-polyfill": "^6.26.0",
+    "d3-scale": "^4.0.2",
     "lodash.debounce": "^4.0.8",
     "plotly.js": "^2.5.1",
     "react": "^17.0.2",

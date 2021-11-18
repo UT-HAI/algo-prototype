@@ -5,6 +5,7 @@ import UpArrowIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
 import glossary from "../content/glossary";
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import Notebook, { NotebookTab } from "./Notebook";
 
 // layout for some of the /steps pages
 
@@ -111,6 +112,7 @@ const Search = () => {
 }
 
 const SidePanel = ({ title, text }) => {
+    const [notebookOpen, openNotebook] = useState(false)
     return (
         <FlexBox sx={{ borderRight: 1, borderColor: "divider", width: '350px', px: 2, py: 4, position: 'relative', overflow: 'hidden'}}>
             <Typography variant="h5" mb={2}>
@@ -119,6 +121,8 @@ const SidePanel = ({ title, text }) => {
             <span sx={{"& > h3": { color: 'text.secondary'}}}>
                 {text}
             </span>
+            <NotebookTab onClick={()=>openNotebook(true)} bottomOffset='80px'/>
+            <Notebook open={notebookOpen} onClose={()=>openNotebook(false)}/>
             <Search />
         </FlexBox>
     )

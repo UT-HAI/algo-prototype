@@ -15,6 +15,12 @@ const initialState = {
         features: {}
     },
     dataLoading: false,
+    notebook: {
+        q1: '',
+        q2: '',
+        rules: [],
+        status: 'not loaded'
+    },
     // ADMIN CONTEXT BELOW
     selectionsUsers: undefined, // users who have submitted a selection
     features: undefined, // list of features without the data
@@ -81,7 +87,18 @@ const reducer = (state, action) => {
                 sessionStorage.setItem('feature-selections',JSON.stringify(newState.featureSelections))
             }
             return newState
+        case 'NOTEBOOK':
+            const notebookData = action.payload
+            const coalesce = notebookData.id === state.notebook.id ? state.notebook : initialState.notebook
+            return {
+                ...state,
+                notebook: {
+                    ...coalesce,
+                    ...notebookData
+                }
+            }
 
+        // admin stuff
         case 'FETCH_SELECTIONS_USERS':
             const users = action.payload
             return {
