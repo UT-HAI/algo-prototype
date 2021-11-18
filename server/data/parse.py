@@ -6,7 +6,7 @@ import numpy as np
 
 # current dataset from: https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv
 
-EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held"]
+EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held", "Special Degree Held"]
 
 # to encode numpy datatypes into json
 class NpEncoder(json.JSONEncoder):

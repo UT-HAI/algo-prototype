@@ -2,7 +2,8 @@
     "rows": 2206,
     "features": {
         "GRE APT Verb Percentile": {
-            "description": "",
+            "rename": "GRE Verbal Percentile",
+            "description": "This is the percentile of the applicant’s GRE Verbal score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -10,7 +11,8 @@
             "median": 69.0
         },
         "GRE APT Quant Percentile": {
-            "description": "",
+            "rename": "GRE Quant Percentile",
+            "description": "The percentile of the applicant’s GRE Quantitative score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -18,7 +20,8 @@
             "median": 75.0
         },
         "GRE APT Analyt Percentile": {
-            "description": "",
+            "rename": "GRE Analytic Percentile",
+            "description": "The percentile of the applicant’s GRE Analytic (Writing) score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -26,7 +29,8 @@
             "median": 42.0
         },
         "tiers": {
-            "description": "",
+            "rename": "Tier of Undergraduate Institution",
+            "description": "Tier 1 being top institutions and 4 being bottom. Primarly determined by aggregating several US News rankings",
             "type": "numerical",
             "min": 0.0,
             "max": 4.0,
@@ -34,7 +38,8 @@
             "median": 4.0
         },
         "admit_code": {
-            "description": "",
+            "rename": "Admit Decision",
+            "description": "Whether the applicant was determined to be admitted or denied by the iSchool Master’s Admissions Committee.",
             "type": "categorical",
             "unique": 3,
             "counts": {
@@ -49,7 +54,8 @@
             ]
         },
         "GPA_Merged": {
-            "description": "",
+            "rename": "GPA",
+            "description": "Upper level grade point average of the applicant, as calculated by their grades in senior level courses (e.g., typically taken in their third year and beyond if considering their bachelor’s experience)",
             "type": "numerical",
             "min": 1.0,
             "max": 4.0,
@@ -57,7 +63,7 @@
             "median": 3.56
         },
         "Master's Held": {
-            "description": "",
+            "description": "Whether the applicant answered that they hold a master’s degree.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -70,7 +76,7 @@
             ]
         },
         "Doctorate Held": {
-            "description": "",
+            "description": "Whether the applicant answered that they hold a doctorate degree.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -83,7 +89,7 @@
             ]
         },
         "Bachelor's Held": {
-            "description": "",
+            "description": "Whether the applicant answered that they hold a bachelor’s degree or are in the final year of their bachelor’s program.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -96,15 +102,21 @@
             ]
         },
         "Special Degree Held": {
-            "description": "",
-            "type": "numerical",
-            "min": 0,
-            "max": 1,
-            "mean": 0.0022665457842248413,
-            "median": 0.0
+            "description": "Whether the applicant answered that they hold a special degree.",
+            "type": "categorical",
+            "unique": 2,
+            "counts": {
+                "0": 2201,
+                "1": 5
+            },
+            "transform": [
+                { "from": 0, "to": "No"},
+                { "from": 1, "to": "Yes"}
+            ]
         },
         "Count: Arts": {
-            "description": "",
+            "rename": "Awards: Arts and Athletics",
+            "description": "The number of awards or honors that the applicant listed on their application that is related to the arts (e.g., creative writing, English, music, etc)",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -112,7 +124,8 @@
             "median": 0.0
         },
         "Count: GAE": {
-            "description": "",
+            "rename": "Awards: Scholastic",
+            "description": "The number of awards or honors that the applicant listed that are related to receiving scholarships or being holding top student rankings such as valedictorian.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -120,7 +133,8 @@
             "median": 0.0
         },
         "Count: Research": {
-            "description": "",
+            "rename": "Awards: Research",
+            "description": "The number of awards or honors that the applicant listed that are related to research experience such as independent studies, research grants, or writing a thesis.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -128,7 +142,8 @@
             "median": 0.0
         },
         "Count: Service": {
-            "description": "",
+            "rename": "Awards: Service",
+            "description": "The number of awards or honors that the applicant listed that are related to service or volunteering.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -136,7 +151,8 @@
             "median": 0.0
         },
         "Count: Leadership": {
-            "description": "",
+            "rename": "Awards: Leadership",
+            "description": "The number of awards or honors that the applicant listed that are related to holding leadership positions.",
             "type": "numerical",
             "min": 0,
             "max": 2,
@@ -144,7 +160,8 @@
             "median": 0.0
         },
         "Count: Competition": {
-            "description": "",
+            "rename": "Awards: Competition",
+            "description": "The number of awards or honors that the applicant listed on their application related to competitions or contests relevant to academia (e.g., hackathons, design contests, case competitions)",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -152,7 +169,7 @@
             "median": 0.0
         },
         "Gender": {
-            "description": "",
+            "description": "This is the applicant’s self-reported gender. Historically, this has been limited to two choices, male or female.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -161,7 +178,7 @@
             }
         },
         "First Generation": {
-            "description": "",
+            "description": "Inferred by the education level of an applicant’s parent(s)’, as reported on the application.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -174,7 +191,8 @@
             ]
         },
         "work_experience_int": {
-            "description": "",
+            "rename": "Work Experience",
+            "description": "How many years an applicant has worked, defined by the time between the applicant’s start date for their first reported work experience and their final end date",
             "type": "numerical",
             "min": -1307.0,
             "max": 33176.0,

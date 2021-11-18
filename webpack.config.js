@@ -30,7 +30,7 @@ const common = {
   output: {
     path: paths.build,
     filename: 'bundle.[hash].js',
-    publicPath: '/build', // change to this by adding the <base> back in
+    publicPath: '/build/', // change to this by adding the <base> back in
     // publicPath: '/',
   },
   performance: {
@@ -96,7 +96,9 @@ const common = {
         use: [
           {
             loader: 'file-loader',
-            options: {}
+            options: {
+              // publicPath: "/"
+            }
           }
         ]
       }

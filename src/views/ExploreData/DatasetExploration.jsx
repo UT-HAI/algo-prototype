@@ -87,7 +87,7 @@ const DatasetExploration = () => {
                             <Stack padding={2} spacing={1}>
                                 <Typography variant='h6' fontSize='1.1rem'>{f}</Typography>
                                 <TypeChip type={features[f].type}/>
-                                <Typography color='textSecondary'>{features[f].description}</Typography>
+                                <Typography color='textSecondary' fontSize='.8rem'>{features[f].description}</Typography>
                             </Stack>
                         </Grid>
                         <Divider orientation='vertical' flexItem sx={{marginLeft: '-1px', opacity: 0.5}}/>
