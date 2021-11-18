@@ -36,8 +36,6 @@ const CategoricalPreview = ({ counts, total }) => {
 }
 
 const NumericalPreview = ({ data, min, max }) => {
-    // const min = useMemo(() => Math.min(...data),[data.length])
-    // const max = useMemo(() => Math.max(...data),[data.length])
     return (
         <Plot
             data={[{
