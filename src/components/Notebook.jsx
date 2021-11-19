@@ -9,7 +9,6 @@ import content from "../content/exploreData"
 // tab isn't displayed until notebook is loaded
 export const NotebookTab = ({ onClick, bottomOffset }) => {
     const [notebook] = useNotebook()
-    console.log(notebook.status)
     return (
         <Tooltip title='Open notebook'>
             <Button

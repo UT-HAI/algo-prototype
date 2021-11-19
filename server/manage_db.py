@@ -26,7 +26,7 @@ if __name__ == "__main__":
   prod = args.production
   connection = os.environ.get('MONGO_URI_PROD') if prod else os.environ.get('MONGO_URI')
   tag = 'prod' if prod else 'dev'
-  db = db = MongoClient(connection).get_default_database() # db should be specified in URI
+  db = MongoClient(connection).get_default_database() # db should be specified in URI
   command = args.command
   collection = args.collection
   if command == "seed":
