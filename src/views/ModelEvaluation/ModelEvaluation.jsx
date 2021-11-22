@@ -3,6 +3,7 @@ import content from "../../content/modelEvalutation"
 import WithLanding from "../../components/WithLandingPage"
 import StepsLayout from "../../components/StepsLayout"
 import FeatureComparison from "./FeatureComparison"
+import Personas from "./Personas"
 
 const ModelEvaluation = () => {
 
@@ -12,11 +13,15 @@ const ModelEvaluation = () => {
             introText={content.intro}
         >
             <StepsLayout
-                title='Mode Evaluation'
+                title='Model Evaluation'
                 tabs={{
                     'Feature Comparison': {
                         text: content.featureComparison,
                         component: <FeatureComparison />
+                    },
+                    'Personas': {
+                        text: content.personas,
+                        component: <Personas />
                     },
                 }}
                 fallback={undefined}

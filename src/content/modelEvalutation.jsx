@@ -13,4 +13,25 @@ export default {
         <Heading>Feature Comparison</Heading>
         <p>Placeholder content</p>
     </>,
+    personas: <>
+        <Heading>Personas</Heading>
+        <p>Now that you can play with the results of different models. The system will generate some personas based on your selection.</p>
+        <p>See which model better represent your goal and what can be improved later.</p>
+    </>,
+    confusion: {
+        quadrants: {
+            'truetrue': 'True Positive',
+            'truefalse': 'False Positive',
+            'falsetrue': 'False Negative',
+            'falsefalse': 'True Negative'
+        },
+        labels: {
+            'true': 'admitted',
+            'false': 'denied',
+        },
+        colors: {
+            'true': 'success.main',
+            'false': 'error.main'
+        }
+    }
 }
