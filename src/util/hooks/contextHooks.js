@@ -37,7 +37,7 @@ export const useId = () => {
 // get feature data (fetched from server's .csv file)
 export const useData = () => {
     const { state, dispatch } = useContext(AppContext)
-    const { data: { rows, features }, dataLoading } = state
+    const { data: { rows, features, target, ids }, dataLoading } = state
     const [_,setError] = useError()
     const [selections] = useFeatureSelection()
 
@@ -49,7 +49,6 @@ export const useData = () => {
             .then(data => {
                 dispatch({ type: 'FETCH_DATA', payload: { loading: false, data, setDefaultSelections: !Boolean(selections) }})
             })
-            // todo: error handling
             .catch((err) => {
                 setError(err.message)
                 dispatch({ type: 'FETCH_DATA', payload: { loading: false }})
@@ -57,7 +56,7 @@ export const useData = () => {
         }
     },[])
 
-    return { rows, features, dataLoading }
+    return { rows, features, target, ids, dataLoading }
 }
 
 export const useNotebook = () => {

@@ -84,7 +84,7 @@ const FeatureComparison = () => {
                                 <Importance
                                     importance={mockImportances[i][0]}
                                     label='Your Model'
-                                    color='#8E44AD'
+                                    color='#F39C12'
                                     onMouseEnter={() => onMouseEnter('your')}
                                     onMouseLeave={onMouseLeave}
                                     dim={hovered=='group'}
@@ -92,7 +92,7 @@ const FeatureComparison = () => {
                                 <Importance
                                     importance={mockImportances[i][1]}
                                     label='Group Model'
-                                    color='#F39C12'
+                                    color='#8E44AD'
                                     onMouseEnter={() => onMouseEnter('group')}
                                     onMouseLeave={onMouseLeave}
                                     dim={hovered=='your'}

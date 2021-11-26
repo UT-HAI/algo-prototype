@@ -1,5 +1,22 @@
 {
     "rows": 2206,
+    "target": {
+        "description": "",
+        "type": "categorical",
+        "unique": 3,
+        "counts": {
+            "R": 814,
+            "A": 789,
+            "D": 603
+        },
+        "name": "admit_code",
+        "transform": [
+            { "from": "R", "to": "Rescind"},
+            { "from": "A", "to": "Admit"},
+            { "from": "D", "to": "Deny"}
+        ]
+    },
+    "id": "Subject ID",
     "features": {
         "GRE APT Verb Percentile": {
             "rename": "GRE Verbal Percentile",
@@ -36,22 +53,6 @@
             "max": 4.0,
             "mean": 2.928377153218495,
             "median": 4.0
-        },
-        "admit_code": {
-            "rename": "Admit Decision",
-            "description": "Whether the applicant was determined to be admitted or denied by the iSchool Master’s Admissions Committee.",
-            "type": "categorical",
-            "unique": 3,
-            "counts": {
-                "R": 814,
-                "A": 789,
-                "D": 603
-            },
-            "transform": [
-                { "from": "R", "to": "Rescind"},
-                { "from": "A", "to": "Admit"},
-                { "from": "D", "to": "Deny"}
-            ]
         },
         "GPA_Merged": {
             "rename": "GPA",

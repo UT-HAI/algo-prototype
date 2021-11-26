@@ -101,6 +101,19 @@ def selections_csv():
     print(e)
     return str(e), 500
 
+def add_data(feature, data):
+  data = data.replace({np.nan: None})
+  # make transforms if specified (only categorical columns)
+  if 'transform' in feature.keys():
+    for transform in feature['transform']:
+      # replace in data
+      data = data.replace(to_replace=transform['from'], value=transform['to'])
+      # replace in counts
+      feature['counts'][str(transform['to'])] = feature['counts'][str(transform['from'])]
+      del feature['counts'][str(transform['from'])]
+      
+  feature['data'] = data.tolist()
+
 # combines the metadata and .csv file in /data and sends a json object
 @app.route('/api/data')
 def data():
@@ -113,18 +126,11 @@ def data():
   # add the rows to each feature (each feature is like a pandas series)
   # NaN values are converted to None, which is converted to null in JSON
   for feature in data_obj['features'].keys():
-    data = rows[feature].replace({np.nan: None})
-    col = data_obj['features'][feature]
-    # make transforms if specified (only categorical columns)
-    if 'transform' in col.keys():
-      for transform in col['transform']:
-        # replace in data
-        data = data.replace(to_replace=transform['from'], value=transform['to'])
-        # replace in counts
-        data_obj['features'][feature]['counts'][str(transform['to'])] = col['counts'][str(transform['from'])]
-        del data_obj['features'][feature]['counts'][str(transform['from'])]
-        
-    data_obj['features'][feature]['data'] = data.tolist()
+    add_data(data_obj['features'][feature],rows[feature])
+  
+  add_data(data_obj['target'], rows[data_obj['target']['name']])
+
+  data_obj['ids'] = rows[data_obj['id']].tolist()
 
   return jsonify(data_obj)
 

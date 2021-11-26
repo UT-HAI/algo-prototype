@@ -12,7 +12,9 @@ const initialState = {
     id: undefined, // participant id,
     data: {
         rows: -1,
-        features: {}
+        features: {},
+        target: null,
+        ids: []
     },
     dataLoading: false,
     notebook: {

@@ -4,6 +4,7 @@ import WithLanding from "../../components/WithLandingPage"
 import StepsLayout from "../../components/StepsLayout"
 import FeatureComparison from "./FeatureComparison"
 import Personas from "./Personas"
+import Fairness from "./Fairness"
 
 const ModelEvaluation = () => {
 
@@ -23,6 +24,10 @@ const ModelEvaluation = () => {
                         text: content.personas,
                         component: <Personas />
                     },
+                    'Fairness': {
+                        text: content.fairness,
+                        component: <Fairness />
+                    }
                 }}
                 fallback={undefined}
             />

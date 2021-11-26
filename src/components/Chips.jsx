@@ -10,6 +10,10 @@ const colors = {
         line: '#2F8221',
         background: 'rgba(117, 200, 104, 0.1)'
     },
+    yellow: {
+        line: '#CAAA02',
+        background: 'rgba(202, 170, 2, 0.1)',
+    },
     admit: {
         line: '#107700',
         background: '#1077001A',
