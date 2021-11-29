@@ -25,8 +25,7 @@ def selection():
     mongo.db.feature_selections.replace_one({'id': id}, {
         'id': id,
         'selections': selections
-    },
-                                            upsert=True)
+    }, upsert=True)
 
     return jsonify(success=True)
 
@@ -109,6 +108,22 @@ def selections_csv():
         return str(e), 500
 
 
+def add_data(feature, data):
+    data = data.replace({np.nan: None})
+    # make transforms if specified (only categorical columns)
+    if 'transform' in feature.keys():
+        for transform in feature['transform']:
+            # replace in data
+            data = data.replace(to_replace=transform['from'],
+                                value=transform['to'])
+            # replace in counts
+            feature['counts'][str(transform['to'])] = feature['counts'][str(
+                transform['from'])]
+            del feature['counts'][str(transform['from'])]
+
+    feature['data'] = data.tolist()
+
+
 # combines the metadata and .csv file in /data and sends a json object
 @api_blueprint.route('/data')
 def data():
@@ -124,21 +139,11 @@ def data():
     # add the rows to each feature (each feature is like a pandas series)
     # NaN values are converted to None, which is converted to null in JSON
     for feature in data_obj['features'].keys():
-        data = rows[feature].replace({np.nan: None})
-        col = data_obj['features'][feature]
-        # make transforms if specified (only categorical columns)
-        if 'transform' in col.keys():
-            for transform in col['transform']:
-                # replace in data
-                data = data.replace(to_replace=transform['from'],
-                                    value=transform['to'])
-                # replace in counts
-                data_obj['features'][feature]['counts'][str(
-                    transform['to'])] = col['counts'][str(transform['from'])]
-                del data_obj['features'][feature]['counts'][str(
-                    transform['from'])]
+        add_data(data_obj['features'][feature], rows[feature])
 
-        data_obj['features'][feature]['data'] = data.tolist()
+    add_data(data_obj['target'], rows[data_obj['target']['name']])
+
+    data_obj['ids'] = rows[data_obj['id']].tolist()
 
     return jsonify(data_obj)
 
@@ -175,16 +180,49 @@ def notebook():
         return jsonify(success=True)
 
 
-@api_blueprint.route('/train', methods=['GET'])
-def train_predict():
-    # read data.csv into dataframe
-    df = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
-                                  'data/data_1.csv'),
-                     header=0)
-    X_train, X_test, y_train, y_test = select_features(df, [])
-    proba = train_and_predict(X_train, y_train, X_test)
-    return jsonify({
-        'test_data': X_test.to_json(),
-        'true_results': y_test.to_json(),
-        'predictions': proba.tolist()
-    })
+@api_blueprint.route('/train', methods=['POST'])
+def train():
+    if request.content_type != 'application/json':
+        return 'content type must be application/json', 400
+    data = request.json
+    df_train = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
+                                        'data/data_train.csv'),
+                           header=0)
+    df_test = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
+                                       'data/data_test.csv'),
+                          header=0)
+
+    selections = mongo.db.feature_selections.find()
+    features = []
+    try:
+        with open(
+                os.path.join(current_app.config['ROOT_DIR'],
+                             'data/meta.json')) as file:
+            features = list(json.load(file)['features'].keys())
+    except Exception as e:
+        return str(e), 500
+
+    def train_predict_save(user_id, selected_features):
+        X_train, X_test, y_train, _ = select_features(df_train, df_test,
+                                                      selected_features)
+        proba = train_and_predict(X_train, y_train, X_test)
+
+        row = {'id': user_id}
+
+        for i, subject_id in enumerate(df_test['Subject ID'].values):
+            row[str(subject_id)] = proba[i][0]
+
+        mongo.db.train_results.insert_one(row)
+
+    # train user models
+    for doc in selections:
+        selected_features = list(
+            filter(lambda x: doc['selections'][x]['decision'] == 'include',
+                   features))
+
+        train_predict_save(doc['id'], selected_features)
+
+    # train group model
+    train_predict_save('admin', data['selected_features'])
+
+    return jsonify(success=True)

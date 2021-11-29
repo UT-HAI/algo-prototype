@@ -6,7 +6,9 @@ import numpy as np
 
 # current dataset from: https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv
 
-EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held"]
+EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held", "Special Degree Held"]
+TARGET_COLUMN = 'admit_code'
+ID_COLUMN = 'Subject ID'
 
 # to encode numpy datatypes into json
 class NpEncoder(json.JSONEncoder):
@@ -48,6 +50,13 @@ if __name__ == '__main__':
             f['counts'] = topCounts
         features[col] = f
     desc['features'] = features
+
+    # add target column to 'target' property and remove it from features
+    desc['target'] = desc['features'][TARGET_COLUMN]
+    desc['target']['name'] = TARGET_COLUMN
+    del desc['features'][TARGET_COLUMN]
+
+    desc['id'] = ID_COLUMN
 
     with open("parsed.json","w") as file:
         json.dump(desc,file,cls=NpEncoder,indent=4)

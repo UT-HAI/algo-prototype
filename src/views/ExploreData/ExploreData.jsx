@@ -25,7 +25,7 @@ const ExploreData = () => {
         newResponses[i] = response
         return newResponses
     })
-    
+    // user-response rules
     const [rules, setRules] = useState([''])
 
     const disabledReason =
@@ -59,7 +59,7 @@ const ExploreData = () => {
                                 <Pages
                                     index={goalSettingPage}
                                     changePage={setPage}
-                                    onFinish={onSubmit} // todo: context
+                                    onFinish={onSubmit}
                                     disabledReason={disabledReason}
                                     pages={[
                                         <GoalSetting

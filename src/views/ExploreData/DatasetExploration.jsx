@@ -36,8 +36,6 @@ const CategoricalPreview = ({ counts, total }) => {
 }
 
 const NumericalPreview = ({ data, min, max }) => {
-    // const min = useMemo(() => Math.min(...data),[data.length])
-    // const max = useMemo(() => Math.max(...data),[data.length])
     return (
         <Plot
             data={[{
@@ -64,9 +62,26 @@ const NumericalPreview = ({ data, min, max }) => {
     )
 }
 
+const Row = ({ name, feature, target, divider, rows }) => <>
+    { divider && <Grid item xs={12}><Divider/></Grid>}
+    <Grid item xs={4}>
+        <Stack padding={2} spacing={1}>
+            <Typography variant='h6' fontSize='1.1rem'>{name}</Typography>
+            <TypeChip type={target ? 'target' : feature.type}/>
+            <Typography color='textSecondary' fontSize='.8rem'>{feature.description}</Typography>
+        </Stack>
+    </Grid>
+    <Divider orientation='vertical' flexItem sx={{marginLeft: '-1px', opacity: 0.5}}/>
+    <Grid item xs={8} padding={2}>
+        {feature.type == 'categorical' ?
+            <CategoricalPreview counts={feature.counts} total={rows}/> :
+            <NumericalPreview data={feature.data} min={feature.min} max={feature.max} />
+        }
+    </Grid>
+</>
 // what goes in the Dataset Exploration tab of 1) Explore Data
 const DatasetExploration = () => {
-    const { features, dataLoading, rows } = useData()
+    const { features, dataLoading, rows, target } = useData()
 
     return (
         <FlexContainer grow maxWidth="md" sx={{pt: 6, pb: 4}}>
@@ -83,23 +98,8 @@ const DatasetExploration = () => {
                 {/* <Divider /> */}
                 {dataLoading ? 'loading...' :
                 <Grid container>
-                    {Object.keys(features).map((f,i) => <>
-                        { i !== 0 && <Grid item xs={12}><Divider/></Grid>}
-                        <Grid item xs={4}>
-                            <Stack padding={2} spacing={1}>
-                                <Typography variant='h6' fontSize='1.1rem'>{f}</Typography>
-                                <TypeChip type={features[f].type}/>
-                                <Typography color='textSecondary'>{features[f].description}</Typography>
-                            </Stack>
-                        </Grid>
-                        <Divider orientation='vertical' flexItem sx={{marginLeft: '-1px', opacity: 0.5}}/>
-                        <Grid item xs={8} padding={2}>
-                            {features[f].type == 'categorical' ?
-                                <CategoricalPreview counts={features[f].counts} total={rows}/> :
-                                <NumericalPreview data={features[f].data} min={features[f].min} max={features[f].max} />
-                            }
-                        </Grid>
-                    </>)}
+                    <Row name={target.name} feature={target} rows={rows} target />
+                    {Object.keys(features).map(f => <Row name={f} feature={features[f]} rows={rows} divider/>)}
                 </Grid>
                 }
                 

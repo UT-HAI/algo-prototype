@@ -4,6 +4,7 @@ import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/material/styles"
 import React from "react"
 import glossary from "../content/glossary"
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 const Tooltip = styled(({ className, ...props }) => (
     <MuiTooltip {...props} classes={{ popper: className }} />
@@ -12,6 +13,20 @@ const Tooltip = styled(({ className, ...props }) => (
       background-color: rgba(0,0,0,.90);
     }
   `);
+
+const inlineProps = {
+  fontSize: 'inherit',
+  marginLeft: '.4em',
+  color: 'inherit',
+  verticalAlign: 'bottom',
+  marginBottom: '.2em'
+}
+
+export const InfoIcon = ({ text, inline, ...props}) => (
+  <Tooltip title={text}>
+    <InfoOutlinedIcon {...props} sx={{...(inline ? inlineProps : undefined), ...props.sx}}/>
+  </Tooltip>
+)
 
 const InfoTip = ({ children, term, text }) => {
     const theme = useTheme()
