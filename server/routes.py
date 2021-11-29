@@ -181,16 +181,49 @@ def notebook():
         return jsonify(success=True)
 
 
-@api_blueprint.route('/train', methods=['GET'])
-def train_predict():
-    # read data.csv into dataframe
-    df = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
-                                  'data/data_1.csv'),
-                     header=0)
-    X_train, X_test, y_train, y_test = select_features(df, [])
-    proba = train_and_predict(X_train, y_train, X_test)
-    return jsonify({
-        'test_data': X_test.to_json(),
-        'true_results': y_test.to_json(),
-        'predictions': proba.tolist()
-    })
+@api_blueprint.route('/train', methods=['POST'])
+def train():
+    if request.content_type != 'application/json':
+        return 'content type must be application/json', 400
+    data = request.json
+    df_train = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
+                                        'data/data_train.csv'),
+                           header=0)
+    df_test = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
+                                       'data/data_test.csv'),
+                          header=0)
+
+    selections = mongo.db.feature_selections.find()
+    features = []
+    try:
+        with open(
+                os.path.join(current_app.config['ROOT_DIR'],
+                             'data/meta.json')) as file:
+            features = list(json.load(file)['features'].keys())
+    except Exception as e:
+        return str(e), 500
+
+    def train_predict_save(user_id, selected_features):
+        X_train, X_test, y_train, _ = select_features(df_train, df_test,
+                                                      selected_features)
+        proba = train_and_predict(X_train, y_train, X_test)
+
+        row = {'id': user_id}
+
+        for i, subject_id in enumerate(df_test['Subject ID'].values):
+            row[str(subject_id)] = proba[i][0]
+
+        mongo.db.train_results.insert_one(row)
+
+    # train user models
+    for doc in selections:
+        selected_features = list(
+            filter(lambda x: doc['selections'][x]['decision'] == 'include',
+                   features))
+
+        train_predict_save(doc['id'], selected_features)
+
+    # train group model
+    train_predict_save('admin', data['selected_features'])
+
+    return jsonify(success=True)
