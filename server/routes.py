@@ -207,12 +207,12 @@ def train():
                                                       selected_features)
         proba = train_and_predict(X_train, y_train, X_test)
 
-        row = {'id': user_id}
+        row = {'id': user_id, 'predictions': {}}
 
         for i, subject_id in enumerate(df_test['Subject ID'].values):
-            row[str(subject_id)] = proba[i][0]
+            row['predictions'][str(subject_id)] = proba[i][0]
 
-        mongo.db.train_results.insert_one(row)
+        mongo.db.notebook.replace_one({'id': row['id']}, row, upsert=True)
 
     # train user models
     for doc in selections:
