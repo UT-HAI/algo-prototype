@@ -9,6 +9,7 @@ import numpy as np
 # API routes
 ##
 
+# feature selection routes /////////////////////////////////////////
 
 # participant is submitting their feature selections
 @app.route('/api/selection',methods=['POST'])
@@ -101,6 +102,8 @@ def selections_csv():
     print(e)
     return str(e), 500
 
+# data routes /////////////////////////////////////////
+
 def add_data(feature, data):
   data = data.replace({np.nan: None})
   # make transforms if specified (only categorical columns)
@@ -141,6 +144,9 @@ def features():
     data_obj = json.load(file)
   return jsonify(list(data_obj['features'].keys()))
 
+# notebook routes /////////////////////////////////////////
+
+# one user's notebook
 @app.route('/api/notebook',methods=['GET','POST'])
 def notebook():
   if request.method == 'POST':
@@ -162,3 +168,48 @@ def notebook():
     if notebook and '_id' in notebook.keys():
       del notebook['_id']
     return jsonify(notebook)
+
+# all notebooks
+@app.route('/api/notebooks', methods=['GET','DELETE'])
+def notebooks_route():
+  if request.method == 'GET':
+    notebooks = db.notebook.find()
+    notebook_obj = {}
+
+    for doc in notebooks:
+      notebook_obj[doc['id']] = { 'q1': doc['q1'], 'q2': doc['q2'], 'rules': doc['rules'] }
+
+    return jsonify(notebook_obj)
+
+  elif request.method == 'DELETE':
+    db.notebook.drop()
+    return jsonify(success=True)
+
+
+@app.route('/api/notebooks/notebooks.csv')
+def notebook_csv():
+  notebooks = db.notebook.find()
+
+  # header
+  csv = 'id,q1,q2,rules\n'
+
+  # each row is one user's notebook
+  for notebook in notebooks:
+      id = notebook['id']
+      row = [str(id)]
+      row.append(notebook['q1'])
+      row.append(notebook['q2'])
+      row += notebook['rules']
+          
+      csv += ",".join(row) + "\n"
+
+  return Response(
+    csv,
+    mimetype='text/csv',
+    headers={"Content-disposition": "attachment; filename=notebooks.csv"}
+  )
+
+@app.route('/api/notebooks/users')
+def get_notebook_users():
+  notebooks = db.notebook.find()
+  return jsonify([doc['id'] for doc in notebooks])

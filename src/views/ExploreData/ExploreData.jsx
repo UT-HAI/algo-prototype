@@ -28,11 +28,6 @@ const ExploreData = () => {
     // user-response rules
     const [rules, setRules] = useState([''])
 
-    const disabledReason =
-        goalSettingPage === 0 ? (!goalResponses.every(r => r.length > 5) ? 'Please answer all questions' : undefined) :
-        goalSettingPage === 1 ? (rules[0] === '' ? 'Please fill out at least Rule 1' : undefined) :
-        undefined
-
     const [finished, setFinished] = useState(false)
     // error handling is done inside the hook
     const onSubmit = () => submitNotebook({
@@ -43,6 +38,13 @@ const ExploreData = () => {
     .then((success) => {
         if (success) setFinished(true)
     })
+
+    const [hasVisitedExploration, setVisited] = useState(false)
+
+    const disabledReason =
+        goalSettingPage === 0 ? (!goalResponses.every(r => r.length > 5) ? 'Please answer all questions' : undefined) :
+        goalSettingPage === 1 ? (rules[0] === '' ? 'Please fill out at least Rule 1' : !hasVisitedExploration ? 'Click on the Dataset Exploration tab before continuing!' : undefined) :
+        undefined
 
     return (
         <WithLanding
@@ -77,7 +79,7 @@ const ExploreData = () => {
                     },
                     'Dataset Exploration': {
                         text: content.datasetExploration,
-                        component: <DatasetExploration />
+                        component: <DatasetExploration visit={() => setVisited(true)}/>
                     }
                 }}
                 fallback={undefined}

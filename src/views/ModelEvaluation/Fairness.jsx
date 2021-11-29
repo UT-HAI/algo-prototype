@@ -105,7 +105,7 @@ const Fairness = () => {
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
             <Stack flex='25%' spacing={2}>
-               <FairnessCard title='1. Equal Accuracy' content='hello world' isOpen={openIdx === 0} open={(isOpen) => openOne(0,isOpen)} isCollapsed={openIdx !== 0 && openIdx !== null} />
+               <FairnessCard title='1. Equal Opportunity' content='hello world' isOpen={openIdx === 0} open={(isOpen) => openOne(0,isOpen)} isCollapsed={openIdx !== 0 && openIdx !== null} />
                <FairnessCard title='2. Demographic Parity' content='hello world' isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
             </Stack>
             <Stack flex='75%' spacing={2}>

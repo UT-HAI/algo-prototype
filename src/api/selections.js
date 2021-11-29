@@ -1,6 +1,6 @@
 import { apiFetch } from '../util/api'
 
-export const fetchUsers = () => 
+export const fetchSelectionUsers = () => 
     apiFetch('/api/selections/users')
     .then(data => data.json())
 

@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
 import { AppContext, defaultSelection } from "../../state/context"
 import { fetchData, fetchFeatures } from "../../api/data";
-import { fetchUsers } from "../../api/selections";
-import { fetchNotebook, postNotebook } from "../../api/notebook";
+import { fetchSelectionUsers } from "../../api/selections";
+import { fetchNotebook, fetchNotebookUsers, postNotebook } from "../../api/notebook";
 
 // `error` is used by a site-wide Snackbar component
 // when this value is truthy, a red error snackbar is displayed with the contents
@@ -105,7 +105,7 @@ export const useSelectionsUsers = () => {
 
     useEffect(() => {
         if (!selectionsUsers){
-            fetchUsers()
+            fetchSelectionUsers()
             .then(users => {
                 dispatch({ type: 'FETCH_SELECTIONS_USERS', payload: users})
             })
@@ -133,4 +133,21 @@ export const useFeatures = () => {
     },[])
 
     return features ?? []
+}
+
+export const useNotebookUsers = () => {
+    const { state: { notebookUsers }, dispatch } = useContext(AppContext)
+    const [_,setError] = useError()
+
+    useEffect(() => {
+        if (!notebookUsers){
+            fetchNotebookUsers()
+            .then(users => {
+                dispatch({ type: 'FETCH_NOTEBOOK_USERS', payload: users})
+            })
+            .catch(err => setError(err.message))
+        }
+    },[])
+
+    return notebookUsers ?? []
 }

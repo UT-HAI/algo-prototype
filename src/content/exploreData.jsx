@@ -8,7 +8,10 @@ import glossary from "./glossary"
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    intro: <p>Description about Explore Data stage</p>,
+    intro: <>
+        <p>To begin, you will take some time to answer a few reflective questions about selecting applicants, and then review the dataset. This is so you can articulate your personal feelings about the admissions process and what matters. </p>
+        <p>The dataset you are going to review has been anonymized and contains information about past iSchool Master’s Program applicants between Fall 2013 through Fall 2020. You will be shown sample values of each column in the data that is known about applicants. You may begin when you are ready</p>
+    </>,
     goalSetting: [<>
         <Heading>Goal Setting</Heading>
         <p>First, take some time to think about and write down what is important to you when it comes to selecting qualified applicants.</p>

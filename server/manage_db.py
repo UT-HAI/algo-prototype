@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import json
 import random
+import string
 
 # script for managing Mongo database (both development and production)
 # assuming this runs from the project root (which is true if you use `yarn db`)
@@ -18,8 +19,10 @@ parser.add_argument("-p", "--production", help="make changes to the production d
 parser.add_argument("-r", "--rows", help="if command is 'seed', number of rows to seed", type=int)
 
 # all the collections in the database
-collections = ['feature_selections']
+collections = ['feature_selections','notebook']
 
+def rand_string(n):
+  return ''.join(random.choice(string.ascii_lowercase) for _ in range(n))
 
 if __name__ == "__main__":
   args = parser.parse_args()
@@ -29,6 +32,7 @@ if __name__ == "__main__":
   db = MongoClient(connection).get_default_database() # db should be specified in URI
   command = args.command
   collection = args.collection
+
   if command == "seed":
     rows = args.rows or 10
     if not collection or collection == "feature_selections":
@@ -45,7 +49,14 @@ if __name__ == "__main__":
           }
         row = { 'id': str(random.randrange(99999)), 'selections': selections}
         db.feature_selections.insert_one(row)
-    print('[{}] seeded collection(s): {}'.format(tag,','.join(collections)))
+
+    if not collection or collection == "notebook":
+      for i in range(rows):
+        rules = [rand_string(10) for _ in range(random.choice([1,2,3]))]
+        row = { 'id': str(random.randrange(99999)), 'q1': rand_string(20), 'q2': rand_string(15), 'rules': rules}
+        db.notebook.insert_one(row)
+      
+    print('[{}] seeded collection(s): {}'.format(tag, collection or ','.join( collections)))
 
   elif command == "drop":
     if collection:

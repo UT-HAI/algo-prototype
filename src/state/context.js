@@ -25,6 +25,7 @@ const initialState = {
     },
     // ADMIN CONTEXT BELOW
     selectionsUsers: undefined, // users who have submitted a selection
+    notebookUsers: undefined, // users who have submitted a notebook
     features: undefined, // list of features without the data
 }
 
@@ -102,10 +103,17 @@ const reducer = (state, action) => {
 
         // admin stuff
         case 'FETCH_SELECTIONS_USERS':
-            const users = action.payload
+            const selectionsUsers = action.payload
             return {
                 ...state,
-                selectionsUsers: users
+                selectionsUsers
+            }
+
+        case 'FETCH_NOTEBOOK_USERS':
+            const notebookUsers = action.payload
+            return {
+                ...state,
+                notebookUsers
             }
 
         case 'FETCH_FEATURES':

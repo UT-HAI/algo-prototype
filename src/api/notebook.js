@@ -13,3 +13,9 @@ export const postNotebook = (id, data) =>
         },
         body: JSON.stringify({ id, ...data })
     })
+
+export const fetchNotebookUsers = () => 
+    apiFetch('/api/notebooks/users')
+    .then(data => data.json())
+
+export const deleteAllNotebooks = () => apiFetch('/api/notebooks', { method: 'DELETE' })

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react"
+import React, { useEffect } from "react"
 import { Typography, Paper, Box, Stack, Divider, Grid } from "@mui/material"
 import { FlexContainer } from "../../util/components"
 import { useData } from "../../util/hooks/contextHooks"
@@ -80,8 +80,9 @@ const Row = ({ name, feature, target, divider, rows }) => <>
     </Grid>
 </>
 // what goes in the Dataset Exploration tab of 1) Explore Data
-const DatasetExploration = () => {
+const DatasetExploration = ({ visit }) => {
     const { features, dataLoading, rows, target } = useData()
+    useEffect(visit, []) // allows the user to continue to the next section after visiting this tab
 
     return (
         <FlexContainer grow maxWidth="md" sx={{pt: 6, pb: 4}}>

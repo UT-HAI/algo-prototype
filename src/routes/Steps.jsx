@@ -6,6 +6,7 @@ import MainLayout from "../components/MainLayout"
 import SelectFeatures from "../views/SelectFeatures/SelectFeatures";
 import ExploreData from "../views/ExploreData/ExploreData";
 import ModelEvaluation from "../views/ModelEvaluation/ModelEvaluation";
+import TrainModel from "../views/TrainModel/TrainModel";
 import { useData } from "../util/hooks/contextHooks";
 
 
@@ -24,7 +25,7 @@ const Steps = () => {
                 <SelectFeatures />
             </Route>
             <Route exact path='/steps/3'>
-                <Typography variant="h2">Train Model</Typography>
+                <TrainModel />
             </Route>
             <Route exact path='/steps/4'>
                 <ModelEvaluation />

@@ -182,7 +182,6 @@ const Persona = ({ id, idx, featureFilters }) => {
                 <Typography color='textSecondary'>(#{id})</Typography>
                 {/* { featureFilters.map(({ feature, value }) => <FilterChip feature={feature} value={value}/>)} */}
             </Stack>
-            {/* todo: feature description on hover */}
             <TableContainer>
                 <Table stickyHeader size='small'>
                 <colgroup>
@@ -210,7 +209,7 @@ const Persona = ({ id, idx, featureFilters }) => {
                 </Table>
             </TableContainer>
             <Stack spacing={2}>
-                <Typography variant='h5'>Model Confidence<InfoIcon inline text='sample text' sx={{opacity: .5}}/></Typography>
+                <Typography variant='h5'>Model Confidence<InfoIcon inline text='This value represents how "sure" the model is about a decision, or how likely the model is to be correct. A confidence of 0 is equivalent to a random guess.' sx={{opacity: .5}}/></Typography>
                 {/* <Slider value={confidence*100} onChange={undefined} /> */}
                 <Stack direction='row' spacing={2}>
                     <Stack alignItems='flex-end'>
