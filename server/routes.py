@@ -185,7 +185,7 @@ def notebook():
         return jsonify(success=True)
 
 # all notebooks
-@api_blueprint.route('/api/notebooks', methods=['GET','DELETE'])
+@api_blueprint.route('/notebooks', methods=['GET','DELETE'])
 def notebooks_route():
   if request.method == 'GET':
     notebooks = mongo.db.notebook.find()
@@ -201,7 +201,7 @@ def notebooks_route():
     return jsonify(success=True)
 
 
-@api_blueprint.route('/api/notebooks/notebooks.csv')
+@api_blueprint.route('/notebooks/notebooks.csv')
 def notebook_csv():
   notebooks = mongo.db.notebook.find()
 
@@ -224,13 +224,13 @@ def notebook_csv():
     headers={"Content-disposition": "attachment; filename=notebooks.csv"}
   )
 
-@api_blueprint.route('/api/notebooks/users')
+@api_blueprint.route('/notebooks/users')
 def get_notebook_users():
   notebooks = mongo.db.notebook.find()
   return jsonify([doc['id'] for doc in notebooks])
 
 
-@api_blueprint.route('/train', methods=['POST'])
+@api_blueprint.route('/ml/train', methods=['POST'])
 def train():
     if request.content_type != 'application/json':
         return 'content type must be application/json', 400
@@ -276,3 +276,44 @@ def train():
     train_predict_save('admin', data['selected_features'])
 
     return jsonify(success=True)
+
+@api_blueprint.route('/ml/predictions')
+def predictions():
+  id = request.args.get('id')
+  your_model = mongo.db.train_results.find_one({ 'id': id })
+  group_model = mongo.db.train_results.find_one({ 'id': 'admin' })
+
+  if not your_model or not group_model: return jsonify(None)
+
+  models = {'group': {}, 'your': {}}
+  test_ids = your_model['predictions'].keys()
+  rows = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'], 'data/data_test.csv'), header=0)
+  rows['y'] = (~(rows['admit_code'] == 'D')).astype(int)
+  y = {}
+  for _, row in rows.iterrows():
+    str_id = str(row['Subject ID'])
+    if str_id in test_ids:
+      y[str_id] = row['y']
+
+  def get_metrics(ids, predictions, ys):
+    tn = tp = fn = fp = 0
+    n = len(ids)
+    for id in ids:
+      y = ys[id]
+      y_hat = predictions[id]
+      if y == 0:
+        if y_hat < 0.5: tn +=1
+        else: fp +=1
+      else:
+        if y_hat > 0.5: tp +=1
+        else: fn +=1
+    acc = (tp + tn) / n
+    return { 'tn':tn, 'tp':tp, 'fn':fn, 'fp':fp, 'acc':acc }
+
+  models['group']['predictions'] = group_model['predictions']
+  models['group']['metrics'] = get_metrics(test_ids, group_model['predictions'], y)
+
+  models['your']['predictions'] = your_model['predictions']
+  models['your']['metrics'] = get_metrics(test_ids, your_model['predictions'], y)
+
+  return jsonify(models)
