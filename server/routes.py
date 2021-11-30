@@ -306,13 +306,15 @@ def predictions():
     if str_id in test_ids:
       y[str_id] = row['y']
 
+  print(y)
+
   def get_metrics(ids, predictions, ys):
     tn = tp = fn = fp = 0
     n = len(ids)
     for id in ids:
-      y = ys[id]
+      y_actual = ys[id]
       y_hat = predictions[id]
-      if y == 0:
+      if y_actual == 0:
         if y_hat < 0.5: tn +=1
         else: fp +=1
       else:

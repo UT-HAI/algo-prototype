@@ -20,12 +20,13 @@ const AxisSelect = ({ label, onChange, values, value }) => (
 )
 
 const Comparison = () => {
-    const { features } = useData()
-    const featureNames = Object.keys(features)
+    const { features, target } = useData()
+    const allFeatures = { [target.name]: target, ...features }
+    const featureNames = Object.keys(allFeatures)
     const [xaxis, setXaxis] = useSessionStore(featureNames[0], 'compare-xaxis')
     const [yaxis, setYaxis] = useSessionStore(featureNames[1], 'compare-yaxis')
-    const x = features[xaxis]
-    const y = features[yaxis]
+    const x = allFeatures[xaxis]
+    const y = allFeatures[yaxis]
     return (
         <FlexContainer grow maxWidth="md" sx={{py:6, flexDirection: "column", height: 'auto', alignItems: 'center'}}>
             <Box sx={{ml:-4}}>

@@ -1,4 +1,4 @@
-import { Typography, Box, IconButton, Container, Stack, Button } from "@mui/material"
+import { Typography, Box, IconButton, Container, Stack, Button, Tooltip } from "@mui/material"
 import React, { useRef, useState } from "react"
 import { Link } from "react-router-dom";
 import ReactFullpage from '@fullpage/react-fullpage';
@@ -94,7 +94,12 @@ const Home = () => {
     </Stack>,
 
     <Stack mt={-10}>
-      <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing" for Responsible Decision-Making</Typography>
+      <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing"
+        <Tooltip title='van den Broek, E., Sergeeva, A., & Huysman, M. (2021). WHEN THE MACHINE MEETS THE EXPERT: AN ETHNOGRAPHY OF DEVELOPING AI FOR HIRING. MIS Quarterly, 45(3).'>
+          <Box component='span' color='primary.main'>*</Box> 
+        </Tooltip>
+        &nbsp;for Responsible Decision-Making
+      </Typography>
       <Stack direction='row' spacing={6} alignItems='center'>
         <Stack spacing={2} alignItems='center'>
           <Box mx={3}>

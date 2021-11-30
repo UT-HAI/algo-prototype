@@ -42,7 +42,7 @@
             "median": 42.0
         },
         "Tier of Undergraduate Institution": {
-            "description": "Tier 1 being top institutions and 4 being bottom. Primarly determined by aggregating several US News rankings",
+            "description": "Tier 4 being top institutions and 1 being bottom. Primarly determined by aggregating several US News rankings",
             "type": "numerical",
             "min": 0.0,
             "max": 4.0,
