@@ -306,8 +306,6 @@ def predictions():
     if str_id in test_ids:
       y[str_id] = row['y']
 
-  print(y)
-
   def get_metrics(ids, predictions, ys):
     tn = tp = fn = fp = 0
     n = len(ids)
