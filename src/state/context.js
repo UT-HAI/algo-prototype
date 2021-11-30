@@ -62,7 +62,7 @@ const reducer = (state, action) => {
             const { feature, selection } = action.payload
             const featureSelections = {
                 ...state.featureSelections,
-                [feature]: selection,
+                [feature]: {...defaultSelection, ...state.featureSelections[feature], ...selection},
             }
             sessionStorage.setItem('feature-selections',JSON.stringify(featureSelections))
             return {

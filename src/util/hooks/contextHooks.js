@@ -16,13 +16,9 @@ export const useError = () => {
 // get current user's feature selections
 export const useFeatureSelection = () => {
     const { state, dispatch } = useContext(AppContext)
-    const select = (feature, { decision, sure, reason }) => {
-        const currentSelection = state.featureSelections[feature]
-        return dispatch({ type: 'FEATURE_SELECT', payload: { feature, selection: {
-            decision: decision ?? currentSelection.decision,
-            sure: sure ?? currentSelection.sure ?? true,
-            reason: reason ?? currentSelection.reason ?? '',
-        }}})
+    const select = (feature, selection) => {
+        // const currentSelection = state.featureSelections[feature]
+        return dispatch({ type: 'FEATURE_SELECT', payload: { feature, selection}})
     }
         
     return [state.featureSelections, select]

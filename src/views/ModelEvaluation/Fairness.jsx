@@ -1,10 +1,13 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Stack, Card, CardContent, Typography, IconButton, Collapse, Paper, Box, Tooltip } from "@mui/material"
 import { useTheme } from "@mui/system";
 import UpArrowIcon from '@mui/icons-material/KeyboardArrowUp';
 import EqualOpportunity from "../../assets/EqualOpportunity.png"
 import DemographicParity from "../../assets/DemographicParity.png"
 import content from "../../content/modelEvalutation"
+import { useData, useModels } from "../../util/hooks/contextHooks";
+import { confusion } from "../../util/math";
+import { DoNotDisturbOnTotalSilence } from "@mui/icons-material";
 
 
 const FairnessCard = ({ title, img, content, isOpen, open, isCollapsed }) =>
@@ -67,12 +70,12 @@ const ConfusionCard = ({ title, confusion, color, groupBy, groups }) => {
                 </Stack>
                 <Stack spacing={1}>
                     <Stack direction='row' spacing={1}>
-                        <ConfusionBar title='True Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={groupBy ? [.15, .15] : 0.30} side='left' color={color} groupBy={groupBy} groups={groups}/>
-                        <ConfusionBar title='False Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={groupBy ? [.05, .05] : 0.10} side='right' color={color} groupBy={groupBy} groups={groups}/>
+                        <ConfusionBar title='True Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.tp} side='left' color={color} groupBy={groupBy} groups={groups}/>
+                        <ConfusionBar title='False Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.fp} side='right' color={color} groupBy={groupBy} groups={groups}/>
                     </Stack>
                     <Stack direction='row' spacing={1}>
-                    <ConfusionBar title='False Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={groupBy ? [.025, .025] : 0.05} side='left' color={color} groupBy={groupBy} groups={groups}/>
-                        <ConfusionBar title='True Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={groupBy ? [.275, .275] : 0.55} side='right' color={color} groupBy={groupBy} groups={groups}/>
+                    <ConfusionBar title='False Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.fn} side='left' color={color} groupBy={groupBy} groups={groups}/>
+                        <ConfusionBar title='True Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.tn} side='right' color={color} groupBy={groupBy} groups={groups}/>
                     </Stack>
                 </Stack>
             </Stack>
@@ -97,14 +100,53 @@ const Legend = ({ colors, labels }) =>
 const Fairness = () => {
     const [openIdx, setOpen] = useState(null)
     const openOne = (i, isOpen) => setOpen(isOpen ? i : null)
-    const groups = ['Gender', 'Gender'] // corresponds to fairness cards
+    const groups = ['Gender', 'Ethnicity'] // corresponds to fairness cards
     const groupValues = {
         'Gender': {
             'Male': ['Male'],
             'Female': ['Female']
+        },
+        'Ethnicity': {
+            'White': ['White'],
+            'Non-White': ['Asian','Hispanic','Black or African American','American Indian or Alaska Native','Native Hawaiian or Other Pacific Islander','Not Reported']
         }
     }
     const groupBy = openIdx !== null ? groups[openIdx] : null
+
+    const { features, ids, rows, target } = useData()
+    const { models } = useModels()
+    const testIds = useMemo(() => Object.keys(models['group'].predictions).map(id => parseInt(id)), [models.id]) // we want to only sample from ids that are in the test set
+    // creates two length tuple, each element is a list of {idx,id} objects corresponding to the rows that match the groupBy value
+    const groupData = useMemo(() => groupBy ? Object.values(groupValues[groupBy]).map(values => {
+        // need index and id
+        const group = []
+        features[groupBy].data.forEach((val,i) => {
+            const id = ids[i]
+            if (values.includes(val) && testIds.includes(id)){
+                group.push({idx: i, id})
+            }
+        })
+        return group
+    }) : undefined
+    ,[models.id, groupBy])
+    const y_actual = useMemo(() =>
+        target.data.map(code => code === 'Admit')
+    ,[rows])
+    
+    const getMatrix = (key) => {
+        const matrix = {}
+        const split = [confusion(y_actual,models[key].predictions,groupData[0],testIds.length),confusion(y_actual,models[key].predictions,groupData[1],groupData[0].length+groupData[1].length)]
+        Object.keys(split[0]).map(quadrant => {
+            matrix[quadrant] = [split[0][quadrant], split[1][quadrant]]
+        })
+        return matrix
+    }
+
+    const confusionMatrix = useMemo(() => ({
+        your: groupBy ? getMatrix('your') : models.your.metrics,
+        group: groupBy ? getMatrix('group') : models.group.metrics,
+    }),[rows,groupBy])
+
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
             <Stack width='35%' spacing={2}>
@@ -112,8 +154,8 @@ const Fairness = () => {
                <FairnessCard title='2. Demographic Parity' content={content.demographicParity} img={DemographicParity} isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
             </Stack>
             <Stack width='65%' spacing={2}>
-                <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])}/>
-                <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])}/>
+                <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.your} total={testIds.length}/>
+                <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.group} total={testIds.length}/>
                 {groupBy && <Legend colors={['#F39C12','#8E44AD']} labels={Object.keys(groupValues[groupBy])} />}
             </Stack>
         </Stack>
