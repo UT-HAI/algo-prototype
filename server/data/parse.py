@@ -7,7 +7,7 @@ import numpy as np
 # current dataset from: https://www.kaggle.com/anthonypino/melbourne-housing-market?select=Melbourne_housing_FULL.csv
 
 EXPLICIT_CATEGORICAL = ['First Generation', "Master's Held", "Doctorate Held", "Bachelor's Held", "Special Degree Held"]
-TARGET_COLUMN = 'admit_code'
+TARGET_COLUMN = 'Admission Decision'
 ID_COLUMN = 'Subject ID'
 
 # to encode numpy datatypes into json

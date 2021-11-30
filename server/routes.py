@@ -120,9 +120,9 @@ def add_data(feature, data):
             data = data.replace(to_replace=transform['from'],
                                 value=transform['to'])
             # replace in counts
-            feature['counts'][str(transform['to'])] = feature['counts'][str(
-                transform['from'])]
-            del feature['counts'][str(transform['from'])]
+            if str(transform['from']) in feature['counts']:
+                feature['counts'][str(transform['to'])] = feature['counts'][str(transform['from'])]
+                del feature['counts'][str(transform['from'])]
 
     feature['data'] = data.tolist()
 
@@ -288,7 +288,7 @@ def predictions():
   models = {'group': {}, 'your': {}}
   test_ids = your_model['predictions'].keys()
   rows = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'], 'data/data_test.csv'), header=0)
-  rows['y'] = (~(rows['admit_code'] == 'D')).astype(int)
+  rows['y'] = (~(rows['Admission Decision'] == 'D')).astype(int)
   y = {}
   for _, row in rows.iterrows():
     str_id = str(row['Subject ID'])
@@ -308,12 +308,14 @@ def predictions():
         if y_hat > 0.5: tp +=1
         else: fn +=1
     acc = (tp + tn) / n
-    return { 'tn':tn, 'tp':tp, 'fn':fn, 'fp':fp, 'acc':acc }
+    return { 'tn':tn/n, 'tp':tp/n, 'fn':fn/n, 'fp':fp/n, 'acc':acc }
 
   models['group']['predictions'] = group_model['predictions']
+  models['group']['coef'] = group_model['coef']
   models['group']['metrics'] = get_metrics(test_ids, group_model['predictions'], y)
 
   models['your']['predictions'] = your_model['predictions']
+  models['your']['coef'] = your_model['coef']
   models['your']['metrics'] = get_metrics(test_ids, your_model['predictions'], y)
 
   return jsonify(models)

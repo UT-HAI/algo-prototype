@@ -1,20 +1,21 @@
-import React, { useEffect } from "react"
-import { Typography, Paper, Box, Stack, Divider, Grid } from "@mui/material"
+import React, { useEffect, useMemo } from "react"
+import { Typography, Paper, Box, Stack, Divider, Grid, Tooltip } from "@mui/material"
 import { FlexContainer } from "../../util/components"
 import { useData } from "../../util/hooks/contextHooks"
 import TypeChip from "../SelectFeatures/TypeChip"
 import { createGradient } from "../../util/color"
 import Plot from "react-plotly.js"
+import { InfoIcon } from "../../components/InfoTip"
 
 const gradient = createGradient(['#C3D6F2', '#2676E1', '#0046A1'])
 
 const Category = ({name, frac}) =>
     <Stack alignItems='center'>
         <span>{name}</span>
-        <Box fontWeight={600} fontSize='1.5em' color={gradient(frac)}>{frac.toFixed(2) * 100}%</Box>
+        <Box fontWeight={600} fontSize='1.5em' color={gradient(frac)}>{Math.round(frac*100)}%</Box>
     </Stack>
 
-const CategoricalPreview = ({ counts, total }) => {
+const CategoricalPreview = ({ counts, total, data }) => {
     // take out the 'other' category
     const { other, ...values } = counts
     // sort descending
@@ -23,13 +24,22 @@ const CategoricalPreview = ({ counts, total }) => {
     const showCounts = sortedValues.slice(0,3)
     // total the rest of the categories, including 'other'
     const otherTotal = sortedValues.slice(3).map(([_,val])=>val).concat([other ?? 0]).reduce((a,b)=>a+b, 0) / total
+
+    const otherNames = useMemo(() => {
+        const unique = new Set(data)
+        showCounts.forEach(([name]) => unique.delete(name))
+        return [...unique].slice(0,15)
+    },[total])
+
     return (
         <Stack direction='row' justifyContent='space-around' height='100%' alignItems='center'>
             {showCounts.map(([category, count]) =>
             <Category name={category} frac={count/total} />
             )}
             {otherTotal !== 0 ?
-            <Category name='other' frac={otherTotal} />
+            <Tooltip title={otherNames.map(n => <><span>{n}</span><br/></>)}>
+                <Box><Category name={<><span>other</span><InfoIcon inline text='' sx={{opacity: .5}}/></>} frac={otherTotal} /></Box>
+            </Tooltip>
             : null}
         </Stack>
     )
@@ -74,7 +84,7 @@ const Row = ({ name, feature, target, divider, rows }) => <>
     <Divider orientation='vertical' flexItem sx={{marginLeft: '-1px', opacity: 0.5}}/>
     <Grid item xs={8} padding={2}>
         {feature.type == 'categorical' ?
-            <CategoricalPreview counts={feature.counts} total={rows}/> :
+            <CategoricalPreview counts={feature.counts} total={rows} data={feature.data}/> :
             <NumericalPreview data={feature.data} min={feature.min} max={feature.max} />
         }
     </Grid>

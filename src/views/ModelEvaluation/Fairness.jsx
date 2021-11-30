@@ -2,6 +2,9 @@ import React, { useState } from "react"
 import { Stack, Card, CardContent, Typography, IconButton, Collapse, Paper, Box, Tooltip } from "@mui/material"
 import { useTheme } from "@mui/system";
 import UpArrowIcon from '@mui/icons-material/KeyboardArrowUp';
+import EqualOpportunity from "../../assets/EqualOpportunity.png"
+import DemographicParity from "../../assets/DemographicParity.png"
+import content from "../../content/modelEvalutation"
 
 
 const FairnessCard = ({ title, img, content, isOpen, open, isCollapsed }) =>
@@ -15,12 +18,12 @@ const FairnessCard = ({ title, img, content, isOpen, open, isCollapsed }) =>
             </Stack>
         </CardContent>
         <Collapse in={!isCollapsed} timeout="auto" unmountOnExit>
-            <CardContent>
-                <img src={img} />
+            <CardContent sx={{py: '0!important', display: 'flex'}}>
+                <img src={img} style={{width: '100%', maxWidth: '250px', margin: 'auto'}}/>
             </CardContent>
         </Collapse>
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-            <CardContent>
+            <CardContent sx={{fontSize: '0.8rem', lineHeight: '1.2em', py: '0!important', '& ul': { paddingLeft: '20px', marginTop: 0 }}}>
                 {content}
             </CardContent>
         </Collapse>
@@ -82,7 +85,7 @@ const Legend = ({ colors, labels }) =>
     <Paper sx={{alignSelf: 'flex-end'}}>
         <Stack direction='row' p={2} spacing={2}>
             {labels.map((label,i) =>
-                <Stack direction='row' spacing={1} alignItems='center'>
+                <Stack direction='row' spacing={1} alignItems='center' key={label}>
                     <Dot d='16px' color={colors[0]} opacity={i === 0 ? 1 : 0.5}/>
                     <Dot d='16px' color={colors[1]} opacity={i === 0 ? 1 : 0.5}/>
                     <Typography>{label}</Typography>
@@ -104,11 +107,11 @@ const Fairness = () => {
     const groupBy = openIdx !== null ? groups[openIdx] : null
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
-            <Stack flex='25%' spacing={2}>
-               <FairnessCard title='1. Equal Opportunity' content='hello world' isOpen={openIdx === 0} open={(isOpen) => openOne(0,isOpen)} isCollapsed={openIdx !== 0 && openIdx !== null} />
-               <FairnessCard title='2. Demographic Parity' content='hello world' isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
+            <Stack width='35%' spacing={2}>
+               <FairnessCard title='1. Equal Opportunity' content={content.equalOpportunity} img={EqualOpportunity} isOpen={openIdx === 0} open={(isOpen) => openOne(0,isOpen)} isCollapsed={openIdx !== 0 && openIdx !== null} />
+               <FairnessCard title='2. Demographic Parity' content={content.demographicParity} img={DemographicParity} isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
             </Stack>
-            <Stack flex='75%' spacing={2}>
+            <Stack width='65%' spacing={2}>
                 <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])}/>
                 <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])}/>
                 {groupBy && <Legend colors={['#F39C12','#8E44AD']} labels={Object.keys(groupValues[groupBy])} />}

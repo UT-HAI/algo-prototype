@@ -23,6 +23,7 @@ const initialState = {
         rules: [],
         status: 'not loaded'
     },
+    models: undefined,
     // ADMIN CONTEXT BELOW
     selectionsUsers: undefined, // users who have submitted a selection
     notebookUsers: undefined, // users who have submitted a notebook
@@ -45,7 +46,8 @@ const getCachedState = () => ({
     featureSelections: getStorage('feature-selections','session',initialState.featureSelections),
     id: getCachedId(initialState.id),
     data: getStorage('feature-data','session',initialState.data),
-    features: getStorage('features','session',initialState.features)
+    features: getStorage('features','session',initialState.features),
+    models: getStorage('models','session',initialState.features),
 })
 
 const reducer = (state, action) => {
@@ -99,6 +101,13 @@ const reducer = (state, action) => {
                     ...coalesce,
                     ...notebookData
                 }
+            }
+        case 'MODELS':
+            const models = action.payload
+            sessionStorage.setItem('models',JSON.stringify(models))
+            return {
+                ...state,
+                models
             }
 
         // admin stuff

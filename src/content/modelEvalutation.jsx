@@ -51,12 +51,34 @@ export default {
         <p>To the right, you can explore a couple ways to evaluate fairness of a model. Keep in mind, there are other methods and metrics to consider outside of this tool.</p>
         <p><b style={{fontWeight: 600}}>Something to think about:</b><br/>How do you think a model can be useful or harmful when assisting humans in applicant selection?</p>
     </>,
+    equalOpportunity: <>
+        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should be accepted, if qualified, at equal rates. Ex: the proportion of female applicants the model accepts out of the total female applicants accepted in the past must equal that for male applicants.</p>
+        <b>Challenges:</b>
+        <ul>
+            <li>Defining who is “qualified” can be difficult and change over time</li>
+            <li>May actually worsen opportunities across groups if there is a large difference in the number of applicants per group</li>
+        </ul>
+    </>,
+    demographicParity: <>
+        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should receive positive outcomes at equal rates. Ex: if we consider ethnicity, a model must ensure acceptances at equal rates for each ethnicity.</p>
+        <b>Challenges:</b>
+        <ul>
+            <li>Doesn’t consider the risk of accepting “unqualified” applicants</li>
+            <li>Difficult to obtain when you have <InfoTip term='intersectional'>intersectionality</InfoTip> of sensitive attributes</li>
+        </ul>
+    </>,
     confusion: {
         quadrants: {
             'truetrue': 'True Positive',
             'truefalse': 'False Positive',
             'falsetrue': 'False Negative',
             'falsefalse': 'True Negative'
+        },
+        quadrantsAbbrev: {
+            'truetrue': 'tp',
+            'truefalse': 'fp',
+            'falsetrue': 'fn',
+            'falsefalse': 'tn'
         },
         labels: {
             'true': 'admitted',

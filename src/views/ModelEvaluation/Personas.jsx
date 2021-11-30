@@ -4,13 +4,21 @@ import Chip from "../../components/Chips"
 import FilterIcon from '@mui/icons-material/FilterAltOutlined';
 import RotateIcon from '@mui/icons-material/Cached';
 import content from "../../content/modelEvalutation"
-import { useData } from "../../util/hooks/contextHooks";
+import { useData, useModels } from "../../util/hooks/contextHooks";
 import { InfoIcon } from "../../components/InfoTip"
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
 
 const greyProps = {
     backgroundColor: 'white',
     borderColor: '#E0E0E0'
 }
+
+const NoPersona = () =>
+    <Stack alignItems='center' my='auto' spacing={2} height='100%' justifyContent='center'>
+        <ErrorOutlineIcon fontSize='large' color='disabled'/> 
+        <Typography sx={{textAlign: 'center'}}>No matching personas found. Try a different filter.</Typography>
+    </Stack>
 
 // "Persona Filter" box 
 
@@ -132,17 +140,29 @@ const ResultSection = ({ label, pred, actual, numerator, denominator, color }) =
             </Typography>
         </Stack>
     </Stack>
-const Result = () => 
-    <Paper>
-        <Stack spacing={3} width='100%' height='100%' px={2} py={3}>
-            <Typography variant='h5'>Result</Typography>
-            <Stack spacing={1}>
-                <ResultSection label='Your Model' confusion='True Positive' numerator={40} denominator={100} color='#F39C12' actual={true} pred={true}/>
-                <ResultSection label='Group Model' confusion='True Positive' numerator={60} denominator={100} color='#8E44AD' actual={true} pred={true}/>
+const Result = ({ actual, pred, empty }) => {
+    const { models } = useModels()
+    const rows = Object.keys(models.group.predictions).length
+    const values = ['your','group'].map(n => {
+        const key = String(actual)+String(pred[n])
+        const confusion = content.confusion.quadrants[key] // True Positive, False Negative, etc.
+        const pct = models[n].metrics[content.confusion.quadrantsAbbrev[key]] //tp, fn, etc.
+        const numerator = Math.round(pct*rows)
+        return { confusion, numerator }
+    })
+    
+    return ( empty ? null :
+        <Paper>
+            <Stack spacing={3} width='100%' height='100%' px={2} py={3}>
+                <Typography variant='h5'>Result</Typography>
+                <Stack spacing={1}>
+                    <ResultSection label='Your Model' confusion={values[0].confusion} numerator={values[0].numerator} denominator={rows} color='#F39C12' actual={actual} pred={pred.your}/>
+                    <ResultSection label='Group Model' confusion={values[1].confusion} numerator={values[1].numerator} denominator={rows} color='#8E44AD' actual={actual} pred={pred.group}/>
+                </Stack>
             </Stack>
-        </Stack>
-    </Paper>
-
+        </Paper>
+    )
+}
 
 
 // Persona & Model Confidence box
@@ -173,9 +193,12 @@ const Confidence = ({ confidences }) =>
 
 const Persona = ({ id, idx, featureFilters }) => {
     const { features } = useData()
-    const confidences = useMemo(() => [Math.random(),Math.random()],[])
+    const { models } = useModels()
+    // transform [0,1] probabilities into [0,1] confidence
+    const confidences = ['your','group'].map(n => 2*Math.abs(models[n].predictions[id] - 0.5))
     return (
     <Paper sx={{flex: '60%'}}>
+        { !id ? <NoPersona /> :
         <Stack px={2} py={3} maxHeight='100%' spacing={2}>
             <Stack direction='row' alignItems='center' spacing={2}>
                 <Typography variant='h5'>Persona</Typography>
@@ -228,7 +251,7 @@ const Persona = ({ id, idx, featureFilters }) => {
                     </Stack>
                 </Stack>
             </Stack>
-        </Stack>
+        </Stack> }
     </Paper>
     )
 }
@@ -236,18 +259,20 @@ const Persona = ({ id, idx, featureFilters }) => {
 // whole container
 
 const Personas = () => {
-    const [persona, setPersona_] = useState(0)
-    const { rows, features, ids } = useData()
-    console.log(ids)
+    const { features, ids, target } = useData()
+    const { models } = useModels()
+    const testIds = useMemo(() => Object.keys(models['group'].predictions).map(id => parseInt(id)), [models.id]) // we want to only sample from ids that are in the test set
+
+    // get the next persona to display based on filters
     const outcomeLabels = {
-        'actual': 'Actual',
-        'your': 'Your Model',
-        'group': 'Group Model'
+        actual: 'Actual',
+        your: 'Your Model',
+        group: 'Group Model'
     }
     const [outcomeFilters, setOutcomeFilters] = useState({
-        'actual': true,
-        'your': true,
-        'group': true
+        actual: true,
+        your: true,
+        group: true
     })
     const [featureFilters, setFeatureFilters] = useState([
         { feature: null, value: null },
@@ -270,10 +295,41 @@ const Personas = () => {
         })
     }
     const [filtersUsed, setFiltersUsed] = useState([])
+
+    const getOutputs = (id,idx) => {
+        return {
+            actual: target.data[idx] !== 'Deny',
+            your: models.your.predictions[id] > 0.5,
+            group: models.group.predictions[id] > 0.5,
+        }
+    }
+    const getNextId = () => {
+        const filtered = []
+        testIds.forEach(testId => {
+            const idx = ids.indexOf(parseInt(testId))
+            const { actual, your, group } = getOutputs(testId, idx)
+            if (outcomeFilters.actual !== actual || outcomeFilters.your !== your || outcomeFilters.group !== group) return;
+
+            const matches = featureFilters.every(filter => {
+                if (!filter.feature) return true
+                const feature = features[filter.feature]
+                if (feature.type === 'categorical')
+                    return feature.data[idx] === filter.value
+                else // numerical
+                    return feature.data[idx] >= filter.value[0] && feature.data[idx] <= filter.value[1]
+            })
+            if (matches) filtered.push(testId)
+        })
+        return filtered[Math.floor(Math.random()*filtered.length)]
+    }
+    const [persona, setPersona_] = useState(() => getNextId()) // Subject ID of the current persona
     const setPersona = (p) => {
         setPersona_(p)
         setFiltersUsed(featureFilters)
     }
+    const idx = ids.indexOf(persona) // index within the entire dataset
+
+    const { actual, your, group } = useMemo(() => getOutputs(persona, idx),[persona])
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
             <Stack flex='40%' spacing={2}>
@@ -284,11 +340,11 @@ const Personas = () => {
                     featureFilters={featureFilters}
                     setFeatureFilter={setFeatureFilter}
                     setFeatureFilterValue={setFeatureFilterValue}
-                    onNext={() => setPersona(Math.floor(Math.random()*rows))}
+                    onNext={() => setPersona(getNextId())}
                 />
-                <Result />
+                <Result actual={actual} pred={{your,group}} empty={!persona}/>
             </Stack>
-            <Persona id={ids[persona]} idx={persona} featureFilters={filtersUsed}/>
+            <Persona id={persona} idx={idx} featureFilters={filtersUsed}/>
         </Stack>
     )
 }

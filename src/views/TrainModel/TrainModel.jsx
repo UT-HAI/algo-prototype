@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { FlexContainer } from "../../util/components"
-import { Typography, Button, Stack } from "@mui/material"
+import { Typography, Button, Stack, Box } from "@mui/material"
 import content from "../../content/trainModel"
 
 const TrainModel = () => 

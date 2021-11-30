@@ -1,8 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext, defaultSelection } from "../../state/context"
 import { fetchData, fetchFeatures } from "../../api/data";
 import { fetchSelectionUsers } from "../../api/selections";
 import { fetchNotebook, fetchNotebookUsers, postNotebook } from "../../api/notebook";
+import { fetchModels } from "../../api/ml";
 
 // `error` is used by a site-wide Snackbar component
 // when this value is truthy, a red error snackbar is displayed with the contents
@@ -150,4 +151,38 @@ export const useNotebookUsers = () => {
     },[])
 
     return notebookUsers ?? []
+}
+
+// will be undefined if ML model hasn't finished
+export const useModels = () => {
+    const { state: { models }, dispatch } = useContext(AppContext)
+    const [id] = useId()
+    const [counter, setCounter] = useState(0)
+    const refresh = () => setCounter(counter+1)
+
+    // useEffect(() => {
+    //     if (!predictions || predictions?.id !== id){
+    //         const timer = setInterval(() => {
+    //             fetchPredictions(id)
+    //             .then(data => {
+    //                 if (data) {
+    //                     dispatch({ type: 'PREDICTIONS', payload: {...data, id } })
+    //                     clearInterval(timer)
+    //                 }
+    //             })
+    //         }, 5000);
+    //     }
+    //     return () => clearInterval(timer);
+    //   }, [id]);
+    useEffect(() => {
+        if (!models || models?.id !== id){
+            fetchModels(id)
+            .then(data => {
+                if (data)
+                    dispatch({ type: 'MODELS', payload: {...data, id } })
+            })
+        }
+    }, [id, counter])
+
+    return { models: id === models?.id ? models : undefined, refresh }
 }

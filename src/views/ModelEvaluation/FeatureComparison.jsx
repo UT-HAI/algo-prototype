@@ -3,7 +3,7 @@ import { InfoIcon } from "../../components/InfoTip"
 import { FlexContainer } from "../../util/components"
 import TypeChip from "../SelectFeatures/TypeChip"
 import { Paper, Typography, Stack, Divider, Grid, Box, Tooltip } from "@mui/material"
-import { useData } from "../../util/hooks/contextHooks"
+import { useData, useModels } from "../../util/hooks/contextHooks"
 import MinusIcon from '@mui/icons-material/RemoveCircleOutline';
 import PlusIcon from '@mui/icons-material/AddCircleOutline';
 
@@ -30,6 +30,7 @@ const Importance = ({ importance, label, color, onMouseEnter, onMouseLeave, dim}
     // the Typography and Stack have to not have a parent container so the grid works
     return(<>
         <Typography {...props}>{label}</Typography>
+        {importance ?
         <Tooltip title={(importance > 0 ? '+' : '') + importance.toFixed(3)}>
             <Stack direction='row' spacing={1} alignItems='center' {...props}>
                 <MinusIcon sx={{color: importance < 0 ? 'error.main' : 'divider'}}/>
@@ -39,12 +40,14 @@ const Importance = ({ importance, label, color, onMouseEnter, onMouseLeave, dim}
                 <PlusIcon sx={{color: importance > 0 ? 'success.light' : 'divider'}} />
             </Stack>
         </Tooltip>
+        : <Typography color='textSecondary' fontSize='0.8rem' sx={{textAlign: 'center'}}>Feature not included in model</Typography>}
     </>)
     /* </Stack> */
 }
 
 const FeatureComparison = () => {
     const { features, dataLoading, rows } = useData()
+    const { models } = useModels()
     const [hovered, setHovered] = useState(null)
     const onMouseEnter = (s) => setHovered(s)
     const onMouseLeave = () => setHovered(null)
@@ -82,7 +85,7 @@ const FeatureComparison = () => {
                         <Grid item xs={7} padding={2} display='flex' alignItems='center' justifyContent='center'>
                             <Box display='grid' gridTemplateColumns='auto auto' columnGap={3} rowGap={2}>
                                 <Importance
-                                    importance={mockImportances[i][0]}
+                                    importance={models.your.coef[f]}
                                     label='Your Model'
                                     color='#F39C12'
                                     onMouseEnter={() => onMouseEnter('your')}
@@ -90,7 +93,7 @@ const FeatureComparison = () => {
                                     dim={hovered=='group'}
                                 />
                                 <Importance
-                                    importance={mockImportances[i][1]}
+                                    importance={models.group.coef[f]}
                                     label='Group Model'
                                     color='#8E44AD'
                                     onMouseEnter={() => onMouseEnter('group')}
