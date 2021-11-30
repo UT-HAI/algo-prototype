@@ -41,4 +41,4 @@ def select_features(df_train, df_test, features):
 def train_and_predict(X_train, y_train, X_test):
     clf = LogisticRegression(random_state=42,
                              max_iter=200).fit(X_train, y_train)
-    return clf.predict_proba(X_test)
+    return clf.coef_[0], clf.predict_proba(X_test)

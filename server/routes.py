@@ -10,6 +10,7 @@ api_blueprint = Blueprint('api', __name__, url_prefix="/api")
 
 # feature selection routes /////////////////////////////////////////
 
+
 # participant is submitting their feature selections
 @api_blueprint.route('/selection', methods=['POST'])
 def selection():
@@ -26,7 +27,8 @@ def selection():
     mongo.db.feature_selections.replace_one({'id': id}, {
         'id': id,
         'selections': selections
-    }, upsert=True)
+    },
+                                            upsert=True)
 
     return jsonify(success=True)
 
@@ -111,6 +113,7 @@ def selections_csv():
 
 # data routes /////////////////////////////////////////
 
+
 def add_data(feature, data):
     data = data.replace({np.nan: None})
     # make transforms if specified (only categorical columns)
@@ -159,7 +162,9 @@ def features():
         data_obj = json.load(file)
     return jsonify(list(data_obj['features'].keys()))
 
+
 # notebook routes /////////////////////////////////////////
+
 
 # one user's notebook
 @api_blueprint.route('/notebook', methods=['GET', 'POST'])
@@ -184,50 +189,52 @@ def notebook():
 
         return jsonify(success=True)
 
+
 # all notebooks
-@api_blueprint.route('/notebooks', methods=['GET','DELETE'])
+@api_blueprint.route('/notebooks', methods=['GET', 'DELETE'])
 def notebooks_route():
-  if request.method == 'GET':
-    notebooks = mongo.db.notebook.find()
-    notebook_obj = {}
+    if request.method == 'DELETE':
+        mongo.db.notebook.drop()
+        return jsonify(success=True)
+    elif request.method == 'GET':
+        notebooks = mongo.db.notebook.find()
+        notebook_obj = {
+            doc['id']: {
+                'q1': doc['q1'],
+                'q2': doc['q2'],
+                'rules': doc['rules']
+            }
+            for doc in notebooks
+        }
 
-    for doc in notebooks:
-      notebook_obj[doc['id']] = { 'q1': doc['q1'], 'q2': doc['q2'], 'rules': doc['rules'] }
-
-    return jsonify(notebook_obj)
-
-  elif request.method == 'DELETE':
-    mongo.db.notebook.drop()
-    return jsonify(success=True)
+        return jsonify(notebook_obj)
 
 
 @api_blueprint.route('/notebooks/notebooks.csv')
 def notebook_csv():
-  notebooks = mongo.db.notebook.find()
+    notebooks = mongo.db.notebook.find()
 
-  # header
-  csv = 'id,q1,q2,rules\n'
+    # header
+    csv = 'id,q1,q2,rules\n'
 
-  # each row is one user's notebook
-  for notebook in notebooks:
-      id = notebook['id']
-      row = [str(id)]
-      row.append(notebook['q1'])
-      row.append(notebook['q2'])
-      row += notebook['rules']
-          
-      csv += ",".join(row) + "\n"
+    # each row is one user's notebook
+    for notebook in notebooks:
+        id = notebook['id']
+        row = [str(id), notebook['q1'], notebook['q2']]
+        row += notebook['rules']
 
-  return Response(
-    csv,
-    mimetype='text/csv',
-    headers={"Content-disposition": "attachment; filename=notebooks.csv"}
-  )
+        csv += ",".join(row) + "\n"
+
+    return Response(
+        csv,
+        mimetype='text/csv',
+        headers={"Content-disposition": "attachment; filename=notebooks.csv"})
+
 
 @api_blueprint.route('/notebooks/users')
 def get_notebook_users():
-  notebooks = mongo.db.notebook.find()
-  return jsonify([doc['id'] for doc in notebooks])
+    notebooks = mongo.db.notebook.find()
+    return jsonify([doc['id'] for doc in notebooks])
 
 
 @api_blueprint.route('/ml/train', methods=['POST'])
@@ -255,12 +262,15 @@ def train():
     def train_predict_save(user_id, selected_features):
         X_train, X_test, y_train, _ = select_features(df_train, df_test,
                                                       selected_features)
-        proba = train_and_predict(X_train, y_train, X_test)
+        coef, proba = train_and_predict(X_train, y_train, X_test)
 
-        row = {'id': user_id, 'predictions': {}}
+        row = {'id': user_id, 'predictions': {}, 'coef': {}}
 
         for i, subject_id in enumerate(df_test['Subject ID'].values):
-            row['predictions'][str(subject_id)] = proba[i][0]
+            row['predictions'][str(subject_id)] = proba[i][1]
+
+        for i, coef in enumerate(coef):
+            row['coef'][X_test.columns[i]] = coef
 
         mongo.db.train_results.replace_one({'id': row['id']}, row, upsert=True)
 
@@ -268,7 +278,7 @@ def train():
     for doc in selections:
         selected_features = list(
             filter(lambda x: doc['selections'][x]['decision'] == 'include',
-                  features))
+                   features))
 
         train_predict_save(doc['id'], selected_features)
 
@@ -276,6 +286,7 @@ def train():
     train_predict_save('admin', data['selected_features'])
 
     return jsonify(success=True)
+
 
 @api_blueprint.route('/ml/predictions')
 def predictions():
