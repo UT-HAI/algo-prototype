@@ -11,6 +11,6 @@ export default {
                 <li>Worked with your colleagues to collectively determine what features in the <InfoTip term='dataset'>dataset</InfoTip> are important for selecting applicants.</li>
             </ul>
         </p>
-        <p>Watch the video for a brief explanation about how the <InfoTip term='model'>machine learning model</InfoTip> is created or <InfoTip term='train'>"trained"</InfoTip>.</p>
+        <p>Watch the video for a brief explanation about how the <InfoTip term='model'>machine learning model</InfoTip> is created or <InfoTip term='training'>"trained"</InfoTip>.</p>
     </>
 }

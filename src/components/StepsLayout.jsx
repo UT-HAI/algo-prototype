@@ -97,7 +97,7 @@ const Search = () => {
                     <UpArrowIcon />
                 </IconButton>
             </Stack>
-            <List disablePadding>
+            <List disablePadding sx={{overflowY: 'auto'}}>
                 {results.length === 0 ?  
                 <Box px={3} py={2} sx={{color: 'text.secondary'}}>No results for "{query}"</Box> :
                 results.map(([term, definition],i) => (

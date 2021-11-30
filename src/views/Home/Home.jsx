@@ -14,6 +14,7 @@ import bro from '../../assets/bro.png'
 import email from '../../assets/email.png'
 import hireReject from '../../assets/hire-reject.png'
 import process from '../../assets/process.png'
+import InfoTip from "../../components/InfoTip"
 
 
 
@@ -55,13 +56,14 @@ const Home = () => {
           This week, you and your colleagues will work together to{' '}
           <span>design a tool to help you make decisions on who should be admitted to the School of Information.</span>
         </Typography>
-        <Typography>
+        <Typography component='span'>
           Throughout the sessions, you will:
           <ol>
             <li>Learn the basic concepts and terminology related to Artificial Intelligence and Machine Learning.</li>
-            <li>Using a real dataset of anonymized past applicants, you will apply these concepts to create your model.</li>
+            <li>Applying these concepts with a real dataset of anonymized past Master’s applicants to create your model.</li>
           </ol>
         </Typography>
+        <Typography>Press the down arrow on the right hand side to continue to the next screen.</Typography>
       </Stack>
       <img src={bro} alt='image' width='400px'/>
     </Stack>,
@@ -72,19 +74,19 @@ const Home = () => {
           <iframe src="https://player.vimeo.com/video/641630657?h=751b5d808a&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="720" height="405" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture" allowFullscreen title="demo" style={{flexShrink: 0}}></iframe>
           <Stack>
             <Typography color='textSecondary' gutterBottom fontWeight={500}>Notes:</Typography>
-            <Typography gutterBottom>When you finish watching a movie on Netflix, AI/ML is in action as it recommends other movies based on what you’ve watched. In this case:</Typography>
+            <Typography gutterBottom>When you use Siri, <InfoTip term='artificial intelligence'>AI</InfoTip>/<InfoTip term='machine learning'>ML</InfoTip> is in action as it answers your questions.</Typography>
             <Stack spacing={2} my={4}>
               <Box>
                 <TextWithIcon icon={<StorageIcon />} text={<strong>Dataset:</strong>} props={{gutterBottom: true}}/>
-                <Typography>The movies you've watched, including characteristics like genre</Typography>
+                <Typography>The questions and responses exchanged between Siri and iPhone users</Typography>
               </Box>
               <Box>
                 <TextWithIcon icon={<FactCheckIcon />} text={<strong>Rules:</strong>} props={{gutterBottom: true}}/>
-                <Typography>These are learned by the computer system based on the data</Typography>
+                <Typography>Learned by the computer system to decide how to best respond</Typography>
               </Box>
               <Box>
                 <TextWithIcon icon={<LightbulbIcon />} text={<strong>Prediction:</strong>} props={{gutterBottom: true}}/>
-                <Typography>recommendations for movies Netflix thinks you'll like</Typography>
+                <Typography>Responses that Siri gives you to the questions you ask her</Typography>
               </Box>
             </Stack>
           </Stack>
@@ -100,7 +102,10 @@ const Home = () => {
           </Box>
           <Typography>e.g. AI filtering our email inboxes for spam</Typography>
         </Stack>
-        <Typography> As useful as AI and ML are in our lives—filtering our email inboxes for spam, predicting medical diagnoses, and giving us directions to get between places—they can still make mistakes and disparately harm people. </Typography>
+        <Stack>
+          <Typography>As useful as <InfoTip term='artificial intelligence'>AI</InfoTip> and <InfoTip term='machine learning'>ML</InfoTip> are in our lives—filtering our email inboxes for spam, predicting medical diagnoses, and giving us directions to get between places—they can still make mistakes and <InfoTip term='disparate impact'>disparately harm people.</InfoTip></Typography>
+          <Typography>For example, a large technology company discontinued a hiring model after it was found to discriminate against female candidates due to gender imbalances and biases of historical hiring decisions data.</Typography>
+        </Stack>
       </Stack>
     </Stack>,
 
@@ -114,7 +119,7 @@ const Home = () => {
       <Typography>e.g ML that is supposed to help with hiring may learn to discriminate based on gender or ethnicity from biases in historical data</Typography>
     </Stack>
     <Stack>
-      <Typography gutterBottom>ML models are dependent on the <strong>quality</strong> and <strong>quantity</strong> of past data.</Typography>
+      <Typography gutterBottom>ML <InfoTip term='model'>models</InfoTip> are dependent on the <strong>quality</strong> and <strong>quantity</strong> of past data.</Typography>
       <Typography>
         If the dataset:
         <ul>

@@ -45,15 +45,36 @@ const Importance = ({ importance, label, color, onMouseEnter, onMouseLeave, dim}
     /* </Stack> */
 }
 
+// this will either get the feature values if it's a numerical feature (name=GPA) or will find the categorical variable it belongs to (name=White)
+const getFeatureData = (name, features) => {
+    const featureNames = Object.keys(features)
+    if (featureNames.includes(name)) return {...features[name], name: name === 'Gender' ? 'Gender (Male)' : name}
+    let data = undefined
+    featureNames.some(f => {
+        if (features[f].data.includes(name)){
+            data = {
+                ...features[f],
+                name: `${f}: ${name}` // i.e. "Ethnicity: White"
+            }
+            return true
+        }
+    })
+    return data
+}
+
 const FeatureComparison = () => {
     const { features, dataLoading, rows } = useData()
     const { models } = useModels()
     const [hovered, setHovered] = useState(null)
     const onMouseEnter = (s) => setHovered(s)
     const onMouseLeave = () => setHovered(null)
-    const mockImportances = useMemo(() => Object.keys(features)
-        .map(()=>[Math.random() * 2 - 1,Math.random() * 2 - 1])
-    ,[])
+    const featureList = [...new Set(Object.keys(models.your.coef).concat(Object.keys(models.group.coef)))]
+    const data = useMemo(() => featureList.map(f => ({
+        ...getFeatureData(f, features),
+        coef: { your: models.your.coef[f], group: models.group.coef[f]}
+    }))
+    .sort((f1,f2) => f1.name < f2.name ? -1 : 1)
+    ,[rows, models.id])
 
     return (
         <FlexContainer grow maxWidth="md" sx={{pt: 6, pb: 4}}>
@@ -67,25 +88,25 @@ const FeatureComparison = () => {
                     {/* flex-basis = 5/12 */}
                     <Typography fontSize='1.1rem' sx={{flexBasis: '41.67%', pl:2}}>Feature</Typography>
                     <Divider orientation='vertical' flexItem sx={{ my: -1, ml: '-1px', opacity: 0.5 }}/>
-                    <Typography fontSize='1.1rem' sx={{pl:2}}>Feature Weight/Importance<InfoIcon inline text='sample text' sx={{opacity: .5}}/></Typography>
+                    <Typography fontSize='1.1rem' sx={{pl:2}}>Feature Weight/Importance<InfoIcon inline text={<>(+): this feature has a positive effect on the model predicting that a student will be accepted.<br/>(-): this feature has a negative effect on the model predicting that a student will be accepted.</>} sx={{opacity: .5}}/></Typography>
                 </Stack>
                 {/* <Divider /> */}
                 {dataLoading ? 'loading...' :
                 <Grid container>
-                    {Object.keys(features).map((f,i) => <>
+                    {data.map(({ type, description, name, coef },i) => <>
                         { i !== 0 && <Grid item xs={12}><Divider/></Grid>}
                         <Grid item xs={5}>
                             <Stack padding={2} spacing={1}>
-                                <Typography variant='h6' fontSize='1.1rem'>{f}</Typography>
-                                <TypeChip type={features[f].type}/>
-                                <Typography color='textSecondary' fontSize='.8rem'>{features[f].description}</Typography>
+                                <Typography variant='h6' fontSize='1.1rem'>{name}</Typography>
+                                <TypeChip type={type}/>
+                                <Typography color='textSecondary' fontSize='.8rem'>{description}</Typography>
                             </Stack>
                         </Grid>
                         <Divider orientation='vertical' flexItem sx={{marginLeft: '-1px', opacity: 0.5}}/>
                         <Grid item xs={7} padding={2} display='flex' alignItems='center' justifyContent='center'>
                             <Box display='grid' gridTemplateColumns='auto auto' columnGap={3} rowGap={2}>
                                 <Importance
-                                    importance={models.your.coef[f]}
+                                    importance={coef.your}
                                     label='Your Model'
                                     color='#F39C12'
                                     onMouseEnter={() => onMouseEnter('your')}
@@ -93,7 +114,7 @@ const FeatureComparison = () => {
                                     dim={hovered=='group'}
                                 />
                                 <Importance
-                                    importance={models.group.coef[f]}
+                                    importance={coef.group}
                                     label='Group Model'
                                     color='#8E44AD'
                                     onMouseEnter={() => onMouseEnter('group')}

@@ -9,8 +9,9 @@ import glossary from "./glossary"
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     intro: <>
-        <p>In this step, you will select which <InfoTip term="feature">features</InfoTip> from the data you want to include in your model.</p>
-        <p>Choosing whether to include a feature is important because it can affect not only the accuracy, but the bias and fairness of your model.</p>
+        <p>You have explored the <InfoTip term='dataset'>dataset</InfoTip> and written down your admissions goals and rules. In this step, you will select what <InfoTip term="feature">features</InfoTip> from the dataset should be used to train your <InfoTip term='model'>model</InfoTip>. The features are the characteristics in the dataset about each student that you just explored, such as their GPA, Undergraduate Institution Tier, and Ethnicity. </p>
+        <p>
+Carefully considering whether to include a feature is important because this will have an impact on the <InfoTip term='accuracy'>accuracy</InfoTip>, fairness, and  <InfoTip term='bias'>bias</InfoTip> of the final model and the predictions it makes. On the next page, we will explain more about this.</p>
     </>,
     selection: <>
         <Heading>Selection</Heading>

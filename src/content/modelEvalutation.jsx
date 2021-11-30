@@ -9,14 +9,11 @@ import glossary from "./glossary"
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
     intro: <>
-        <p>
-            Now, you will evaluate and compare the performance of two models that were just <InfoTip term='train'>trained</InfoTip>.
+            Now, you will evaluate and compare the performance of two models that were just <InfoTip term='training'>trained</InfoTip>.
             <ul>
                 <li>The first, Individual Model, was trained using the features that <i>you</i> decided to include.</li>
                 <li>The second, Group Model, was trained using the features your <i>group</i> decided to include.</li>
             </ul>
-        </p>
-        <p>
             We explained earlier what a model’s <InfoTip term='accuracy'>accuracy</InfoTip> is.
             However, a high accuracy doesn’t automatically mean an ML model is ready to launch. It is important to dig deeper and look at things like:
             <ol>
@@ -25,7 +22,6 @@ export default {
                 <li>how historical <InfoTip term='bias'>biases</InfoTip> may be embedded in the data</li>
                 <li>whether the patterns the ML model learned are representative of what we want a future decision-making system to use.</li>
             </ol>
-        </p>
         <p>In this final section, we will introduce you to a few ways for evaluating a model.</p>
     </>,
     featureComparison: <>
@@ -64,7 +60,7 @@ export default {
         <b>Challenges:</b>
         <ul>
             <li>Doesn’t consider the risk of accepting “unqualified” applicants</li>
-            <li>Difficult to obtain when you have <InfoTip term='intersectional'>intersectionality</InfoTip> of sensitive attributes</li>
+            <li>Difficult to obtain when you have <InfoTip term='intersectionality'>intersectionality</InfoTip> of sensitive attributes</li>
         </ul>
     </>,
     confusion: {
