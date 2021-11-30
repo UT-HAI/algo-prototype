@@ -114,7 +114,7 @@ const Search = () => {
 const SidePanel = ({ title, text }) => {
     const [notebookOpen, openNotebook] = useState(false)
     return (
-        <FlexBox sx={{ borderRight: 1, borderColor: "divider", width: '350px', flexShrink: 0, px: 2, pt: 4, pb: '70px', position: 'relative', overflow: 'hidden'}}>
+        <FlexBox sx={{ borderRight: 1, borderColor: "divider", width: '300px', flexShrink: 0, px: 2, pt: 4, pb: '70px', position: 'relative', overflow: 'hidden'}}>
             <Box sx={{overflowY: 'auto'}}>
                 <Typography variant="h5" mb={2}>
                     {title}

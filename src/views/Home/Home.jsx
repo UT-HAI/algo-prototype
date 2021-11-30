@@ -51,7 +51,7 @@ const Home = () => {
   const sections = [
     <Stack direction='row' spacing={8}>
       <Stack spacing={2} justifyContent='center'>
-        <Typography variant="h2" gutterBottom>Welcome to TBD</Typography>
+        <Typography variant="h2" gutterBottom>Welcome to "Future-Proofing AI"!</Typography>
         <Typography sx={{'& > span': { color: 'primary.dark'}}}>
           This week, you and your colleagues will work together to{' '}
           <span>design a tool to help you make decisions on who should be admitted to the School of Information.</span>

@@ -319,7 +319,9 @@ def predictions():
         if y_hat >= 0.5: tp +=1
         else: fn +=1
     acc = (tp + tn) / n
-    return { 'tn':tn/n, 'tp':tp/n, 'fn':fn/n, 'fp':fp/n, 'acc':acc }
+    precision = tp / (tp + fp)
+    recall = tp / (tp + fn)
+    return { 'tn':tn/n, 'tp':tp/n, 'fn':fn/n, 'fp':fp/n, 'acc':acc, 'precision':precision, 'recall':recall }
 
   models['group']['predictions'] = group_model['predictions']
   models['group']['coef'] = group_model['coef']

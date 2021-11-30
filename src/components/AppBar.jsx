@@ -9,7 +9,7 @@ const AppBar = () => {
     <MuiAppBar position="static" sx={{zIndex: 0}}>
         <Toolbar variant="dense">
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                Name TBD
+                Future-Proofing AI
             </Typography>
             {id ? 
             <Tooltip title='Change ID'>

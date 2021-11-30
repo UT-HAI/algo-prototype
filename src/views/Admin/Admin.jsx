@@ -117,7 +117,7 @@ const Admin = () => {
                         title='Notebooks'
                         content={
                             <Stack>
-                                <Typography gutterBottom>The following {notebookUsers.length} user(s) have submitted selections:</Typography>
+                                <Typography gutterBottom>The following {notebookUsers.length} user(s) have submitted notebooks:</Typography>
                                 {notebookUsers.map(id => (
                                     <Typography color='textSecondary' key={id}>{id}</Typography>
                                 ))}

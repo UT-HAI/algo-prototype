@@ -9,6 +9,7 @@ import { useModels } from "../../util/hooks/contextHooks"
 import { Stack, Typography, Button } from "@mui/material"
 import ReplayIcon from '@mui/icons-material/Replay';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import ModelComparison from "./ModelComparison"
 
 const NoModels = ({ refresh }) => (
     <Stack alignItems='center' my='auto' spacing={2}>
@@ -29,6 +30,10 @@ const ModelEvaluation = () => {
             <StepsLayout
                 title='Model Evaluation'
                 tabs={{
+                    'Model Comparison': {
+                        text: content.modelComparison,
+                        component: <ModelComparison />
+                    },
                     'Feature Comparison': {
                         text: content.featureComparison,
                         component: <FeatureComparison />
