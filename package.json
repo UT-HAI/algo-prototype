@@ -15,7 +15,7 @@
     "compress": "webpack --config webpack.config.js --mode=production",
     "production": "npm run build && npm run serve",
     "serve": "FLASK_ENV=development FLASK_APP=server flask run --port=3000",
-    "gunicorn": "gunicorn --chdir server run:app --bind=0.0.0.0:$PORT",
+    "gunicorn": "gunicorn \"server:create_app()\" --bind=0.0.0.0:$PORT",
     "lint-js": "eslint -c './src/config/.eslintrc.js' src/",
     "lint-py": "pylint server/app.py",
     "lint": "npm run lint-js && npm run lint-py",
