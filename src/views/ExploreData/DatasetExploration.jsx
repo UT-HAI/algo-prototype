@@ -98,7 +98,7 @@ const DatasetExploration = ({ visit }) => {
         <FlexContainer grow maxWidth="md" sx={{pt: 6, pb: 4}}>
             <Typography variant='h4' sx={{mb: 3}}>Dataset Exploration</Typography>
             <Typography sx={{mb: 2}}>
-                Familiarize yourself with what is known, or not known, about students and jot your thoughts down. You can also see what the data values look like. 
+                Familiarize yourself with what is known, or not known, about students. Review what attributes have been collected (or are not currently collected). 
             </Typography>
             <Paper>
                 <Stack direction='row' width='100%' py={1} backgroundColor='#e7f0f3'>

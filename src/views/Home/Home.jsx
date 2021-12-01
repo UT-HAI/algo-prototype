@@ -53,13 +53,14 @@ const Home = () => {
       <Stack spacing={2} justifyContent='center'>
         <Typography variant="h2" gutterBottom>Welcome to "Future-Proofing AI"!</Typography>
         <Typography sx={{'& > span': { color: 'primary.dark'}}}>
-          This week, you and your colleagues will work together to{' '}
-          <span>design a tool to help you make decisions on who should be admitted to the School of Information.</span>
+          This week, you and your colleagues will work together to explore MSIS admissions data to "future-proof" decision-making.
+          By building a machine learning model that predicts admissions, you will explore past decision patterns and gaps{' '}
+          <span>to inform the future admissions practice.</span>
         </Typography>
         <Typography component='span'>
-          Throughout the sessions, you will:
+          This website will guide you through:
           <ol>
-            <li>Learn the basic concepts and terminology related to Artificial Intelligence and Machine Learning.</li>
+            <li>Basic concepts and terminology related to Artificial Intelligence and Machine Learning.</li>
             <li>Applying these concepts with a real dataset of anonymized past Master’s applicants to create your model.</li>
           </ol>
         </Typography>
@@ -94,12 +95,7 @@ const Home = () => {
     </Stack>,
 
     <Stack mt={-10}>
-      <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing"
-        <Tooltip title='van den Broek, E., Sergeeva, A., & Huysman, M. (2021). WHEN THE MACHINE MEETS THE EXPERT: AN ETHNOGRAPHY OF DEVELOPING AI FOR HIRING. MIS Quarterly, 45(3).'>
-          <Box component='span' color='primary.main'>*</Box> 
-        </Tooltip>
-        &nbsp;for Responsible Decision-Making
-      </Typography>
+  <Typography variant='h4' sx={{mb: 10}}>AI/ML Biases Reflective of Past Decision Patterns</Typography>
       <Stack direction='row' spacing={6} alignItems='center'>
         <Stack spacing={2} alignItems='center'>
           <Box mx={3}>
@@ -115,13 +111,13 @@ const Home = () => {
     </Stack>,
 
 <Stack mt={-10}>
-  <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing" for Responsible Decision-Making</Typography>
+  <Typography variant='h4' sx={{mb: 10}}>AI/ML Biases Reflective of Past Decision Patterns</Typography>
   <Stack direction='row' spacing={6} alignItems='center'>
     <Stack spacing={2} alignItems='center'>
       <Box mx={3}>
         <img src={hireReject}/>
       </Box>
-      <Typography>e.g ML that is supposed to help with hiring may learn to discriminate based on gender or ethnicity from biases in historical data</Typography>
+      <Typography>e.g. ML that is supposed to help with hiring may learn to discriminate based on gender or ethnicity from biases in historical data</Typography>
     </Stack>
     <Stack>
       <Typography gutterBottom>ML <InfoTip term='model'>models</InfoTip> are dependent on the <strong>quality</strong> and <strong>quantity</strong> of past data.</Typography>
@@ -131,8 +127,10 @@ const Home = () => {
           <li>is missing information or context</li>
           <li>isn't representative enough of different populations</li>
           <li>contains errors</li>
+          <li>contains historical human biases</li>
+
         </ul>
-        the predictions is makes will be inaccurate, biased, or even <strong>exacerbate disparities</strong>.
+        the predictions it makes will be inaccurate, biased, or even <strong>exacerbate disparities</strong>.
       </Typography>
     </Stack>
   </Stack>
@@ -142,11 +140,12 @@ const Home = () => {
   <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing" for Responsible Decision-Making</Typography>
   <Typography>
       Today, you will have the opportunity to learn how to create an ML model as well as probe deeper into an important task, applicant selection, collaboratively with your colleagues.<br/>
-      However, trying to create the perfect ML model for applicant selection is a very challenging task. Instead, treat this week’s sessions as a chance to:
+      Creating the perfect ML model for applicant selection is a very challenging task, however a model can be useful for revealing biases of past human decisions.
+      <strong>Thus, treat today's session as a chance to "future-proof" responsible decision-making by:</strong>
       <ol>
-        <li>understand ways that ML is suitable or limited in its abilities to assist human decision-making, </li>
-        <li>examine past data for patterns and gaps,</li>
-        <li>and align with colleagues on iSchool goals.</li>
+        <li>critically examining past data for patterns and gaps,</li>
+        <li>aligning with colleagues on iSchool goals for the Master's program,</li>
+        <li>and understanding ways that ML is suitable or limited in its abilities to assist human decision-making.</li>
       </ol>
   </Typography>
 </Stack>,

@@ -10,17 +10,19 @@ import glossary from "./glossary"
 export default {
     intro: <>
         <p>To begin, you will take some time to answer a few reflective questions about selecting applicants, and then review the dataset. This is so you can articulate your personal feelings about the admissions process and what matters. </p>
-        <p>The dataset you are going to review has been anonymized and contains information about past iSchool Master’s Program applicants between Fall 2013 through Fall 2020. You will be shown sample values of each column in the data that is known about applicants. You may begin when you are ready</p>
+        <p>The dataset you are going to review has been anonymized and contains information about past iSchool Master’s Program applicants between Fall 2013 through Spring 2019. You will be shown distributions of select columns from their application data. We are not including recommendation letters and statements of purpose for student privacy. You may begin when you are ready</p>
     </>,
     goalSetting: [<>
         <Heading>Goal Setting</Heading>
-        <p>First, take some time to think about and write down what is important to you when it comes to selecting qualified applicants.</p>
+        <p>Take some time to think about and write down what is important to you when it comes to selecting qualified applicants.</p>
+        <p>Your answers will be saved in your notebook (accessible below) and not displayed to your colleagues.</p>
         <p>Once you determine your goals, click <b>Next</b> to move on to the next page.</p>
     </>,
     <>
         <Heading>Practice</Heading>
-        <p>Let’s practice with rules. Read the following scenario and list rules that you think best fit the scenario.</p>
-        <p>Once you determine your rules, you may begin exploring the data by clicking on the <b>Dataset Exploration</b> tab.</p>
+        <p>Write down the rules you would tell a computer so it can recognize a strong vs. a weak applicant.</p>
+        <p>Your answers will be saved in your notebook (accessible below) and not displayed to your colleagues.</p>
+        <p>When you are done, click the <b>Dataset Exploration</b> tab at the top. Once you have explored the dataset, return to this page. You may make modifications, and click <b>Finish</b> to move to the next activity.</p>
     </>],
     questions: [
         'What characteristics matter to you when you read an individual’s application package?',
@@ -28,12 +30,16 @@ export default {
     ],
     datasetExploration: <>
         <Heading>Dataset Exploration</Heading>
-        <p>Let’s start by taking a look at the dataset. On this page, you can scroll to view the rows and columns of the data to explore what we know about each applicant. </p>
-        <p>If at any point during the sessions you wish to return to this page, just click <b>Explore data</b> in the menu bar above.</p>
-        <p>To continue to the next step, navigate back to <b>Goal Setting</b> and complete the activity.</p>
+        <p>On this page, you can scroll to view the distributions of selected columns from the dataset.</p>
+        <p>When you are done, click on the <b>Goal Setting</b> tab to return to the previous screen. You can update the goals or rules you wrote earlier, based on this data.</p>
     </>,
     practice: <>
-        <Typography gutterBottom>When you try to get a computer program to assist you, you can’t always talk to it like you would a person. Instead you have to give it some structured rules or instructions to complete a task. For example, if you are trying to find a restaurant for a group dinner, you have to specify characteristics to the search engine to narrow down what restaurants satisfy dietary requirements, price constraints, locations, and so on.</Typography>
-        <Typography>How would you teach a <b>computer program</b> to recognize a <b>strong vs. weak applicant</b>? Put one rule per line.</Typography>
+        <Typography gutterBottom>You can’t always tell a computer what to do the way you would a person. Instead you have to give it some structured rules or instructions to complete a task. For example, if you are trying to find a restaurant for a group dinner, you might have to describe your criteria as a set of rules. Your rules might be: </Typography>
+        <ol>
+            <li>Has vegan options</li>
+            <li>${20} per entree</li>
+            <li>Within 5 miles of Hyde Park</li>
+        </ol>
+        <Typography>How would you teach a <b>computer program</b> to recognize a <b>strong vs. weak applicant</b>? Put one rule per line. Format doesn't matter.</Typography>
     </>,
 }

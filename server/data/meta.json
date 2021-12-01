@@ -18,7 +18,7 @@
     "id": "Subject ID",
     "features": {
         "GRE Verbal Percentile": {
-            "description": "This is the percentile of the applicant’s GRE Verbal score.",
+            "description": "Percentile of the applicant’s GRE Verbal score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -26,7 +26,7 @@
             "median": 69.0
         },
         "GRE Quant Percentile": {
-            "description": "The percentile of the applicant’s GRE Quantitative score.",
+            "description": "Percentile of the applicant’s GRE Quantitative score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -34,7 +34,7 @@
             "median": 75.0
         },
         "GRE Analytical Percentile": {
-            "description": "The percentile of the applicant’s GRE Analytic (Writing) score.",
+            "description": "Percentile of the applicant’s GRE Analytic (Writing) score.",
             "type": "numerical",
             "min": 0,
             "max": 99,
@@ -42,7 +42,7 @@
             "median": 42.0
         },
         "Tier of Undergraduate Institution": {
-            "description": "Tier 4 being top institutions and 1 being bottom. Primarly determined by aggregating several US News rankings",
+            "description": "Tier 4 being top institutions and 1 being bottom. Primarily determined by aggregating several US News rankings",
             "type": "numerical",
             "min": 0.0,
             "max": 4.0,
@@ -58,7 +58,7 @@
             "median": 3.56
         },
         "Master's Held": {
-            "description": "Whether the applicant answered that they hold a master’s degree.",
+            "description": "Whether the applicant holds a master’s degree.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -71,7 +71,7 @@
             ]
         },
         "Doctorate Held": {
-            "description": "Whether the applicant answered that they hold a doctorate degree.",
+            "description": "Whether the applicant holds a doctorate degree.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -84,7 +84,7 @@
             ]
         },
         "Bachelor's Held": {
-            "description": "Whether the applicant answered that they hold a bachelor’s degree or are in the final year of their bachelor’s program.",
+            "description": "Whether the applicant holds a bachelor’s degree or are in the final year of their bachelor’s program.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -97,7 +97,7 @@
             ]
         },
         "Special Degree Held": {
-            "description": "The number of awards or honors that the applicant listed on their application that is related to the arts (e.g., creative writing, English, music, etc)",
+            "description": "Whether the applicant holds a special degree.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -110,7 +110,7 @@
             ]
         },
         "Awards: Arts": {
-            "description": "The number of awards or honors that the applicant listed on their application that is related to the arts (e.g., creative writing, English, music, etc)",
+            "description": "The number of awards or honors that the applicant listed, related to the arts (e.g., creative writing, English, music, etc)",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -118,7 +118,7 @@
             "median": 0.0
         },
         "Awards: Scholastic": {
-            "description": "The number of awards or honors that the applicant listed that are related to receiving scholarships or being holding top student rankings such as valedictorian.",
+            "description": "The number of awards or honors that the applicant listed, related to receiving scholarships or being holding top student rankings such as valedictorian.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -126,7 +126,7 @@
             "median": 0.0
         },
         "Awards: Research": {
-            "description": "The number of awards or honors that the applicant listed that are related to research experience such as independent studies, research grants, or writing a thesis.",
+            "description": "The number of awards or honors that the applicant listed, related to research experience such as independent study, research grants, or writing a thesis.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -134,7 +134,7 @@
             "median": 0.0
         },
         "Awards: Service": {
-            "description": "The number of awards or honors that the applicant listed that are related to service or volunteering.",
+            "description": "The number of awards or honors that the applicant listed, related to service or volunteering.",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -142,7 +142,7 @@
             "median": 0.0
         },
         "Awards: Leadership": {
-            "description": "The number of awards or honors that the applicant listed that are related to holding leadership positions.",
+            "description": "The number of awards or honors that the applicant listed, related to holding leadership positions.",
             "type": "numerical",
             "min": 0,
             "max": 2,
@@ -150,7 +150,7 @@
             "median": 0.0
         },
         "Awards: Competitions": {
-            "description": "The number of awards or honors that the applicant listed on their application related to competitions or contests relevant to academia (e.g., hackathons, design contests, case competitions)",
+            "description": "The number of awards or honors that the applicant listed, related to competitions or contests relevant to academia (e.g., hackathons, design contests, case competitions)",
             "type": "numerical",
             "min": 0,
             "max": 3,
@@ -158,7 +158,7 @@
             "median": 0.0
         },
         "Gender": {
-            "description": "This is the applicant’s self-reported gender. Historically, this has been limited to two choices, male or female.",
+            "description": "Applicant’s self-reported gender. Historically, this has been limited to two choices, male or female.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -167,7 +167,7 @@
             }
         },
         "Ethnicity": {
-            "description": "This is the applicant’s self-reported ethnicity. Historically, this has been limited to five race/ethnicity categories.",
+            "description": "Applicant’s self-reported ethnicity. Historically, this has been limited to five race/ethnicity categories.",
             "type": "categorical",
             "unique": 7,
             "counts": {
@@ -181,7 +181,7 @@
             }
         },
         "First Generation": {
-            "description": "Inferred by the education level of an applicant’s parent(s)’, as reported on the application.",
+            "description": "Inferred by the education level of an applicant’s parent(s), as reported on the application.",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -194,7 +194,7 @@
             ]
         },
         "Work Experience": {
-            "description": "How many years an applicant has worked, defined by the time between the applicant’s start date for their first reported work experience and their final end date",
+            "description": "How many years an applicant has worked, defined by the time between the applicant’s earliest work start date and their most recent work end date",
             "type": "numerical",
             "min": 0.0,
             "max": 13179.0,
