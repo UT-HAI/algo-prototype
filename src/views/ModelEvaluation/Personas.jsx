@@ -184,7 +184,7 @@ const Confidence = ({ confidences }) =>
         <Box display='flex' position='relative' alignItems='center' my={3}>
             <Box width='100%' height='6px' borderRadius='20px' backgroundColor='primary.main' sx={{opacity: .2}}/>
             {confidences.map(({label, color, value},i) => 
-                <Tooltip open={true} title={`${label} (${(value*100).toFixed(2)}%)`} arrow placement={i % 2 === 0 ? 'top' : 'bottom'}>
+                <Tooltip open={true} title={`${label} (${Math.round(value*100)}%)`} arrow placement={i % 2 === 0 ? 'top' : 'bottom'}>
                     <Box position='absolute' left={`${(value*100).toFixed(2)}%`} width='16px' height='16px' borderRadius='16px' backgroundColor={color} boxShadow={2}/>
                 </Tooltip>
             )}
