@@ -64,7 +64,7 @@ const Home = () => {
             <li>Applying these concepts with a real dataset of anonymized past Master’s applicants to create your model.</li>
           </ol>
         </Typography>
-        <Typography>Press the down arrow on the right hand side to continue to the next screen.</Typography>
+        <Typography>Press the down arrow on the right hand side or scroll down with your mouse to continue to the next screen.</Typography>
       </Stack>
       <img src={bro} alt='image' width='400px'/>
     </Stack>,
@@ -95,7 +95,7 @@ const Home = () => {
     </Stack>,
 
     <Stack mt={-10}>
-  <Typography variant='h4' sx={{mb: 10}}>AI/ML Biases Reflective of Past Decision Patterns</Typography>
+      <Typography variant='h4' sx={{mb: 10}}>AI/ML Biases Reflective of Past Decision Patterns</Typography>
       <Stack direction='row' spacing={6} alignItems='center'>
         <Stack spacing={2} alignItems='center'>
           <Box mx={3}>
@@ -140,7 +140,7 @@ const Home = () => {
   <Typography variant='h4' sx={{mb: 10}}>"Future-Proofing" for Responsible Decision-Making</Typography>
   <Typography>
       Today, you will have the opportunity to learn how to create an ML model as well as probe deeper into an important task, applicant selection, collaboratively with your colleagues.<br/>
-      Creating the perfect ML model for applicant selection is a very challenging task, however a model can be useful for revealing biases of past human decisions.
+      Creating the perfect ML model for applicant selection is a very challenging task, however a model can be useful for revealing biases of past human decisions.&nbsp;
       <strong>Thus, treat today's session as a chance to "future-proof" responsible decision-making by:</strong>
       <ol>
         <li>critically examining past data for patterns and gaps,</li>

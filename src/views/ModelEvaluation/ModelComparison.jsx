@@ -5,26 +5,30 @@ import { useModels } from "../../util/hooks/contextHooks"
 import content from "../../content/modelEvalutation"
 import { InfoIcon } from "../../components/InfoTip"
 
-const gradient = createGradient(['#FFFFFF','#BE3206'])
+const gradient = {
+    group: createGradient(['#FFFFFF','#8E44AD']),
+    your: createGradient(['#FFFFFF','#E98F00']),
+}
+
 const toPercent = (decimal) => `${Math.round(decimal*100)}%`
 
-const Sum = ({ terms }) => (
+const Sum = ({ terms, colorBy }) => (
     <Stack direction='row' spacing={'4px'}>
         {terms.map(({name, val},i) => <>
             {i !== 0 ? <span>+</span> : null}
-            <span style={{backgroundColor: gradient(val), padding: '2px'}}>{toPercent(val)}&nbsp;({name})</span>
+            <span style={{backgroundColor: gradient[colorBy](val), padding: '2px'}}>{toPercent(val)}&nbsp;({name})</span>
         </>)}
     </Stack>
 )
-const Equation = ({ title, titleTooltip, numerator, denominator, result }) => (
+const Equation = ({ title, titleTooltip, numerator, denominator, result, colorBy }) => (
     <Stack spacing={2}>
         <Typography variant='h6'>{title}<InfoIcon inline sx={{opacity:0.5}} text={titleTooltip}/></Typography>
         
         <Stack direction='row' alignItems='center' spacing={1} alignSelf='center'>
             <Stack alignItems='center' spacing={'2px'}>
-                <Sum terms={numerator}/>
+                <Sum terms={numerator} colorBy={colorBy}/>
                 <Divider sx={{borderColor: 'text.primary'}} flexItem/>
-                <Sum terms={denominator}/>
+                <Sum terms={denominator} colorBy={colorBy}/>
             </Stack>
             <span>=</span>
             <Box color='primary.main' fontSize='2rem'>{toPercent(result)}</Box>
@@ -43,11 +47,9 @@ const Overview = ({ metrics }) =>
         </>)}
     </Stack>
 
-// orange gradient for confusion matrix
-
-const ConfusionCell = ({ val, label, disabled, ...props }) =>
+const ConfusionCell = ({ val, label, disabled, colorBy, ...props }) =>
     <Box
-        backgroundColor={disabled ? 'none' : gradient(val)}
+        backgroundColor={disabled ? 'none' : gradient[colorBy](val)}
         {...props}
         display='flex'
         justifyContent='space-between'
@@ -60,7 +62,7 @@ const ConfusionCell = ({ val, label, disabled, ...props }) =>
         >
             <span>{label}</span><span>{toPercent(val)}</span>
     </Box>
-const ConfusionMatrix = ({ matrix, colored }) => {
+const ConfusionMatrix = ({ matrix, colored, colorBy }) => {
     const createGrid = () => { 
         let row = 0
         return ['false', 'true'].map((pred) => (
@@ -71,7 +73,7 @@ const ConfusionMatrix = ({ matrix, colored }) => {
                 if (colored.includes(content.confusion.quadrantsAbbrev[key])) {
                     row +=1
                     return <>
-                        <Box gridArea={`${row+1} / 1`} backgroundColor={gradient(decimal)} display='flex' alignItems='center' px={1} justifyContent='center'>
+                        <Box gridArea={`${row+1} / 1`} backgroundColor={gradient[colorBy](decimal)} display='flex' alignItems='center' px={1} justifyContent='center'>
                             <Typography><b>{content.confusion.quadrants[key]}</b></Typography>
                         </Box>
                         <Typography fontSize='0.8rem' sx={{gridArea: `${row+1} / 2`}}>
@@ -96,10 +98,10 @@ const ConfusionMatrix = ({ matrix, colored }) => {
                 <Typography sx={{gridArea:'2 / 1', textAlign: 'right'}}><b>Actual Admit</b></Typography>
                 <Typography sx={{gridArea:'3 / 1', textAlign: 'right'}}><b>Actual Reject</b></Typography>
 
-                <ConfusionCell gridArea='2 / 2' disabled={!colored.includes('tp')} val={matrix.tp} label='True Positive'/>
-                <ConfusionCell gridArea='2 / 3' disabled={!colored.includes('fn')} val={matrix.fn} label='False Negative'/>
-                <ConfusionCell gridArea='3 / 2' disabled={!colored.includes('fp')} val={matrix.fp} label='False Positive'/>
-                <ConfusionCell gridArea='3 / 3' disabled={!colored.includes('tn')} val={matrix.tn} label='True Negative'/>
+                <ConfusionCell gridArea='2 / 2' disabled={!colored.includes('tp')} val={matrix.tp} label='True Positive' colorBy={colorBy}/>
+                <ConfusionCell gridArea='2 / 3' disabled={!colored.includes('fn')} val={matrix.fn} label='False Negative' colorBy={colorBy}/>
+                <ConfusionCell gridArea='3 / 2' disabled={!colored.includes('fp')} val={matrix.fp} label='False Positive' colorBy={colorBy}/>
+                <ConfusionCell gridArea='3 / 3' disabled={!colored.includes('tn')} val={matrix.tn} label='True Negative' colorBy={colorBy}/>
             </Box>
             <Divider sx={{my: 3}} />
             <Box display='grid' gridTemplateColumns='1fr 2fr' columnGap={2} rowGap={1}>
@@ -121,7 +123,7 @@ const Tabs = ({ tabs }) => {
     </>)
 }
 
-const ModelCard = ({ title, metrics }) => {
+const ModelCard = ({ title, metrics, colorBy }) => {
     
     return (
         <Card sx={{px:3, py:3, flex: '50%'}}>
@@ -133,7 +135,7 @@ const ModelCard = ({ title, metrics }) => {
                     content: 
                         <Stack spacing={4}>
                             <Overview metrics={[{name: 'Accuracy', decimal: metrics.acc}, {name: 'Precision', decimal: metrics.precision}, {name: 'Recall', decimal: metrics.recall}]}/>
-                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy}/>
                         </Stack>
                 },
                 {
@@ -146,8 +148,9 @@ const ModelCard = ({ title, metrics }) => {
                                 numerator={[{name: 'TP', val: metrics.tp},{name: 'TN', val: metrics.tn}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FP', val: metrics.fp},{name: 'FN', val: metrics.fn},{name: 'TN', val: metrics.tn}]}
                                 result={metrics.acc}
+                                colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy}/>
                         </Stack>
                 },
                 {
@@ -160,8 +163,9 @@ const ModelCard = ({ title, metrics }) => {
                                 numerator={[{name: 'TP', val: metrics.tp}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FP', val: metrics.fp}]}
                                 result={metrics.precision}
+                                colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','fp']}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','fp']} colorBy={colorBy}/>
                         </Stack>
                 },
                 {
@@ -174,8 +178,9 @@ const ModelCard = ({ title, metrics }) => {
                                 numerator={[{name: 'TP', val: metrics.tp}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FN', val: metrics.fn}]}
                                 result={metrics.recall}
+                                colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','fn']}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','fn']} colorBy={colorBy}/>
                         </Stack>
                 },
                 ]}
@@ -188,8 +193,8 @@ const ModelComparison = () => {
     const { models } = useModels()
     return (
         <Stack direction='row' spacing={2} padding={4}>
-            <ModelCard title='Your Model' metrics={models.your.metrics}/>
-            <ModelCard title='Group Model' metrics={models.group.metrics}/>
+            <ModelCard title='Your Model' metrics={models.your.metrics} colorBy='your'/>
+            <ModelCard title='Group Model' metrics={models.group.metrics} colorBy='group'/>
         </Stack>
     )
 }

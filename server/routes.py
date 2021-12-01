@@ -5,6 +5,8 @@ import numpy as np
 from server.db import mongo
 from flask import Blueprint, Response, jsonify, request, current_app
 from server.ml import select_features, train_and_predict
+from datetime import datetime
+import pytz
 
 api_blueprint = Blueprint('api', __name__, url_prefix="/api")
 
@@ -67,6 +69,7 @@ def get_users():
 @api_blueprint.route('/selections/selections.csv')
 def selections_csv():
     selections = mongo.db.feature_selections.find()
+    selections = [s for s in selections]
     csv = ""
     features = []
     try:
@@ -76,20 +79,40 @@ def selections_csv():
             features = list(json.load(file)['features'].keys())
 
         # header
-        columns = []
-        for f in features:
-            columns.append(f)
-            columns.append('{} - reason'.format(f))
-        csv += ','.join(['user id'] + columns) + '\n'
+        # columns = []
+        # for f in features:
+        #     columns.append(f)
+        #     columns.append('{} - reason'.format(f))
+        # csv += ','.join(['user id'] + columns) + '\n'
+        columns = [''] # empty first cell
+        for user_selection in selections:
+            columns.append(user_selection['id'])
+            columns.append(user_selection['id']+'-Reasons')
+        csv += ','.join(columns + ['Final']) + '\n'
 
         # each row is one user's selections
-        for user_selection in selections:
-            id = user_selection['id']
-            row = [str(id)]
-            for f in features:
+        # for user_selection in selections:
+        #     id = user_selection['id']
+        #     row = [str(id)]
+        #     for f in features:
+        #         selection = ""
+        #         reason = ""
+        #         if f in user_selection['selections'].keys():
+        #             selection = user_selection['selections'][f]['decision']
+        #             if not user_selection['selections'][f]['sure']:
+        #                 selection += ' (not sure)'
+        #             reason = user_selection['selections'][f]['reason']
+        #         row.append(selection)
+        #         row.append(reason)
+        for f in features:
+            row = [f]
+            for user_selection in selections:
+                # print(user_selection)
                 selection = ""
                 reason = ""
+                # print(f,user_selection['selections'].keys(),f in user_selection['selections'].keys())
                 if f in user_selection['selections'].keys():
+                # if True:
                     selection = user_selection['selections'][f]['decision']
                     if not user_selection['selections'][f]['sure']:
                         selection += ' (not sure)'
@@ -103,7 +126,7 @@ def selections_csv():
                         mimetype='text/csv',
                         headers={
                             "Content-disposition":
-                            "attachment; filename=selections.csv"
+                            "attachment; filename=selections {}.csv".format(datetime.now(tz=pytz.timezone('US/Central')).strftime("%d-%m-%Y %H.%M"))
                         })
 
     except Exception as e:
@@ -228,7 +251,8 @@ def notebook_csv():
     return Response(
         csv,
         mimetype='text/csv',
-        headers={"Content-disposition": "attachment; filename=notebooks.csv"})
+        headers={"Content-disposition": "attachment; filename=notebooks {}.csv".format(datetime.now(tz=pytz.timezone('US/Central')).strftime("%d-%m-%Y %H.%M"))}
+    )
 
 
 @api_blueprint.route('/notebooks/users')
