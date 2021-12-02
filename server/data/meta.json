@@ -44,10 +44,10 @@
         "Tier of Undergraduate Institution": {
             "description": "Tier 4 being top institutions and 1 being bottom. Primarily determined by aggregating several US News rankings",
             "type": "numerical",
-            "min": 0.0,
-            "max": 4.0,
-            "mean": 2.92827961870177,
-            "median": 4.0
+            "min": 1.0,
+            "max": 5.0,
+            "mean": 2.071558796718323,
+            "median": 1.0
         },
         "GPA": {
             "description": "Upper level grade point average of the applicant, as calculated by their grades in senior level courses (e.g., typically taken in their third year and beyond if considering their bachelor’s experience)",
@@ -197,8 +197,8 @@
             "description": "How many years an applicant has worked, defined by the time between the applicant’s earliest work start date and most recent work end date",
             "type": "numerical",
             "min": 0.0,
-            "max": 13179.0,
-            "mean": 395.66681797548796,
+            "max": 16.34246575342466,
+            "mean": 0.9802574892920918,
             "median": 0.0
         }
     }
