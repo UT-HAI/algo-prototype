@@ -59,7 +59,7 @@ export default {
     </>,
     equalOpportunity: <>
         <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should be accepted, if qualified, at equal rates. 
-        Ex: Imagine that 20 students (12 female, 8 male) apply. 6 females are "qualified" to be accepted, and only 4 males are "qualified" to be accepted. Thus, if the model accepts 3 out of 6 qualified females, it should accept 2 out of 4 qualified males.</p>
+        Ex: Imagine that 20 students (12 female, 8 male) apply. 6 females are "qualified" to be accepted; 4 males are "qualified" to be accepted. Thus, if the model accepts 3 out of 6 qualified females, it should accept 2 out of 4 qualified males.</p>
         <b>Challenges:</b>
         <ul>
             <li>Defining who is “qualified” can be difficult and change over time</li>
