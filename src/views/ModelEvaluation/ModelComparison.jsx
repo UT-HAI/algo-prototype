@@ -144,7 +144,7 @@ const ModelCard = ({ title, metrics, colorBy, total }) => {
                         <Stack spacing={4}>
                             <Equation
                                 title='Accuracy'
-                                titleTooltip='The number of students the model correctly predicted to be admitted and rejected to the school out of all its predictions'
+                                titleTooltip='The proportion of students the model correctly predicted to admit/reject out of all students'
                                 numerator={[{name: 'TP', val: metrics.tp},{name: 'TN', val: metrics.tn}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FP', val: metrics.fp},{name: 'FN', val: metrics.fn},{name: 'TN', val: metrics.tn}]}
                                 result={metrics.acc}
@@ -159,7 +159,7 @@ const ModelCard = ({ title, metrics, colorBy, total }) => {
                         <Stack spacing={4}>
                             <Equation
                                 title='Precision'
-                                titleTooltip='The number of students the model correctly predicted to admit out of all the students the model predicted to admit (correctly and incorrectly)'
+                                titleTooltip='The proportion of students the model correctly predicted to admit out of all the students it predicted to admit'
                                 numerator={[{name: 'TP', val: metrics.tp}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FP', val: metrics.fp}]}
                                 result={metrics.precision}
@@ -174,7 +174,7 @@ const ModelCard = ({ title, metrics, colorBy, total }) => {
                         <Stack spacing={4}>
                             <Equation
                                 title='Recall'
-                                titleTooltip='The number of students that the model correctly predicted to admit out of the number of students actually admitted in the past'
+                                titleTooltip='The proportion of students the model correctly predicted to admit out of all students historically admitted'
                                 numerator={[{name: 'TP', val: metrics.tp}]}
                                 denominator={[{name: 'TP', val: metrics.tp},{name: 'FN', val: metrics.fn}]}
                                 result={metrics.recall}

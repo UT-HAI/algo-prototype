@@ -16,7 +16,7 @@ const TrainModel = () =>
                     Continue
                 </Button>
             </Stack>
-            <iframe src="https://player.vimeo.com/video/651866855?h=4ce3bd036d&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" width="720" height="405" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture" allowFullscreen title="demo" style={{flexShrink: 0}}></iframe>
+            <iframe src="https://www.youtube-nocookie.com/embed/_zMpMWy2bIA?rel=0&amp;showinfo=0&amp;ytp-pause-overlay=0&amp;modestbranding=1&amp;showinfo=0" frameborder="0" width="720" height="405" frameBorder="0" allow="autoplay; fullscreen; picture-in-picture" allowFullscreen title="demo" style={{flexShrink: 0}}></iframe>
         </Stack>
     </FlexContainer>
 

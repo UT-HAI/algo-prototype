@@ -181,7 +181,7 @@
             }
         },
         "First Generation": {
-            "description": "Inferred by the education level of an applicant’s parent(s), as reported on the application.",
+            "description": "Whether the applicant is the first in their family to receive a bachelor's degree. Inferred by the education level of an applicant’s parent(s).",
             "type": "categorical",
             "unique": 2,
             "counts": {
@@ -194,7 +194,7 @@
             ]
         },
         "Work Experience": {
-            "description": "How many years an applicant has worked, defined by the time between the applicant’s earliest work start date and their most recent work end date",
+            "description": "How many years an applicant has worked, defined by the time between the applicant’s earliest work start date and most recent work end date",
             "type": "numerical",
             "min": 0.0,
             "max": 13179.0,

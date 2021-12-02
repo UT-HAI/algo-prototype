@@ -58,7 +58,8 @@ export default {
         <p><b style={{fontWeight: 600}}>Something to think about:</b><br/>How do you think a model can be useful or harmful when assisting humans in applicant selection?</p>
     </>,
     equalOpportunity: <>
-        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should be accepted, if qualified, at equal rates. Ex: the proportion of female applicants the model accepts out of the total female applicants accepted in the past must equal that for male applicants.</p>
+        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should be accepted, if qualified, at equal rates. 
+        Ex: Imagine that 20 students (12 female, 8 male) apply. 6 females are "qualified" to be accepted, and only 4 males are "qualified" to be accepted. Thus, if the model accepts 3 out of 6 qualified females, it should accept 2 out of 4 qualified males.</p>
         <b>Challenges:</b>
         <ul>
             <li>Defining who is “qualified” can be difficult and change over time</li>
@@ -66,7 +67,7 @@ export default {
         </ul>
     </>,
     demographicParity: <>
-        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should receive positive outcomes at equal rates. Ex: if we consider ethnicity, a model must ensure acceptances at equal rates for each ethnicity.</p>
+        <p>All groups (by <InfoTip term='sensitive attribute'>sensitive attribute</InfoTip>) should receive positive outcomes at equal rates. Ex: if we consider ethnicity, a model must predict acceptances at equal rates for each ethnicity.</p>
         <b>Challenges:</b>
         <ul>
             <li>Doesn’t consider the risk of accepting “unqualified” applicants</li>
