@@ -34,23 +34,24 @@ const FairnessCard = ({ title, img, content, isOpen, open, isCollapsed }) =>
 
 const toPercent = (decimal) => `${Math.round(decimal*100)}%`
 
-const ConfusionBar = ({ title, subtitle, groupBy, groups, value, side, color }) => {
+const ConfusionBar = ({ title, subtitle, groupBy, groups, value, side, color, total }) => {
     const theme = useTheme()
+    const sum = groupBy ? value[0] + value[1] : value
     return (
     <Stack direction={side === 'left' ? 'row' : 'row-reverse'} flex='50%' spacing={1}>
         {/* text */}
         <Stack textAlign={side === 'left' ? 'right' : 'left'} alignItems={side === 'left' ? 'flex-end' : 'flex-start'} flex='50%'>
             <Typography>{title}</Typography>
-            <Typography><strong>{groupBy ? toPercent(value[0] + value[1]) : toPercent(value)}</strong></Typography>
+            <Typography><strong>{Math.round(sum*total)} ({toPercent(sum)})</strong></Typography>
             <Typography color='textSecondary' fontSize='.8rem'>{subtitle}</Typography>
         </Stack>
         {/* bars */}
         <Stack direction={side === 'right' ? 'row' : 'row-reverse'} backgroundColor='grey.100' /*border='1px solid' borderColor='grey.300'*/ flex='50%' height='90px'>
             {groupBy ? <>
-                <Tooltip title={`${groups[0]} - ${toPercent(value[0])}`}>
+                <Tooltip title={`${groups[0]} - ${Math.round(value[0]*total)} (${toPercent(value[0])})`}>
                     <Box flex={toPercent(value[0])} flexGrow={0} backgroundColor={color} sx={{'&:hover': { outline: `2px solid ${theme.palette.primary.main}`}}}/>
                 </Tooltip>
-                <Tooltip title={`${groups[1]} - ${toPercent(value[1])}`}>
+                <Tooltip title={`${groups[1]} - ${Math.round(value[1]*total)} (${toPercent(value[1])})`}>
                     <Box flex={toPercent(value[1])} flexGrow={0} backgroundColor={color} sx={{opacity: 0.5, '&:hover': { outline: `2px solid ${theme.palette.primary.main}` }}} />
                 </Tooltip>
             </> :
@@ -60,7 +61,7 @@ const ConfusionBar = ({ title, subtitle, groupBy, groups, value, side, color }) 
     </Stack>
     )
 }
-const ConfusionCard = ({ title, confusion, color, groupBy, groups }) => {
+const ConfusionCard = ({ title, confusion, color, groupBy, groups, total }) => {
     return (
         <Paper>
             <Stack p={3} spacing={2}>
@@ -70,12 +71,12 @@ const ConfusionCard = ({ title, confusion, color, groupBy, groups }) => {
                 </Stack>
                 <Stack spacing={1}>
                     <Stack direction='row' spacing={1}>
-                        <ConfusionBar title='True Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.tp} side='left' color={color} groupBy={groupBy} groups={groups}/>
-                        <ConfusionBar title='False Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.fp} side='right' color={color} groupBy={groupBy} groups={groups}/>
+                        <ConfusionBar title='True Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.tp} side='left' color={color} groupBy={groupBy} groups={groups} total={total}/>
+                        <ConfusionBar title='False Positive' subtitle={<>Predict <Box display='inline' color='success.main' fontWeight={600}>Admit</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.fp} side='right' color={color} groupBy={groupBy} groups={groups} total={total}/>
                     </Stack>
                     <Stack direction='row' spacing={1}>
-                    <ConfusionBar title='False Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.fn} side='left' color={color} groupBy={groupBy} groups={groups}/>
-                        <ConfusionBar title='True Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.tn} side='right' color={color} groupBy={groupBy} groups={groups}/>
+                    <ConfusionBar title='False Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='success.main' fontWeight={600}>Admit</Box></>} value={confusion.fn} side='left' color={color} groupBy={groupBy} groups={groups} total={total}/>
+                        <ConfusionBar title='True Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.tn} side='right' color={color} groupBy={groupBy} groups={groups} total={total}/>
                     </Stack>
                 </Stack>
             </Stack>
@@ -147,6 +148,8 @@ const Fairness = () => {
         group: groupBy ? getMatrix('group') : models.group.metrics,
     }),[rows,groupBy])
 
+    const total = testIds.length
+
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
             <Stack width='35%' spacing={2}>
@@ -154,8 +157,8 @@ const Fairness = () => {
                <FairnessCard title='2. Demographic Parity' content={content.demographicParity} img={DemographicParity} isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
             </Stack>
             <Stack width='65%' spacing={2}>
-                <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.your} total={testIds.length}/>
-                <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.group} total={testIds.length}/>
+                <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.your} total={testIds.length} total={total}/>
+                <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.group} total={testIds.length} total={total}/>
                 {groupBy && <Legend colors={['#F39C12','#8E44AD']} labels={Object.keys(groupValues[groupBy])} />}
             </Stack>
         </Stack>

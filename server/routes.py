@@ -64,6 +64,7 @@ def get_users():
     selections = mongo.db.feature_selections.find()
     return jsonify([doc['id'] for doc in selections])
 
+def add_quotes(s): return '"' + s + '"'
 
 # Sends .csv of all participant feature selections
 @api_blueprint.route('/selections/selections.csv')
@@ -107,10 +108,8 @@ def selections_csv():
         for f in features:
             row = [f]
             for user_selection in selections:
-                # print(user_selection)
                 selection = ""
                 reason = ""
-                # print(f,user_selection['selections'].keys(),f in user_selection['selections'].keys())
                 if f in user_selection['selections'].keys():
                 # if True:
                     selection = user_selection['selections'][f]['decision']
@@ -118,7 +117,7 @@ def selections_csv():
                         selection += ' (not sure)'
                     reason = user_selection['selections'][f]['reason']
                 row.append(selection)
-                row.append(reason)
+                row.append(add_quotes(reason))
 
             csv += ",".join(row) + "\n"
 
@@ -243,8 +242,8 @@ def notebook_csv():
     # each row is one user's notebook
     for notebook in notebooks:
         id = notebook['id']
-        row = [str(id), notebook['q1'], notebook['q2']]
-        row += notebook['rules']
+        row = [str(id), add_quotes(notebook['q1']), add_quotes(notebook['q2'])]
+        row += [add_quotes(rule) for rule in notebook['rules']]
 
         csv += ",".join(row) + "\n"
 
@@ -356,3 +355,29 @@ def predictions():
   models['your']['metrics'] = get_metrics(test_ids, your_model['predictions'], y)
 
   return jsonify(models)
+
+
+@api_blueprint.route('/ml/models.json')
+def models_json():
+    models = list(mongo.db.train_results.find())
+    for i in range(len(models)): models[i].pop('_id')
+    models_json = json.dumps(models)
+
+    return Response(models_json,
+                    mimetype='application/json',
+                    headers={
+                        "Content-disposition":
+                        "attachment; filename=models {}.json".format(datetime.now(tz=pytz.timezone('US/Central')).strftime("%d-%m-%Y %H.%M"))
+                    })
+
+
+@api_blueprint.route('/ml/models', methods=['DELETE'])
+def clear_models():
+    if request.method == 'DELETE':
+        mongo.db.train_results.drop()
+        return jsonify(success=True)
+
+@api_blueprint.route('/ml/models/users')
+def get_model_users():
+    selections = mongo.db.train_results.find()
+    return jsonify([doc['id'] for doc in selections])

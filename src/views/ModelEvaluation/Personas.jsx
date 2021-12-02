@@ -165,7 +165,7 @@ const Result = ({ actual, pred, empty }) => {
 }
 
 
-// Persona & Model Confidence box
+// Persona & Model Score box
 
 const FilterChip = ({ feature, value }) => {
     if (feature === null) return null
@@ -179,11 +179,11 @@ const FilterChip = ({ feature, value }) => {
     )
 }
 
-const Confidence = ({ confidences }) =>
+const Score = ({ scores }) =>
     <Box flexGrow={1}>
         <Box display='flex' position='relative' alignItems='center' my={3}>
             <Box width='100%' height='6px' borderRadius='20px' backgroundColor='primary.main' sx={{opacity: .2}}/>
-            {confidences.map(({label, color, value},i) => 
+            {scores.map(({label, color, value},i) => 
                 <Tooltip open={true} title={`${label} (${Math.round(value*100)}%)`} arrow placement={i % 2 === 0 ? 'top' : 'bottom'}>
                     <Box position='absolute' left={`${(value*100).toFixed(2)}%`} width='16px' height='16px' borderRadius='16px' backgroundColor={color} boxShadow={2}/>
                 </Tooltip>
@@ -194,8 +194,6 @@ const Confidence = ({ confidences }) =>
 const Persona = ({ id, idx, featureFilters }) => {
     const { features } = useData()
     const { models } = useModels()
-    // transform [0,1] probabilities into [0,1] confidence
-    const confidences = ['your','group'].map(n => 2*Math.abs(models[n].predictions[id] - 0.5))
     return (
     <Paper sx={{flex: '60%'}}>
         { !id ? <NoPersona /> :
@@ -232,22 +230,21 @@ const Persona = ({ id, idx, featureFilters }) => {
                 </Table>
             </TableContainer>
             <Stack spacing={2}>
-                <Typography variant='h5'>Model Confidence<InfoIcon inline text='This value represents how "sure" the model is about a decision, or how likely the model is to be correct. A confidence of 0 is equivalent to a random guess.' sx={{opacity: .5}}/></Typography>
-                {/* <Slider value={confidence*100} onChange={undefined} /> */}
+                <Typography variant='h5'>Model Scores<InfoIcon inline text='The models generate a score for each applicant, representing how likely the model thinks they are to be admitted. Values farther from 0.5 are more confident predictions.' sx={{opacity: .5}}/></Typography>
                 <Stack direction='row' spacing={2}>
                     <Stack alignItems='flex-end'>
                         <Typography>0%</Typography>
-                        <Typography color='textSecondary'>(guess)</Typography>
+                        <Typography color='textSecondary'>(deny)</Typography>
                     </Stack>
-                    <Confidence
-                        confidences={[
-                            { label: 'Your Model', color: '#F39C12', value: confidences[0] },
-                            { label: 'Group Model', color: '#8E44AD', value: confidences[1] },
+                    <Score
+                        scores={[
+                            { label: 'Your Model', color: '#F39C12', value: models.your.predictions[id] },
+                            { label: 'Group Model', color: '#8E44AD', value: models.group.predictions[id]  },
                         ]}
                     />
                     <Stack>
                         <Typography>100%</Typography>
-                        <Typography color='textSecondary'>(sure)</Typography>
+                        <Typography color='textSecondary'>(admit)</Typography>
                     </Stack>
                 </Stack>
             </Stack>

@@ -7,11 +7,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import { Link } from "react-router-dom";
-import { useSelectionsUsers, useFeatures, useNotebookUsers } from "../../util/hooks/contextHooks";
+import { useSelectionsUsers, useFeatures, useNotebookUsers, useModels, useModelUsers } from "../../util/hooks/contextHooks";
 import { deleteAllSelections } from "../../api/selections"
 import AreYouSure from "./AreYouSure"
 import { deleteAllNotebooks } from "../../api/notebook";
-import { postTrain } from "../../api/ml";
+import { deleteAllModels, postTrain } from "../../api/ml";
 
 
 const ControlCard = ({ title, content, buttons }) =>
@@ -29,10 +29,12 @@ const Admin = () => {
     const [alert,setAlert] = useState(undefined)
     const selectionUsers = useSelectionsUsers()
     const notebookUsers = useNotebookUsers()
+    const modelUsers = useModelUsers()
     const [areYouSure,setAreYouSure] = useState(undefined) // controls Are You Sure dialog?
     const deleteSelections = () => deleteAllSelections().then(() => window.location.reload(false))
     const deleteNotebooks = () => deleteAllNotebooks().then(() => window.location.reload(false))
-    const deleteAll = () => Promise.all([deleteAllSelections(), deleteAllNotebooks()]).then(() => window.location.reload(false))
+    const deleteModels = () => deleteAllModels().then(() => window.location.reload(false))
+    const deleteAll = () => Promise.all([deleteAllSelections(), deleteAllNotebooks(), deleteAllModels()]).then(() => window.location.reload(false))
     const features = useFeatures()
     const [groupSelection, setGroupSelection] = useState({})
     useEffect(() => {
@@ -50,7 +52,7 @@ const Admin = () => {
         postTrain(selectedFeatures)
         .then(() => {
             setAlert({
-                message: 'Models successfully trained!',
+                message: 'Models successfully trained! (reload to see them in the Models section)',
                 severity: 'success'
             })
             setAreYouSure(undefined)
@@ -63,6 +65,10 @@ const Admin = () => {
         'deleteNotebooks': {
             text: 'You\'re about to clear all participant notebooks from the database. This action is not reversible!',
             button: <Button onClick={deleteNotebooks} startIcon={<DeleteIcon />} color='error' variant='contained'>Confirm (delete all)</Button>
+        },
+        'deleteModels': {
+            text: 'You\'re about to clear all trained models from the database. This action is not reversible!',
+            button: <Button onClick={deleteModels} startIcon={<DeleteIcon />} color='error' variant='contained'>Confirm (delete all)</Button>
         },
         'train': {
             text: 'Train model? (not sure yet if this will overwrite existing models)',
@@ -138,6 +144,37 @@ const Admin = () => {
                                 startIcon={<DeleteIcon/>}
                                 color='error'
                                 onClick={()=>setAreYouSure('deleteNotebooks')}
+                                variant='outlined'
+                            >
+                                Delete all
+                            </Button>
+                        ]}
+                    />
+                    <ControlCard
+                        title='Models'
+                        content={
+                            <Stack>
+                                <Typography gutterBottom>The following {modelUsers.length} user(s) have models trained:</Typography>
+                                {modelUsers.map(id => (
+                                    <Typography color='textSecondary' key={id}>{id}</Typography>
+                                ))}
+                            </Stack>
+                        }
+                        buttons={[
+                            <Button
+                                variant='contained'
+                                startIcon={<DownloadIcon/>}
+                                component={Link}
+                                to={'/api/ml/models.json'}
+                                target="_blank"
+                                download
+                            >
+                                Download (json)
+                            </Button>,
+                            <Button
+                                startIcon={<DeleteIcon/>}
+                                color='error'
+                                onClick={()=>setAreYouSure('deleteModels')}
                                 variant='outlined'
                             >
                                 Delete all

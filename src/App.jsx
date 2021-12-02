@@ -18,7 +18,7 @@ function App() {
             <GlobalProvider>
               <Error />
               <Switch>
-              <Route exact path='/'>
+                <Route exact path='/'>
                   <Home/>
                 </Route>
                 <Route path='/steps'>
@@ -27,7 +27,7 @@ function App() {
                 <Route path='/admin'>
                   <Admin />
                 </Route>
-                <Redirect to='/steps' />
+                <Redirect to='/' />
               </Switch>
             </GlobalProvider>
           </Router>

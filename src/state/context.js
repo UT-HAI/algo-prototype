@@ -27,6 +27,7 @@ const initialState = {
     // ADMIN CONTEXT BELOW
     selectionsUsers: undefined, // users who have submitted a selection
     notebookUsers: undefined, // users who have submitted a notebook
+    modelUsers: undefined, // users who have an ML model trained with their features
     features: undefined, // list of features without the data
 }
 
@@ -123,6 +124,13 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 notebookUsers
+            }
+
+        case 'FETCH_MODEL_USERS':
+            const modelUsers = action.payload
+            return {
+                ...state,
+                modelUsers
             }
 
         case 'FETCH_FEATURES':

@@ -3,7 +3,7 @@ import { AppContext, defaultSelection } from "../../state/context"
 import { fetchData, fetchFeatures } from "../../api/data";
 import { fetchSelectionUsers } from "../../api/selections";
 import { fetchNotebook, fetchNotebookUsers, postNotebook } from "../../api/notebook";
-import { fetchModels } from "../../api/ml";
+import { fetchModels, fetchModelUsers } from "../../api/ml";
 
 // `error` is used by a site-wide Snackbar component
 // when this value is truthy, a red error snackbar is displayed with the contents
@@ -181,4 +181,21 @@ export const useModels = () => {
     }, [id, counter])
 
     return { models: id === models?.id ? models : undefined, refresh }
+}
+
+export const useModelUsers = () => {
+    const { state: { modelUsers }, dispatch } = useContext(AppContext)
+    const [_,setError] = useError()
+
+    useEffect(() => {
+        if (!modelUsers){
+            fetchModelUsers()
+            .then(users => {
+                dispatch({ type: 'FETCH_MODEL_USERS', payload: users})
+            })
+            .catch(err => setError(err.message))
+        }
+    },[])
+
+    return modelUsers ?? []
 }

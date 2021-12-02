@@ -62,7 +62,7 @@ const ConfusionCell = ({ val, label, disabled, colorBy, ...props }) =>
         >
             <span>{label}</span><span>{toPercent(val)}</span>
     </Box>
-const ConfusionMatrix = ({ matrix, colored, colorBy }) => {
+const ConfusionMatrix = ({ matrix, colored, colorBy, total }) => {
     const createGrid = () => { 
         let row = 0
         return ['false', 'true'].map((pred) => (
@@ -77,7 +77,7 @@ const ConfusionMatrix = ({ matrix, colored, colorBy }) => {
                             <Typography><b>{content.confusion.quadrants[key]}</b></Typography>
                         </Box>
                         <Typography fontSize='0.8rem' sx={{gridArea: `${row+1} / 2`}}>
-                            <b>{toPercent(decimal)}</b>
+                            <b>{Math.round(decimal*total)} ({toPercent(decimal)})</b>
                             &nbsp;students were predicted to be&nbsp;
                             <Box component='span' color={content.confusion.colors[pred]} fontWeight={600}>{content.confusion.labels[pred]}</Box>
                             &nbsp;and were actually&nbsp;
@@ -123,7 +123,7 @@ const Tabs = ({ tabs }) => {
     </>)
 }
 
-const ModelCard = ({ title, metrics, colorBy }) => {
+const ModelCard = ({ title, metrics, colorBy, total }) => {
     
     return (
         <Card sx={{px:3, py:3, flex: '50%'}}>
@@ -135,7 +135,7 @@ const ModelCard = ({ title, metrics, colorBy }) => {
                     content: 
                         <Stack spacing={4}>
                             <Overview metrics={[{name: 'Accuracy', decimal: metrics.acc}, {name: 'Precision', decimal: metrics.precision}, {name: 'Recall', decimal: metrics.recall}]}/>
-                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy} total={total}/>
                         </Stack>
                 },
                 {
@@ -150,7 +150,7 @@ const ModelCard = ({ title, metrics, colorBy }) => {
                                 result={metrics.acc}
                                 colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','tn','fp','fn']} colorBy={colorBy} total={total}/>
                         </Stack>
                 },
                 {
@@ -165,7 +165,7 @@ const ModelCard = ({ title, metrics, colorBy }) => {
                                 result={metrics.precision}
                                 colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','fp']} colorBy={colorBy}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','fp']} colorBy={colorBy} total={total}/>
                         </Stack>
                 },
                 {
@@ -180,7 +180,7 @@ const ModelCard = ({ title, metrics, colorBy }) => {
                                 result={metrics.recall}
                                 colorBy={colorBy}
                             />
-                            <ConfusionMatrix matrix={metrics} colored={['tp','fn']} colorBy={colorBy}/>
+                            <ConfusionMatrix matrix={metrics} colored={['tp','fn']} colorBy={colorBy} total={total}/>
                         </Stack>
                 },
                 ]}
@@ -191,10 +191,11 @@ const ModelCard = ({ title, metrics, colorBy }) => {
 
 const ModelComparison = () => {
     const { models } = useModels()
+    const total = Object.keys(models.your.predictions).length
     return (
         <Stack direction='row' spacing={2} padding={4}>
-            <ModelCard title='Your Model' metrics={models.your.metrics} colorBy='your'/>
-            <ModelCard title='Group Model' metrics={models.group.metrics} colorBy='group'/>
+            <ModelCard title='Your Model' metrics={models.your.metrics} colorBy='your' total={total}/>
+            <ModelCard title='Group Model' metrics={models.group.metrics} colorBy='group' total={total}/>
         </Stack>
     )
 }
