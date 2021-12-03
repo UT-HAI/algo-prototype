@@ -83,19 +83,6 @@
                 { "from": 1, "to": "Yes"}
             ]
         },
-        "Bachelor's Held": {
-            "description": "Whether the applicant holds a bachelor’s degree or are in the final year of their bachelor’s program.",
-            "type": "categorical",
-            "unique": 2,
-            "counts": {
-                "0": 1538,
-                "1": 665
-            },
-            "transform": [
-                { "from": 0, "to": "No"},
-                { "from": 1, "to": "Yes"}
-            ]
-        },
         "Special Degree Held": {
             "description": "Whether the applicant holds a special degree.",
             "type": "categorical",
