@@ -61,7 +61,7 @@ const ConfusionBar = ({ title, subtitle, groupBy, groups, value, side, color, to
     </Stack>
     )
 }
-const ConfusionCard = ({ title, confusion, color, groupBy, groups, total }) => {
+const ConfusionCard = ({ title, confusion, color, groupBy, groups, total, bottomText }) => {
     return (
         <Paper>
             <Stack p={3} spacing={2}>
@@ -79,6 +79,7 @@ const ConfusionCard = ({ title, confusion, color, groupBy, groups, total }) => {
                         <ConfusionBar title='True Negative' subtitle={<>Predict <Box display='inline' color='error.main' fontWeight={600}>Reject</Box>, Actually <Box display='inline' color='error.main' fontWeight={600}>Reject</Box></>} value={confusion.tn} side='right' color={color} groupBy={groupBy} groups={groups} total={total}/>
                     </Stack>
                 </Stack>
+                {bottomText && bottomText(confusion, groups)}
             </Stack>
         </Paper>
     )
@@ -148,17 +149,64 @@ const Fairness = () => {
         group: groupBy ? getMatrix('group') : models.group.metrics,
     }),[rows,groupBy])
 
+    const bottomTexts = {
+        equalOpportunity: (matrix, values) =>
+            <Stack alignItems='center'>
+                <Typography><b>Equal Opportunity</b></Typography>
+                <Typography fontSize='0.8rem'>{toPercent(matrix.tp[0]/(matrix.tp[0]+matrix.fn[0]))} of qualified {values[0]}s accepted</Typography>
+                <Typography fontSize='0.8rem' color='textSecondary'>vs.</Typography>
+                <Typography fontSize='0.8rem'>{toPercent(matrix.tp[1]/(matrix.tp[1]+matrix.fn[1]))} of qualified {values[1]}s accepted</Typography>
+            </Stack>,
+        demographicParity: (matrix, values) =>
+            <Stack alignItems='center'>
+                <Typography><b>Demographic Parity</b></Typography>
+                <Typography fontSize='0.8rem'>{toPercent((matrix.tp[0]+matrix.fp[0])/(matrix.tp[0]+matrix.fp[0]+matrix.tn[0]+matrix.fn[0]))} of {values[0]}s accepted</Typography>
+                <Typography fontSize='0.8rem' color='textSecondary'>vs.</Typography>
+                <Typography fontSize='0.8rem'>{toPercent((matrix.tp[1]+matrix.fp[1])/(matrix.tp[1]+matrix.fp[1]+matrix.tn[1]+matrix.fn[1]))} of {values[1]}s accepted</Typography>
+            </Stack>
+    }
+
+    const bottomText = openIdx === 0 ? bottomTexts.equalOpportunity: openIdx === 1 ? bottomTexts.demographicParity : undefined
+
     const total = testIds.length
 
     return (
         <Stack direction='row' spacing={2} height='100%' padding={4}>
             <Stack width='35%' spacing={2}>
-               <FairnessCard title='1. Equal Opportunity' content={content.equalOpportunity} img={EqualOpportunity} isOpen={openIdx === 0} open={(isOpen) => openOne(0,isOpen)} isCollapsed={openIdx !== 0 && openIdx !== null} />
-               <FairnessCard title='2. Demographic Parity' content={content.demographicParity} img={DemographicParity} isOpen={openIdx === 1} open={(isOpen) => openOne(1,isOpen)} isCollapsed={openIdx !== 1 && openIdx !== null} />
+                <FairnessCard
+                    title='1. Equal Opportunity'
+                    content={content.equalOpportunity}
+                    img={EqualOpportunity}
+                    isOpen={openIdx === 0}
+                    open={(isOpen) => openOne(0,isOpen)}
+                    isCollapsed={openIdx !== 0 && openIdx !== null}
+                />
+               <FairnessCard
+                    title='2. Demographic Parity'
+                    content={content.demographicParity}
+                    img={DemographicParity}
+                    isOpen={openIdx === 1}
+                    open={(isOpen) => openOne(1,isOpen)}
+                    isCollapsed={openIdx !== 1 && openIdx !== null}
+                />
             </Stack>
             <Stack width='65%' spacing={2}>
-                <ConfusionCard title='Your Model' color='#F39C12' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.your} total={testIds.length} total={total}/>
-                <ConfusionCard title='Group Model' color='#8E44AD' groupBy={groupBy} groups={groupBy && Object.keys(groupValues[groupBy])} confusion={confusionMatrix.group} total={testIds.length} total={total}/>
+                <ConfusionCard
+                    title='Your Model' color='#F39C12'
+                    groupBy={groupBy}
+                    groups={groupBy && Object.keys(groupValues[groupBy])}
+                    confusion={confusionMatrix.your}
+                    bottomText={bottomText}
+                    total={total}
+                />
+                <ConfusionCard
+                    title='Group Model' color='#8E44AD'
+                    groupBy={groupBy}
+                    groups={groupBy && Object.keys(groupValues[groupBy])}
+                    confusion={confusionMatrix.group}
+                    bottomText={bottomText}
+                    total={total}
+                />
                 {groupBy && <Legend colors={['#F39C12','#8E44AD']} labels={Object.keys(groupValues[groupBy])} />}
             </Stack>
         </Stack>
