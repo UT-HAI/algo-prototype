@@ -30,10 +30,6 @@ const ModelEvaluation = () => {
             <StepsLayout
                 title='Model Evaluation'
                 tabs={{
-                    'Model Comparison': {
-                        text: content.modelComparison,
-                        component: <ModelComparison />
-                    },
                     'Feature Comparison': {
                         text: content.featureComparison,
                         component: <FeatureComparison />
@@ -41,6 +37,10 @@ const ModelEvaluation = () => {
                     'Personas': {
                         text: content.personas,
                         component: <Personas />
+                    },
+                    'Model Comparison': {
+                        text: content.modelComparison,
+                        component: <ModelComparison />
                     },
                     'Fairness': {
                         text: content.fairness,

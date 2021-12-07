@@ -339,7 +339,7 @@ const Personas = () => {
                     setFeatureFilterValue={setFeatureFilterValue}
                     onNext={() => setPersona(getNextId())}
                 />
-                <Result actual={actual} pred={{your,group}} empty={!persona}/>
+                {/* <Result actual={actual} pred={{your,group}} empty={!persona}/> */}
             </Stack>
             <Persona id={persona} idx={idx} featureFilters={filtersUsed}/>
         </Stack>
