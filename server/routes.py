@@ -34,7 +34,7 @@ def selection():
 
     return jsonify(success=True)
 
-
+# get or delete all the participants' submitted feature selections
 @api_blueprint.route('/selections', methods=['GET', 'DELETE'])
 def selections():
     if request.method == 'DELETE':
@@ -58,7 +58,7 @@ def selections():
 
         return jsonify(selections_obj)
 
-
+# list of all users who have submitted feature selections
 @api_blueprint.route('/selections/users')
 def get_users():
     selections = mongo.db.feature_selections.find()
@@ -79,32 +79,12 @@ def selections_csv():
                              'data/meta.json')) as file:
             features = list(json.load(file)['features'].keys())
 
-        # header
-        # columns = []
-        # for f in features:
-        #     columns.append(f)
-        #     columns.append('{} - reason'.format(f))
-        # csv += ','.join(['user id'] + columns) + '\n'
         columns = [''] # empty first cell
         for user_selection in selections:
             columns.append(user_selection['id'])
             columns.append(user_selection['id']+'-Reasons')
         csv += ','.join(columns + ['Final']) + '\n'
 
-        # each row is one user's selections
-        # for user_selection in selections:
-        #     id = user_selection['id']
-        #     row = [str(id)]
-        #     for f in features:
-        #         selection = ""
-        #         reason = ""
-        #         if f in user_selection['selections'].keys():
-        #             selection = user_selection['selections'][f]['decision']
-        #             if not user_selection['selections'][f]['sure']:
-        #                 selection += ' (not sure)'
-        #             reason = user_selection['selections'][f]['reason']
-        #         row.append(selection)
-        #         row.append(reason)
         for f in features:
             row = [f]
             for user_selection in selections:
@@ -135,7 +115,7 @@ def selections_csv():
 
 # data routes /////////////////////////////////////////
 
-
+# take raw data from CSV and transform as necessary and add to data structure
 def add_data(feature, data):
     data = data.replace({np.nan: None})
     # make transforms if specified (only categorical columns)
@@ -260,11 +240,19 @@ def get_notebook_users():
     return jsonify([doc['id'] for doc in notebooks])
 
 
+# ml routes /////////////////////////////
+
+# the requester sends the feature selections for the group model
+# we then take all the participant-submitted feature selections
+# and train a LR model for each set of selections
+# and upload the output to the Mongo
 @api_blueprint.route('/ml/train', methods=['POST'])
 def train():
     if request.content_type != 'application/json':
         return 'content type must be application/json', 400
     data = request.json
+
+    # train/test split
     df_train = pd.read_csv(os.path.join(current_app.config['ROOT_DIR'],
                                         'data/data_train.csv'),
                            header=0)
@@ -272,7 +260,9 @@ def train():
                                        'data/data_test.csv'),
                           header=0)
 
+    # get all the participant feature selections
     selections = mongo.db.feature_selections.find()
+    # get a list of all feature names from the data
     features = []
     try:
         with open(
@@ -282,6 +272,7 @@ def train():
     except Exception as e:
         return str(e), 500
 
+    # train a model, write predictions, and save output to Mongo
     def train_predict_save(user_id, selected_features):
         X_train, X_test, y_train, _ = select_features(df_train, df_test,
                                                       selected_features)
@@ -311,6 +302,8 @@ def train():
     return jsonify(success=True)
 
 
+# get the model output
+# includes predictions ([0,1]) for each row in test data, trained LR coefficients for each feature, and summary statistics (confusion matric, accuracy, precision, and recall)
 @api_blueprint.route('/ml/predictions')
 def predictions():
   id = request.args.get('id')
@@ -356,7 +349,7 @@ def predictions():
 
   return jsonify(models)
 
-
+# jsonify all the trained models' output
 @api_blueprint.route('/ml/models.json')
 def models_json():
     models = list(mongo.db.train_results.find())
@@ -377,6 +370,7 @@ def clear_models():
         mongo.db.train_results.drop()
         return jsonify(success=True)
 
+# get all the participants who have trained models in the database
 @api_blueprint.route('/ml/models/users')
 def get_model_users():
     selections = mongo.db.train_results.find()

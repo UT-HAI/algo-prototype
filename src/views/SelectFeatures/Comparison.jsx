@@ -5,6 +5,8 @@ import { useData } from "../../util/hooks/contextHooks";
 import { FlexContainer, FlexBox } from "../../util/components";
 import Bivariate from "../../components/Bivariate";
 
+// Component that allows bivariate visualization of any two features
+
 const AxisSelect = ({ label, onChange, values, value }) => (
     <FormControl sx={{ minWidth: 120 }}>
         <InputLabel>{label}</InputLabel>

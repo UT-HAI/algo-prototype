@@ -41,6 +41,7 @@ const ExploreData = () => {
 
     const [hasVisitedExploration, setVisited] = useState(false)
 
+    // why the Finish/Next button is disabled (undefined means it's not disabled)
     const disabledReason =
         goalSettingPage === 0 ? (!goalResponses.every(r => r.length > 5) ? 'Please answer all questions' : undefined) :
         goalSettingPage === 1 ? (rules[0] === '' ? 'Please fill out at least Rule 1' : !hasVisitedExploration ? 'Click on the Dataset Exploration tab before continuing!' : undefined) :

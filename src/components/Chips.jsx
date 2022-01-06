@@ -1,6 +1,8 @@
 import React from "react"
 import { Chip as MuiChip } from "@mui/material"
 
+// a customization of the MUI Chip component
+
 const colors = {
     purple: {
         line: '#8A3F97',

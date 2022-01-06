@@ -1,5 +1,4 @@
 import { Tooltip as MuiTooltip } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
 import { tooltipClasses } from "@mui/material/Tooltip"
 import { styled } from "@mui/material/styles"
 import React from "react"
@@ -22,14 +21,16 @@ const inlineProps = {
   marginBottom: '.2em'
 }
 
+// "i" icon that renders a tooltip on hover
 export const InfoIcon = ({ text, inline, ...props}) => (
   <Tooltip title={text}>
     <InfoOutlinedIcon {...props} sx={{...(inline ? inlineProps : undefined), ...props.sx}}/>
   </Tooltip>
 )
 
+// highlights the child content and on hover displays a tooltip containing text
+// the `term` prop can refer to a term in the glossary, use either `term` or `text`
 const InfoTip = ({ children, term, text }) => {
-    const theme = useTheme()
     return (
         <Tooltip title={glossary[term] ?? text}>
             <mark

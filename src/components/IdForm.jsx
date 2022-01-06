@@ -2,6 +2,8 @@ import React, { useState } from "react"
 import { Dialog, DialogContent, Typography, Box, TextField, Button } from "@mui/material"
 import { useId } from "../util/hooks/contextHooks"
 
+// Dialog that prompts users for a particpant ID
+
 export const IdForm = () => {
     const [id,setId] = useId()
     const [text, setText] = useState('')

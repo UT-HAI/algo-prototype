@@ -20,7 +20,7 @@ const NoPersona = () =>
         <Typography sx={{textAlign: 'center'}}>No matching personas found. Try a different filter.</Typography>
     </Stack>
 
-// "Persona Filter" box 
+// "Persona Filter" box ///////////////////////////////////////////////
 
 const Filter = ({ label, onChange, val }) => (
     <Stack direction='row' justifyContent='space-between'>
@@ -121,7 +121,8 @@ const ResultFilter = ({ onNext, outcomeFilterLabels, outcomeFilterValues, setOut
     )
 }
 
-// "Result" box
+// "Result" box ///////////////////////////////////////////////
+
 const ResultSection = ({ label, pred, actual, numerator, denominator, color }) =>
     <Stack direction='row' spacing={1}>
         <Box width='3px' backgroundColor={color} borderRadius='3px' flexShrink={0}/>
@@ -165,7 +166,7 @@ const Result = ({ actual, pred, empty }) => {
 }
 
 
-// Persona & Model Score box
+// Persona & Model Score box ///////////////////////////////////////////////
 
 const FilterChip = ({ feature, value }) => {
     if (feature === null) return null
@@ -253,7 +254,7 @@ const Persona = ({ id, idx, featureFilters }) => {
     )
 }
 
-// whole container
+// root component for the Personas tab ///////////////////////////////////////////////
 
 const Personas = () => {
     const { features, ids, target } = useData()
@@ -300,6 +301,7 @@ const Personas = () => {
             group: models.group.predictions[id] > 0.5,
         }
     }
+    // get the next randomly generated Subject ID according to the filters currently selected
     const getNextId = () => {
         const filtered = []
         testIds.forEach(testId => {

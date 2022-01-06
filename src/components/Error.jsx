@@ -2,7 +2,8 @@ import { Alert, Snackbar } from "@mui/material"
 import React from "react"
 import { useError } from "../util/hooks/contextHooks"
 
-// component that render error message based on value of error in app context
+// component that renders error message based on value of error in app context
+// (if `error` is non-null, an error message at the bottom will display)
 
 const Error = () => {
     const [error, setError] = useError()

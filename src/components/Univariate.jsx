@@ -1,6 +1,8 @@
 import React from "react"
 import Plot from "react-plotly.js"
 
+// component displaying a univariate distribution of a data (histogram for numerical and pie for categorical)
+
 const pieColors = {
     'Yes': '#537dc1',
     'No': '#ed6868',

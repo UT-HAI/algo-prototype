@@ -2,6 +2,8 @@ import React from "react"
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from "@mui/material"
 import { Link } from "react-router-dom"
 
+// Dialog rendered at the end of every section that generally asks users if they want to continue to the next section
+
 const FinishDialog = ({open, setOpen, title, content, cancelText, continueTo}) => {
     const close = () => setOpen(false)
     return (

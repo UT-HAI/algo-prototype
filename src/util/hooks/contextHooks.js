@@ -5,6 +5,8 @@ import { fetchSelectionUsers } from "../../api/selections";
 import { fetchNotebook, fetchNotebookUsers, postNotebook } from "../../api/notebook";
 import { fetchModels, fetchModelUsers } from "../../api/ml";
 
+// these hooks are meant to be an interface into the app-wide state located in context.js
+
 // `error` is used by a site-wide Snackbar component
 // when this value is truthy, a red error snackbar is displayed with the contents
 export const useError = () => {

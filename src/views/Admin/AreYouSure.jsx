@@ -1,6 +1,7 @@
 import React from "react"
 import { Dialog, DialogActions, DialogContent, DialogTitle, Button } from "@mui/material"
 
+// confirmation dialog component
 
 const AreYouSure = ({open, close, text, confirmButton}) => (
     <Dialog open={open} onClose={close}>

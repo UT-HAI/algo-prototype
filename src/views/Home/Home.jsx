@@ -16,7 +16,7 @@ import hireReject from '../../assets/hire-reject.png'
 import process from '../../assets/process.png'
 import InfoTip from "../../components/InfoTip"
 
-
+// landing page located at / route
 
 const FullPageSection = ({ children }) => 
 // background color for debugging

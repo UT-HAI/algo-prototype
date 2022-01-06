@@ -13,6 +13,7 @@ import AreYouSure from "./AreYouSure"
 import { deleteAllNotebooks } from "../../api/notebook";
 import { deleteAllModels, postTrain } from "../../api/ml";
 
+// the component that renders at the /Admin route, allows control over data as well as training group model
 
 const ControlCard = ({ title, content, buttons }) =>
     <Card variant='outlined' sx={{px:3, py:2}}>
@@ -85,9 +86,9 @@ const Admin = () => {
             <Typography variant="h3" gutterBottom>Admin</Typography>
             <Divider sx={{width: '100%'}}/>
             <Button onClick={()=>setAreYouSure('deleteAll')} startIcon={<DeleteForeverIcon />} variant='contained' color='error' sx={{mt: 3}} >Delete all data</Button>
-            {/* <Box mt={2} display='flex' flexWrap='wrap' alignItems='flex-start' sx={{'& > *': { marginRight: '16px', marginBottom: '16px' }}}> */}
             <Stack direction='row' mt={2} spacing={2}>
                 <Stack spacing={2}>
+                    {/* participant feature selection operations */}
                     <ControlCard
                         title='Feature Selections'
                         content={
@@ -119,6 +120,7 @@ const Admin = () => {
                             </Button>
                         ]}
                     />
+                    {/* participant notebooks operations */}
                     <ControlCard
                         title='Notebooks'
                         content={
@@ -150,6 +152,7 @@ const Admin = () => {
                             </Button>
                         ]}
                     />
+                    {/* trained model operations */}
                     <ControlCard
                         title='Models'
                         content={
@@ -182,6 +185,7 @@ const Admin = () => {
                         ]}
                     />
                 </Stack>
+                {/* allows admin to select features for group model and tell backend to train all models */}
                 <ControlCard
                     title='Group Selection'
                     content={
@@ -210,7 +214,6 @@ const Admin = () => {
                     ]}
                 />
             </Stack>
-            {/* </Box> */}
         </FlexContainer>
         <AreYouSure
             open={Boolean(areYouSure)}
