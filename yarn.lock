@@ -7393,6 +7393,11 @@ numeric@^1.2.6:
   resolved "https://registry.yarnpkg.com/numeric/-/numeric-1.2.6.tgz#765b02bef97988fcf880d4eb3f36b80fa31335aa"
   integrity sha1-dlsCvvl5iPz4gNTrPza4D6MTNao=
 
+numpy@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/numpy/-/numpy-0.0.1.tgz#c6bbd4c49b45bd537f768a09c9220a290de41598"
+  integrity sha512-HPoSFyRtH4dRUGjI6bzeVKgfOeNtIAWLvVWMqbaNGmWKE+npdnZ6L78TEJELgZBb+9XpL6r16vOz1jaQ7YVI7Q==
+
 object-assign@^2.0.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-2.1.1.tgz#43c36e5d569ff8e4816c4efa8be02d26967c18aa"

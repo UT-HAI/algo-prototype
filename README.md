@@ -13,6 +13,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+If you're getting errors trying to run the pip install, you may need to upgrade packages. The easiest way to do that is `pip install -U -r requirements.txt`. Make sure to `pip freeze > requirements.txt` to update the package file with new versions,  and push those changes.
+
 ## Development
 
 Start the frontend development server with hot-reloading:
